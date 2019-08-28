@@ -11,9 +11,9 @@ import UIKit
 class SelectionToggle: UIView {
     
     let withFriendButton = SButton(titleText: "a friend",
-                                   font: UIFont.systemFont(ofSize: 24))
+                                   font: UIFont.systemFont(ofSize: 32))
     let withSomeoneButton = SButton(titleText: "someone new",
-                                    font: UIFont.systemFont(ofSize: 24))
+                                    font: UIFont.systemFont(ofSize: 32))
     
     init() {
         super.init(frame: .zero)
