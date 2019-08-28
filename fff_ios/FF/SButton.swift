@@ -16,13 +16,13 @@ class SButton: UIButton {
     convenience init(titleText: String) {
         self.init(titleText: titleText,
                   font: UIFont.systemFont(ofSize: 16),
-                  titleInsets: UIEdgeInsets(top: 20, left: 10, bottom: 20, right: 10))
+                  titleInsets: UIEdgeInsets(top: 15, left: 8, bottom: 15, right: 8))
     }
     
     convenience init(titleText: String, font: UIFont) {
         self.init(titleText: titleText,
                   font: font,
-                  titleInsets: UIEdgeInsets(top: 20, left: 10, bottom: 20, right: 10))
+                  titleInsets: UIEdgeInsets(top: 15, left: 8, bottom: 15, right: 8))
     }
     
     init(titleText: String, font: UIFont, titleInsets: UIEdgeInsets) {

@@ -9,7 +9,7 @@
 import UIKit
 
 class SelectionSlider: UISlider {
-    
+        
     init() {
         super.init(frame: .zero)
         

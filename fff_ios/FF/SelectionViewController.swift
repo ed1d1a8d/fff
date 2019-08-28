@@ -33,6 +33,9 @@ class SelectionViewController: UIViewController {
         self.selectionSlider.addTarget(self, action: #selector(SelectionViewController.sliderChanged), for: .valueChanged)
         self.friendButton.addTarget(self, action: #selector(SelectionViewController.showMapView), for: .touchUpInside)
         
+        self.friendButton.isHidden = true
+        self.selectionToggle.selection = self
+        
         self.container.addSubview(self.titleLabel)
         self.container.addSubview(self.selectionToggle)
         self.container.addSubview(self.timeLabel)
@@ -64,7 +67,7 @@ class SelectionViewController: UIViewController {
         self.container.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.selectionSlider, lowerView: self.selectionTime, spacing: 25))
         self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.selectionTime, sides: [.left, .right], padding: 0))
         
-        self.container.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.selectionTime, lowerView: self.friendButton, spacing: 25))
+        self.container.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.selectionTime, lowerView: self.friendButton, spacing: 75))
         self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.friendButton, sides: [.left, .bottom, .right], padding: 0))
         
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.container, sides: [.left, .right], padding: 50))
@@ -82,7 +85,12 @@ class SelectionViewController: UIViewController {
     }
 }
 
-
-
+extension SelectionViewController: SelectionDelegate {
+    
+    func showFindButton() {
+        self.friendButton.isHidden = false
+    }
+    
+}
 
 

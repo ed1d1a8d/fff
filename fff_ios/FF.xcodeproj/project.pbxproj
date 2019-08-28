@@ -24,6 +24,7 @@
 		DCDA5DFF2316DC58007F9155 /* SelectionToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DFE2316DC58007F9155 /* SelectionToggle.swift */; };
 		DCDA5E012316F22E007F9155 /* SelectionSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E002316F22E007F9155 /* SelectionSlider.swift */; };
 		DCDA5E0323171A58007F9155 /* SelectionTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E0223171A58007F9155 /* SelectionTime.swift */; };
+		DCDA5E0523172ADB007F9155 /* SelectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E0423172ADB007F9155 /* SelectionProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		DCDA5DFE2316DC58007F9155 /* SelectionToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionToggle.swift; sourceTree = "<group>"; };
 		DCDA5E002316F22E007F9155 /* SelectionSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionSlider.swift; sourceTree = "<group>"; };
 		DCDA5E0223171A58007F9155 /* SelectionTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionTime.swift; sourceTree = "<group>"; };
+		DCDA5E0423172ADB007F9155 /* SelectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				DCDA5DF623161FF6007F9155 /* FView.swift */,
 				DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */,
 				DCDA5DFA23163E01007F9155 /* SelectionViewController.swift */,
+				DCDA5E0423172ADB007F9155 /* SelectionProtocol.swift */,
 				DCDA5DFE2316DC58007F9155 /* SelectionToggle.swift */,
 				DCDA5E002316F22E007F9155 /* SelectionSlider.swift */,
 				DCDA5E0223171A58007F9155 /* SelectionTime.swift */,
@@ -180,6 +183,7 @@
 				DCDA5DFB23163E01007F9155 /* SelectionViewController.swift in Sources */,
 				DCDA5DEF2316029F007F9155 /* LobbyViewController.swift in Sources */,
 				DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */,
+				DCDA5E0523172ADB007F9155 /* SelectionProtocol.swift in Sources */,
 				DCDA5DED2315FF30007F9155 /* FButton.swift in Sources */,
 				DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */,
 				DCDA5DFF2316DC58007F9155 /* SelectionToggle.swift in Sources */,

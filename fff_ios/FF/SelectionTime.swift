@@ -44,7 +44,7 @@ class SelectionTime: UIView {
     func attrString(time: Int, forTime: Bool) -> NSAttributedString {
         let attrText = NSMutableAttributedString(
             string: "\(time) minutes",
-            attributes: [.font: UIFont.systemFont(ofSize: 24.0)])
+            attributes: [.font: UIFont.systemFont(ofSize: 32.0)])
         let timeColor = forTime ? UIColor.black : UIColor.clear
         let minuteColor = forTime ? UIColor.clear : UIColor.black
         
