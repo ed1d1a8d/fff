@@ -11,7 +11,7 @@ import UIKit
 class MapViewController: UIViewController {
 
     let friendButton = FButton(titleText: "5 friends nearby")
-    let lobbyViewController = UINavigationController(rootViewController: LobbyViewController())
+    let lobbyViewController = FFNavigationController(rootViewController: LobbyViewController())
     
     override func viewDidLoad() {
         super.viewDidLoad()

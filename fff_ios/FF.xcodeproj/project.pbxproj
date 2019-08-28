@@ -25,6 +25,9 @@
 		DCDA5E012316F22E007F9155 /* SelectionSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E002316F22E007F9155 /* SelectionSlider.swift */; };
 		DCDA5E0323171A58007F9155 /* SelectionTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E0223171A58007F9155 /* SelectionTime.swift */; };
 		DCDA5E0523172ADB007F9155 /* SelectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E0423172ADB007F9155 /* SelectionProtocol.swift */; };
+		DCDA5E092317391A007F9155 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E082317391A007F9155 /* MessagesViewController.swift */; };
+		DCDA5E0B23173A81007F9155 /* FFNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E0A23173A81007F9155 /* FFNavigationController.swift */; };
+		DCDA5E0D23173CA1007F9155 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E0C23173CA1007F9155 /* KeyboardViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +51,9 @@
 		DCDA5E002316F22E007F9155 /* SelectionSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionSlider.swift; sourceTree = "<group>"; };
 		DCDA5E0223171A58007F9155 /* SelectionTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionTime.swift; sourceTree = "<group>"; };
 		DCDA5E0423172ADB007F9155 /* SelectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionProtocol.swift; sourceTree = "<group>"; };
+		DCDA5E082317391A007F9155 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		DCDA5E0A23173A81007F9155 /* FFNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFNavigationController.swift; sourceTree = "<group>"; };
+		DCDA5E0C23173CA1007F9155 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,14 +86,11 @@
 		DCDA5DD72315FCE7007F9155 /* FF */ = {
 			isa = PBXGroup;
 			children = (
+				DCDA5E0A23173A81007F9155 /* FFNavigationController.swift */,
+				DCDA5E0623173085007F9155 /* Selection */,
+				DCDA5E07231735BF007F9155 /* Messages */,
 				DCDA5DF623161FF6007F9155 /* FView.swift */,
 				DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */,
-				DCDA5DFA23163E01007F9155 /* SelectionViewController.swift */,
-				DCDA5E0423172ADB007F9155 /* SelectionProtocol.swift */,
-				DCDA5DFE2316DC58007F9155 /* SelectionToggle.swift */,
-				DCDA5E002316F22E007F9155 /* SelectionSlider.swift */,
-				DCDA5E0223171A58007F9155 /* SelectionTime.swift */,
-				DCDA5DFC2316D92B007F9155 /* SButton.swift */,
 				DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */,
 				DCDA5DEA2315FEF6007F9155 /* FConstraint.swift */,
 				DCDA5DEC2315FF30007F9155 /* FButton.swift */,
@@ -101,6 +104,28 @@
 				DCDA5DE42315FCE8007F9155 /* Info.plist */,
 			);
 			path = FF;
+			sourceTree = "<group>";
+		};
+		DCDA5E0623173085007F9155 /* Selection */ = {
+			isa = PBXGroup;
+			children = (
+				DCDA5DFA23163E01007F9155 /* SelectionViewController.swift */,
+				DCDA5DFE2316DC58007F9155 /* SelectionToggle.swift */,
+				DCDA5E002316F22E007F9155 /* SelectionSlider.swift */,
+				DCDA5E0223171A58007F9155 /* SelectionTime.swift */,
+				DCDA5DFC2316D92B007F9155 /* SButton.swift */,
+				DCDA5E0423172ADB007F9155 /* SelectionProtocol.swift */,
+			);
+			path = Selection;
+			sourceTree = "<group>";
+		};
+		DCDA5E07231735BF007F9155 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				DCDA5E0C23173CA1007F9155 /* KeyboardViewController.swift */,
+				DCDA5E082317391A007F9155 /* MessagesViewController.swift */,
+			);
+			path = Messages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +201,7 @@
 				DCDA5DEB2315FEF6007F9155 /* FConstraint.swift in Sources */,
 				DCDA5DF9231635F0007F9155 /* Extensions.swift in Sources */,
 				DCDA5DF123160A74007F9155 /* FLabel.swift in Sources */,
+				DCDA5E092317391A007F9155 /* MessagesViewController.swift in Sources */,
 				DCDA5E0323171A58007F9155 /* SelectionTime.swift in Sources */,
 				DCDA5DF523161971007F9155 /* LobbyCell.swift in Sources */,
 				DCDA5DF723161FF6007F9155 /* FView.swift in Sources */,
@@ -183,12 +209,14 @@
 				DCDA5DFB23163E01007F9155 /* SelectionViewController.swift in Sources */,
 				DCDA5DEF2316029F007F9155 /* LobbyViewController.swift in Sources */,
 				DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */,
+				DCDA5E0D23173CA1007F9155 /* KeyboardViewController.swift in Sources */,
 				DCDA5E0523172ADB007F9155 /* SelectionProtocol.swift in Sources */,
 				DCDA5DED2315FF30007F9155 /* FButton.swift in Sources */,
 				DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */,
 				DCDA5DFF2316DC58007F9155 /* SelectionToggle.swift in Sources */,
 				DCDA5DF323160FFF007F9155 /* LobbyTableView.swift in Sources */,
 				DCDA5DFD2316D92B007F9155 /* SButton.swift in Sources */,
+				DCDA5E0B23173A81007F9155 /* FFNavigationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
