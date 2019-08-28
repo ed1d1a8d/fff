@@ -11,7 +11,7 @@
 		DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */; };
 		DCDA5DE02315FCE8007F9155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCDA5DDF2315FCE8007F9155 /* Assets.xcassets */; };
 		DCDA5DE32315FCE8007F9155 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCDA5DE12315FCE8007F9155 /* LaunchScreen.storyboard */; };
-		DCDA5DEB2315FEF6007F9155 /* FConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DEA2315FEF6007F9155 /* FConstraints.swift */; };
+		DCDA5DEB2315FEF6007F9155 /* FConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DEA2315FEF6007F9155 /* FConstraint.swift */; };
 		DCDA5DED2315FF30007F9155 /* FButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DEC2315FF30007F9155 /* FButton.swift */; };
 		DCDA5DEF2316029F007F9155 /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DEE2316029F007F9155 /* LobbyViewController.swift */; };
 		DCDA5DF123160A74007F9155 /* FLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DF023160A74007F9155 /* FLabel.swift */; };
@@ -19,6 +19,9 @@
 		DCDA5DF523161971007F9155 /* LobbyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DF423161971007F9155 /* LobbyCell.swift */; };
 		DCDA5DF723161FF6007F9155 /* FView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DF623161FF6007F9155 /* FView.swift */; };
 		DCDA5DF9231635F0007F9155 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DF8231635F0007F9155 /* Colors.swift */; };
+		DCDA5DFB23163E01007F9155 /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DFA23163E01007F9155 /* SelectionViewController.swift */; };
+		DCDA5DFD2316D92B007F9155 /* SButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DFC2316D92B007F9155 /* SButton.swift */; };
+		DCDA5DFF2316DC58007F9155 /* SelectionToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DFE2316DC58007F9155 /* SelectionToggle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,7 +31,7 @@
 		DCDA5DDF2315FCE8007F9155 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DCDA5DE22315FCE8007F9155 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DCDA5DE42315FCE8007F9155 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCDA5DEA2315FEF6007F9155 /* FConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FConstraints.swift; sourceTree = "<group>"; };
+		DCDA5DEA2315FEF6007F9155 /* FConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FConstraint.swift; sourceTree = "<group>"; };
 		DCDA5DEC2315FF30007F9155 /* FButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FButton.swift; sourceTree = "<group>"; };
 		DCDA5DEE2316029F007F9155 /* LobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyViewController.swift; sourceTree = "<group>"; };
 		DCDA5DF023160A74007F9155 /* FLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FLabel.swift; sourceTree = "<group>"; };
@@ -36,6 +39,9 @@
 		DCDA5DF423161971007F9155 /* LobbyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyCell.swift; sourceTree = "<group>"; };
 		DCDA5DF623161FF6007F9155 /* FView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FView.swift; sourceTree = "<group>"; };
 		DCDA5DF8231635F0007F9155 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		DCDA5DFA23163E01007F9155 /* SelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
+		DCDA5DFC2316D92B007F9155 /* SButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SButton.swift; sourceTree = "<group>"; };
+		DCDA5DFE2316DC58007F9155 /* SelectionToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionToggle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +76,11 @@
 			children = (
 				DCDA5DF623161FF6007F9155 /* FView.swift */,
 				DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */,
+				DCDA5DFA23163E01007F9155 /* SelectionViewController.swift */,
+				DCDA5DFE2316DC58007F9155 /* SelectionToggle.swift */,
+				DCDA5DFC2316D92B007F9155 /* SButton.swift */,
 				DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */,
-				DCDA5DEA2315FEF6007F9155 /* FConstraints.swift */,
+				DCDA5DEA2315FEF6007F9155 /* FConstraint.swift */,
 				DCDA5DEC2315FF30007F9155 /* FButton.swift */,
 				DCDA5DEE2316029F007F9155 /* LobbyViewController.swift */,
 				DCDA5DF223160FFF007F9155 /* LobbyTableView.swift */,
@@ -155,16 +164,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCDA5DEB2315FEF6007F9155 /* FConstraints.swift in Sources */,
+				DCDA5DEB2315FEF6007F9155 /* FConstraint.swift in Sources */,
 				DCDA5DF9231635F0007F9155 /* Colors.swift in Sources */,
 				DCDA5DF123160A74007F9155 /* FLabel.swift in Sources */,
 				DCDA5DF523161971007F9155 /* LobbyCell.swift in Sources */,
 				DCDA5DF723161FF6007F9155 /* FView.swift in Sources */,
+				DCDA5DFB23163E01007F9155 /* SelectionViewController.swift in Sources */,
 				DCDA5DEF2316029F007F9155 /* LobbyViewController.swift in Sources */,
 				DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */,
 				DCDA5DED2315FF30007F9155 /* FButton.swift in Sources */,
 				DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */,
+				DCDA5DFF2316DC58007F9155 /* SelectionToggle.swift in Sources */,
 				DCDA5DF323160FFF007F9155 /* LobbyTableView.swift in Sources */,
+				DCDA5DFD2316D92B007F9155 /* SButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

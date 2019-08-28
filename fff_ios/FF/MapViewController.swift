@@ -10,7 +10,7 @@ import UIKit
 
 class MapViewController: UIViewController {
 
-    let friendButton = FButton(titleText: "Search For Friends")
+    let friendButton = FButton(titleText: "5 friends nearby")
     let lobbyViewController = UINavigationController(rootViewController: LobbyViewController())
     
     override func viewDidLoad() {
