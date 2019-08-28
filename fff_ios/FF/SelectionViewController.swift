@@ -17,6 +17,7 @@ class SelectionViewController: UIViewController {
     let timeLabel = FLabel(text: "within the next",
                             font: UIFont.systemFont(ofSize: 32, weight: .medium),
                             color: UIColor.black)
+    let selectionSlider = SelectionSlider()
 
     let container = FView(baseColor: UIColor.white)
     
@@ -28,6 +29,7 @@ class SelectionViewController: UIViewController {
         self.container.addSubview(self.titleLabel)
         self.container.addSubview(self.selectionToggle)
         self.container.addSubview(self.timeLabel)
+        self.container.addSubview(self.selectionSlider)
         
         self.view.addSubview(self.container)
         
@@ -44,7 +46,11 @@ class SelectionViewController: UIViewController {
         self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.selectionToggle, sides: [.left, .right], padding: 0))
         
         self.container.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.selectionToggle, lowerView: self.timeLabel, spacing: 25))
-        self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.timeLabel, sides: [.left, .bottom, .right], padding: 0))
+        self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.timeLabel, sides: [.left, .right], padding: 0))
+        
+        self.container.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.timeLabel, lowerView: self.selectionSlider, spacing: 25))
+        self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.selectionSlider, sides: [.left, .bottom, .right], padding: 10))
+
         
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.container, sides: [.left, .right], padding: 50))
         self.view.addConstraints(FConstraint.centerAlignConstraints(firstView: self.container, secondView: self.view))
