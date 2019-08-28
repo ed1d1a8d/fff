@@ -19,12 +19,13 @@ class LobbyViewController: UIViewController {
         super.viewDidLoad()
         
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(LobbyViewController.dismissSelf))
-        cancelButton.tintColor = UIColor.black
         self.navigationItem.rightBarButtonItem = cancelButton
     
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage() //remove pesky 1 pixel line
+        
+        self.lobbyTableView.delegate = self
         
         self.view.backgroundColor = UIColor.white
         
@@ -48,4 +49,16 @@ class LobbyViewController: UIViewController {
     @objc func dismissSelf() {
         self.dismiss(animated: true, completion: nil)
     }
+}
+
+extension LobbyViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let messagesViewController = MessagesViewController()
+        let title = (lobbyTableView.cellForRow(at: indexPath) as! LobbyCell).nameLabel.text!
+            
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: title, style: .plain, target: nil, action: nil)
+        self.navigationController?.pushViewController(messagesViewController, animated: true)
+    }
+    
 }

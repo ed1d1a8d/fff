@@ -10,10 +10,13 @@ import UIKit
 
 class FView: UIView {
     
-    let baseColor = UIColor.orange
-    let darkerColor = UIColor.orange.darker(by: 20)
+    let baseColor:UIColor
+    let darkerColor:UIColor
     
-    init() {
+    init(baseColor: UIColor) {
+        self.baseColor = baseColor
+        self.darkerColor = self.baseColor.darker(by: 20)!
+        
         super.init(frame: .zero)
         
         self.translatesAutoresizingMaskIntoConstraints = false

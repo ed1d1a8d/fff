@@ -10,6 +10,12 @@ import UIKit
 
 class FLabel: UILabel {
     
+    init() {
+        super.init(frame: .zero)
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
     init(text: String, font: UIFont, color: UIColor) {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false

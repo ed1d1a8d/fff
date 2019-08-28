@@ -10,7 +10,7 @@ import UIKit
 
 class LobbyCell: UITableViewCell {
     
-    let container = FView()
+    let container = FView(baseColor: UIColor.orange)
     let nameLabel = FLabel(text: "",
                            font: UIFont.systemFont(ofSize: 18.0),
                            color: UIColor.black)
