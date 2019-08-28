@@ -10,13 +10,18 @@ import UIKit
 
 class FButton: UIButton {
     
-    init(titleText: String) {
+    convenience init(titleText: String) {
+        self.init(titleText: titleText, font: UIFont.systemFont(ofSize: 16))
+    }
+    
+    init(titleText: String, font: UIFont) {
         super.init(frame: .zero)
         
         self.translatesAutoresizingMaskIntoConstraints = false
-
+        
         self.backgroundColor = UIColor.red
         self.setTitle(titleText, for: .normal)
+        self.titleLabel!.font = font
     }
     
     required init?(coder aDecoder: NSCoder) {
