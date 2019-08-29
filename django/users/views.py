@@ -21,8 +21,8 @@ class FriendList(generics.ListAPIView):
         return Friend.objects.friends(self.request.user)
 
 
-def dumb(*_, **__):
-    return HttpRequest("you dumb asf")
+def dumb(a, b):
+    return HttpRequest("you dumb asf 2")
 
 
 # TODO: Friend request system
