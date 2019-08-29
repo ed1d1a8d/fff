@@ -43,6 +43,7 @@
 		DCDA5E2323174B67007F9155 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E2223174B67007F9155 /* MessageBubble.swift */; };
 		DCDA5E252317834F007F9155 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E242317834F007F9155 /* Secret.swift */; };
 		DCDA5E2823178C6E007F9155 /* FriendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E2723178C6E007F9155 /* FriendData.swift */; };
+		DCDA5E2A23183508007F9155 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E2923183508007F9155 /* Networking.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +87,7 @@
 		DCDA5E2223174B67007F9155 /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
 		DCDA5E242317834F007F9155 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		DCDA5E2723178C6E007F9155 /* FriendData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendData.swift; sourceTree = "<group>"; };
+		DCDA5E2923183508007F9155 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 			children = (
 				DCDA5E242317834F007F9155 /* Secret.swift */,
 				DCDA5E1023173E63007F9155 /* Constants.swift */,
+				DCDA5E2923183508007F9155 /* Networking.swift */,
 				DCDA5E0A23173A81007F9155 /* FFNavigationController.swift */,
 				DCDA5E2623178C57007F9155 /* Data */,
 				DCDA5E0623173085007F9155 /* Selection */,
@@ -362,6 +365,7 @@
 				DCDA5E0F23173DE3007F9155 /* InputContainer.swift in Sources */,
 				DCDA5E1123173E63007F9155 /* Constants.swift in Sources */,
 				DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */,
+				DCDA5E2A23183508007F9155 /* Networking.swift in Sources */,
 				DCDA5E0D23173CA1007F9155 /* KeyboardViewController.swift in Sources */,
 				DCDA5E0523172ADB007F9155 /* SelectionProtocol.swift in Sources */,
 				DCDA5DED2315FF30007F9155 /* FButton.swift in Sources */,

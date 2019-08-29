@@ -28,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        self.window?.rootViewController = SelectionViewController()
           self.window?.rootViewController = FBLoginViewController()
 //        self.window?.rootViewController = MapViewController(friendData: Fake.Friends.one)
+//        self.window?.rootViewController = SelectionViewController()
+//        self.window?.rootViewController = MapViewController(currLocation: Fake.Friends.currLocation, friendData: Fake.Friends.one)
 //        self.window?.rootViewController = LobbyViewController()
         self.window?.makeKeyAndVisible()
         

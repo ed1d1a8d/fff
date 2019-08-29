@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import CoreLocation
 
 class SelectionViewController: UIViewController {
+    
+    let locationManager = CLLocationManager()
+    var currentLocation:CLLocation!
     
     let titleLabel = FLabel(text: "I want to eat with",
                            font: UIFont.systemFont(ofSize: 32, weight: .medium),
@@ -27,6 +31,34 @@ class SelectionViewController: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
+        
+        enableBasicLocationServices()
+    }
+    
+    func enableBasicLocationServices() {
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.startUpdatingLocation()
+        
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            // Request when-in-use authorization initially
+            locationManager.requestWhenInUseAuthorization()
+            break
+            
+        case .restricted, .denied:
+            // Disable location features
+            // code to disable everything until location services are enabled
+            break
+            
+        case .authorizedWhenInUse, .authorizedAlways:
+            // Enable location features
+            break
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.white
         
@@ -79,7 +111,7 @@ class SelectionViewController: UIViewController {
     }
     
     @objc func showMapView() {
-        let mapView = MapViewController(friendData: Fake.Friends.one)
+        let mapView = MapViewController(currLocation: Fake.Friends.currLocation, friendData: Fake.Friends.one)
         self.present(mapView, animated: true, completion: nil)
     }
 }
@@ -89,7 +121,13 @@ extension SelectionViewController: SelectionDelegate {
     func showFindButton() {
         self.friendButton.isHidden = false
     }
-    
 }
 
-
+extension SelectionViewController: CLLocationManagerDelegate {
+    
+    // code from https://stackoverflow.com/questions/26741591/how-to-get-current-longitude-and-latitude-using-cllocationmanager-swift
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        self.currentLocation = locations.last!
+    }
+    
+}

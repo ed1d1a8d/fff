@@ -42,7 +42,7 @@ class LobbyViewController: UIViewController {
         self.view.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.lobbyLabel, lowerView: self.lobbyTableView, spacing: 20))
     }
     
-    func updateLobbySource(data: [String]) {
+    func updateLobbySource(data: [FriendData]) {
         self.lobbyTableView.updateData(data: data)
     }
     
