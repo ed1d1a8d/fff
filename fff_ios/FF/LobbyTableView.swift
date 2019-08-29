@@ -10,7 +10,7 @@ import UIKit
 
 class LobbyTableView: UITableView, UITableViewDelegate {
     
-    var lobbySource:[String] = []
+    var lobbySource:[FriendData] = []
     
     init() {
         super.init(frame: .zero, style: .plain)
@@ -38,12 +38,12 @@ extension LobbyTableView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let data = self.lobbySource[indexPath.row]
-        let cell = LobbyCell(textData: data)
+        let cell = LobbyCell(data: data)
         
         return cell
     }
     
-    func updateData(data: [String]) {
+    func updateData(data: [FriendData]) {
         self.lobbySource = data
         self.reloadData()
         self.layoutIfNeeded()
