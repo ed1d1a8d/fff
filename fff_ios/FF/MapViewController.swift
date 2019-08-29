@@ -16,14 +16,21 @@ class MapViewController: UIViewController {
     let friendButton = FButton(titleText: "5 friends nearby")
     let lobbyViewController = FFNavigationController(rootViewController: LobbyViewController())
     
-    init() {
-        self.camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
+    let friendData:[FriendData]
+    
+    init(friendData: [FriendData]) {
+        self.friendData = friendData
+        
+        self.camera = GMSCameraPosition.camera(withLatitude: 42.3601, longitude: -71.0942, zoom: 15.0)
         self.mapView = GMSMapView.map(withFrame: CGRect(x: 0, y: 0, width: Dimensions.width, height: Dimensions.height), camera: camera)
         
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
-        marker.map = mapView
-
+        for friend in friendData {
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: friend.friendLat, longitude: friend.friendLng)
+            marker.title = friend.friendName
+            marker.map = mapView
+        }
+        
         super.init(nibName: nil, bundle: nil)
     }
     
