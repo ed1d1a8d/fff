@@ -23,7 +23,6 @@ class LobbyViewController: UIViewController {
     
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.barTintColor = UIColor.white
-//        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage() //remove pesky 1 pixel line
         
         self.lobbyTableView.delegate = self
@@ -55,7 +54,7 @@ class LobbyViewController: UIViewController {
 extension LobbyViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let messagesViewController = MessagesViewController(senderID: "Jing", recipientID: "Corrine", messages: Fake.Conversations.one)
+        let messagesViewController = MessagesViewController(senderID: "Jing Lin", recipientID: "Corrine Li", messages: Fake.Conversations.one)
         let title = (lobbyTableView.cellForRow(at: indexPath) as! LobbyCell).nameLabel.text!
             
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: title, style: .plain, target: nil, action: nil)
