@@ -21,8 +21,9 @@ class LobbyViewController: UIViewController {
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(LobbyViewController.dismissSelf))
         self.navigationItem.rightBarButtonItem = cancelButton
     
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = UIColor.white
+//        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage() //remove pesky 1 pixel line
         
         self.lobbyTableView.delegate = self
@@ -36,7 +37,7 @@ class LobbyViewController: UIViewController {
     
     func addConstraints() {
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.lobbyLabel, sides: [.left, .right], padding: 35))
-        self.view.addConstraint(FConstraint.paddingPositionConstraint(view: self.lobbyLabel, side: .top, padding: 84))
+        self.view.addConstraint(FConstraint.paddingPositionConstraint(view: self.lobbyLabel, side: .top, padding: 0))
         
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.lobbyTableView, sides: [.left, .right ,.bottom], padding: 0))
         self.view.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.lobbyLabel, lowerView: self.lobbyTableView, spacing: 20))
