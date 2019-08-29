@@ -46,6 +46,16 @@ class InputContainer: UIView {
         }
     }
     
+    func fetchText() -> String {
+        let text = textContainer.text!
+        textContainer.text = ""
+        
+        self.textPlaceholder.isHidden = false
+        self.textContainer.containerConstraint.constant = Keyboard.defaultHeight
+        
+        return text
+    }
+    
 }
 
 extension InputContainer: UITextViewDelegate {

@@ -10,7 +10,7 @@ import UIKit
 
 class MessagesTableView: UITableView {
     
-    let messages:[MessageData]
+    var messages:[MessageData]
     
     init(messages: [MessageData]) {
         self.messages = messages

@@ -38,7 +38,6 @@ extension LobbyTableView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let data = self.lobbySource[indexPath.row]
-        print(data)
         let cell = LobbyCell(textData: data)
         
         return cell
@@ -47,6 +46,7 @@ extension LobbyTableView: UITableViewDataSource {
     func updateData(data: [String]) {
         self.lobbySource = data
         self.reloadData()
+        self.layoutIfNeeded()
     }
     
 }
