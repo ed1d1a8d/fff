@@ -40,6 +40,7 @@
 		DCDA5E2123174B4F007F9155 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E2023174B4F007F9155 /* MessageCell.swift */; };
 		DCDA5E2323174B67007F9155 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E2223174B67007F9155 /* MessageBubble.swift */; };
 		DCDA5E252317834F007F9155 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E242317834F007F9155 /* Secret.swift */; };
+		DCDA5E2823178C6E007F9155 /* FriendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E2723178C6E007F9155 /* FriendData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +81,7 @@
 		DCDA5E2023174B4F007F9155 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		DCDA5E2223174B67007F9155 /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
 		DCDA5E242317834F007F9155 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		DCDA5E2723178C6E007F9155 /* FriendData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				DCDA5E242317834F007F9155 /* Secret.swift */,
 				DCDA5E1023173E63007F9155 /* Constants.swift */,
 				DCDA5E0A23173A81007F9155 /* FFNavigationController.swift */,
+				DCDA5E2623178C57007F9155 /* Data */,
 				DCDA5E0623173085007F9155 /* Selection */,
 				DCDA5E07231735BF007F9155 /* Messages */,
 				DCDA5DF623161FF6007F9155 /* FView.swift */,
@@ -162,7 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				DCDA5E1E23174A97007F9155 /* Fake.swift */,
-				DCDA5E1C23174A8B007F9155 /* MessageData.swift */,
 				DCDA5E2223174B67007F9155 /* MessageBubble.swift */,
 				DCDA5E2023174B4F007F9155 /* MessageCell.swift */,
 				DCDA5E1A231749DD007F9155 /* MessagesTableView.swift */,
@@ -174,6 +176,15 @@
 				DCDA5E082317391A007F9155 /* MessagesViewController.swift */,
 			);
 			path = Messages;
+			sourceTree = "<group>";
+		};
+		DCDA5E2623178C57007F9155 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				DCDA5E1C23174A8B007F9155 /* MessageData.swift */,
+				DCDA5E2723178C6E007F9155 /* FriendData.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		ED42EB17BD263A12061583CC /* Pods */ = {
@@ -299,6 +310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCDA5E2823178C6E007F9155 /* FriendData.swift in Sources */,
 				DCDA5DEB2315FEF6007F9155 /* FConstraint.swift in Sources */,
 				DCDA5E252317834F007F9155 /* Secret.swift in Sources */,
 				DCDA5DF9231635F0007F9155 /* Extensions.swift in Sources */,
