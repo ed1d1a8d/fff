@@ -54,7 +54,7 @@ class LobbyViewController: UIViewController {
 extension LobbyViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let messagesViewController = MessagesViewController()
+        let messagesViewController = MessagesViewController(messages: Fake.Conversations.one)
         let title = (lobbyTableView.cellForRow(at: indexPath) as! LobbyCell).nameLabel.text!
             
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: title, style: .plain, target: nil, action: nil)

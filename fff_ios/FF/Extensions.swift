@@ -30,3 +30,17 @@ extension UIColor {
         }
     }
 }
+
+func heightForUILabel(text: String, font: UIFont, width: CGFloat) -> CGFloat {
+    
+    let label = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
+    label.numberOfLines = 0
+    label.lineBreakMode = .byWordWrapping
+    label.text = text
+    label.font = font
+    
+    label.sizeToFit()
+    
+    return label.frame.height
+}
+
