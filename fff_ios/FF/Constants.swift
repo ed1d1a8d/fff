@@ -27,6 +27,11 @@ struct Bubble {
     static let vPadding:CGFloat = 6
     static let hPadding:CGFloat = 10
     
+    static let incomingTextColor = UIColor(rgb: 0x101010)
+    static let outgoingTextColor = UIColor(rgb: 0xFFFFFF)
+    static let incomingColor = UIColor(rgb: 0xCACACA)
+    static let outgoingColor = UIColor(rgb: 0xef9425)
+    
     static let offset:CGFloat = Dimensions.width - 2 * MessagesList.padding
     
     static let cushion:CGFloat = 0.5

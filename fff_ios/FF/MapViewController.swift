@@ -19,7 +19,7 @@ class MapViewController: UIViewController {
         
         self.view.backgroundColor = UIColor.orange
         
-        self.friendButton.addTarget(self, action: #selector(MapViewController.friendClick), for: .touchDown)
+        self.friendButton.addTarget(self, action: #selector(MapViewController.friendClick), for: .touchUpInside)
         
         self.view.addSubview(self.friendButton)
         
