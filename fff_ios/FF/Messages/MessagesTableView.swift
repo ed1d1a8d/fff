@@ -19,6 +19,7 @@ class MessagesTableView: UITableView {
         
         self.translatesAutoresizingMaskIntoConstraints = false
         self.separatorStyle = .none
+        
         self.contentInset = .zero
         
         self.dataSource = self
@@ -41,7 +42,10 @@ extension MessagesTableView: UITableViewDataSource {
         let messageData = self.messages[indexPath.row]
         let messageType = messageData.receiverName == "Corrine Li" ? MessageType.Incoming : MessageType.Outgoing
         
-        return MessageCell(messageData: messageData, messageType: messageType)
+        let priorData = self.messages[max(0, indexPath.row - 1)]
+        let alternate = !(messageData.receiverName == priorData.receiverName)
+        
+        return MessageCell(messageData: messageData, messageType: messageType, alternate: alternate)
     }
     
 }
@@ -49,9 +53,17 @@ extension MessagesTableView: UITableViewDataSource {
 extension MessagesTableView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let priorData = self.messages[max(0, indexPath.row - 1)]
+        let messageData = self.messages[indexPath.row]
+
+        let alternate = !(messageData.receiverName == priorData.receiverName)
+        let alternateOffset:CGFloat = alternate ? 15 : 0
+        print(alternateOffset)
+        
         return heightForUILabel(text: self.messages[indexPath.row].message, font: Bubble.font, width: Bubble.bubbleLength) +
             Bubble.vPadding * 2 +
-            Bubble.cushion
+            Bubble.cushion +
+            alternateOffset
     }
     
 }
