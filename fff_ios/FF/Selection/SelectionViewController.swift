@@ -75,7 +75,6 @@ class SelectionViewController: UIViewController {
     }
     
     @objc func sliderChanged(sender: UISlider) {
-        print(sender.value)
         selectionTime.updateTime(time: sender.value)
     }
     
