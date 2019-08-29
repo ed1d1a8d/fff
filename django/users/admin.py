@@ -9,9 +9,9 @@ class UserAdmin(auth.admin.UserAdmin):
     add_form = forms.UserCreationForm
     form = forms.UserChangeForm
     model = models.User
-    " = [
-        'email',
-        'username',
+    list_display = [
+        "email",
+        "username",
     ]
 
 
