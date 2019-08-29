@@ -40,7 +40,7 @@ extension MessagesTableView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let messageData = self.messages[indexPath.row]
-        let messageType = messageData.receiverName == "Corrine Li" ? MessageType.Incoming : MessageType.Outgoing
+        let messageType = messageData.senderName == "Jing Lin" ? MessageType.Outgoing : MessageType.Incoming
         
         let priorData = self.messages[max(0, indexPath.row - 1)]
         let alternate = !(messageData.receiverName == priorData.receiverName)
@@ -58,7 +58,6 @@ extension MessagesTableView: UITableViewDelegate {
 
         let alternate = !(messageData.receiverName == priorData.receiverName)
         let alternateOffset:CGFloat = alternate ? 15 : 0
-        print(alternateOffset)
         
         return heightForUILabel(text: self.messages[indexPath.row].message, font: Bubble.font, width: Bubble.bubbleLength) +
             Bubble.vPadding * 2 +
