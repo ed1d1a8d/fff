@@ -18,17 +18,17 @@ class LobbyCell: UITableViewCell {
                            font: UIFont.systemFont(ofSize: 18.0),
                            color: UIColor.black)
     
-    init(textData: String) {
+    init(data: FriendData) {
         super.init(style: .default, reuseIdentifier: "lobbyCell")
         
         self.translatesAutoresizingMaskIntoConstraints = false
         
         self.selectionStyle = .none
         
-        let dataArr = textData.components(separatedBy: ",")
+        let distance = data.distance * 1.6 / 1000
         
-        self.nameLabel.text = dataArr[0]
-        self.distLabel.text = dataArr[1]
+        self.nameLabel.text = data.friendName
+        self.distLabel.text = String(format: "%.2fm", distance)
         self.distLabel.textAlignment = .right
         
         self.container.layer.cornerRadius = 10
@@ -47,10 +47,10 @@ class LobbyCell: UITableViewCell {
     
     func addConstraints() {
         self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.nameLabel, sides: [.left, .top, .bottom], padding: 25))
-        self.container.addConstraint(FConstraint.fillXConstraints(view: self.nameLabel, widthRatio: 0.8))
+        self.container.addConstraint(FConstraint.fillXConstraints(view: self.nameLabel, widthRatio: 0.6))
         
         self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.distLabel, sides: [.right, .top, .bottom], padding: 25))
-        self.container.addConstraint(FConstraint.fillXConstraints(view: self.distLabel, widthRatio: 0.2))
+        self.container.addConstraint(FConstraint.fillXConstraints(view: self.distLabel, widthRatio: 0.4))
         
         self.contentView.addConstraints(FConstraint.paddingPositionConstraints(view: self.container, sides: [.left, .right], padding: 45))
         self.contentView.addConstraint(FConstraint.paddingPositionConstraint(view: self.container, side: .top, padding: 0))

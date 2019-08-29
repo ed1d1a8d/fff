@@ -10,8 +10,8 @@ class UserAdmin(auth.admin.UserAdmin):
     form = forms.UserChangeForm
     model = models.User
     list_display = [
-        "email",
         "username",
+        "email",
     ]
 
 
