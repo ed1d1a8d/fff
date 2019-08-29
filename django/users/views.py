@@ -21,8 +21,7 @@ class FriendList(generics.ListAPIView):
         return Friend.objects.friends(self.request.user)
 
 
-# TODO: Friend request system
-
+# details about a specific user who is a friend
 class FriendDetail(generics.RetrieveAPIView):
    serializer_class = UserSerializer
 
@@ -31,5 +30,5 @@ class FriendDetail(generics.RetrieveAPIView):
        other = User.objects.get(pk=pk)
        print("pk", pk)
        if Friend.objects.are_friends(self.request.user, other) != True:
-           return other
+           return other # should be an error
        return other
