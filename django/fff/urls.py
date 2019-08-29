@@ -14,10 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path("blog/", include("blog.urls"))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.http import HttpResponse
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic.base import RedirectView
+
+favicon_view = RedirectView.as_view(url="/static/favicon.ico", permanent=True)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -25,7 +28,8 @@ urlpatterns = [
     path("auth/registration/", include("rest_auth.registration.urls")),
     path("users/", include("users.urls")),
 
-    path("dumb/", lambda request: HttpResponse("dumb"))
+    path("dumb/", lambda request: HttpResponse("dumb")),
+    path("/favicon.ico/", favicon_view),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
