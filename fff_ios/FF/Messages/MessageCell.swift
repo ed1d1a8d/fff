@@ -25,7 +25,6 @@ class MessageCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: "incomingMessageCell")
         
         self.selectionStyle = .none
-        self.backgroundColor = UIColor.blue
         
         messageBubble.text = messageData.message
         if (messageType == .Incoming) {

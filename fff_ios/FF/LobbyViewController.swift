@@ -23,7 +23,6 @@ class LobbyViewController: UIViewController {
     
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.barTintColor = UIColor.white
-//        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage() //remove pesky 1 pixel line
         
         self.lobbyTableView.delegate = self
