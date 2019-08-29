@@ -17,6 +17,7 @@ struct Dimensions {
 
 struct MessagesList {
     static let hPadding:CGFloat = 20
+    static let padding:CGFloat = 15
 }
 
 struct Bubble {
@@ -26,7 +27,7 @@ struct Bubble {
     static let vPadding:CGFloat = 6
     static let hPadding:CGFloat = 10
     
-    static let offset:CGFloat = Dimensions.width
+    static let offset:CGFloat = Dimensions.width - 2 * MessagesList.padding
     
     static let cushion:CGFloat = 0.5
     

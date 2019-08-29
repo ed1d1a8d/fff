@@ -27,7 +27,7 @@ class MessagesViewController: KeyboardViewController {
     }
     
     func addConstraints() {
-        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.messagesTableView, sides: [.left, .top, .right], padding: 0))
+        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.messagesTableView, sides: [.left, .top, .right], padding: MessagesList.padding))
         self.view.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.messagesTableView, lowerView: self.keyboard, spacing: 0))
 
         self.keyboardConstraint = FConstraint.paddingPositionConstraint(view: self.keyboard, side: .bottom, padding: 0)

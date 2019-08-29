@@ -23,9 +23,7 @@ class MessageCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: "incomingMessageCell")
         
         messageBubble.text = messageData.message
-        messageBubble.layer.backgroundColor = UIColor.darkGray.cgColor
-        
-        self.backgroundColor = UIColor.green
+        messageBubble.layer.backgroundColor = messageType == .Incoming ? UIColor.cyan.cgColor : UIColor.orange.cgColor
         
         self.addSubview(messageBubble)
         setupElements()
