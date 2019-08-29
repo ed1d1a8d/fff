@@ -6,10 +6,10 @@ from . import models
 class UserCreationForm(auth.forms.UserCreationForm):
     class Meta(auth.forms.UserCreationForm):
         model = models.User
-        fields = ('username', 'email')
+        fields = ("username", "email")
 
 
 class UserChangeForm(auth.forms.UserChangeForm):
     class Meta(auth.forms.UserChangeForm):
         model = models.User
-        fields = ('username', 'email')
+        fields = ("username", "email")
