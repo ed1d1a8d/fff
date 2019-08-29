@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-
 from django.http import HttpResponse
+
+from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,3 +27,5 @@ urlpatterns = [
 
     path("dumb/", lambda request: HttpResponse("dumb"))
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
