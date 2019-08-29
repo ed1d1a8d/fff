@@ -79,7 +79,7 @@ class SelectionViewController: UIViewController {
     }
     
     @objc func showMapView() {
-        let mapView = MapViewController()
+        let mapView = MapViewController(friendData: Fake.Friends.one)
         self.present(mapView, animated: true, completion: nil)
     }
 }
