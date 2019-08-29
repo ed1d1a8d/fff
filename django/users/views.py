@@ -21,7 +21,7 @@ class FriendList(generics.ListAPIView):
         return Friend.objects.friends(self.request.user)
 
 
-def dumb(request):
+def dumb(*_):
     return HttpRequest("you dumb asf")
 
 
