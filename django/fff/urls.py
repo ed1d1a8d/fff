@@ -29,7 +29,7 @@ urlpatterns = [
     path("users/", include("users.urls")),
 
     path("dumb/", lambda request: HttpResponse("dumb")),
-    path("/favicon.ico/", favicon_view),
+    path("favicon.ico/", favicon_view),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
