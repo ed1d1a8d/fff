@@ -8,4 +8,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             'email',
             'username',
+            'lat',
+            'lon'
         )
