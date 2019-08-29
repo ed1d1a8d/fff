@@ -29,15 +29,19 @@ class MapViewController: UIViewController {
         self.friendData = friendData
         self.camera = GMSCameraPosition.camera(withLatitude: 42.3601, longitude: -71.0942, zoom: 15.0)
         self.mapView = GMSMapView.map(withFrame: CGRect(x: 0, y: 0, width: Dimensions.width, height: Dimensions.height), camera: camera)
+
+        super.init(nibName: nil, bundle: nil)
+        
+        self.mapView.delegate = self
         
         for friend in friendData {
             let marker = GMSMarker()
+            
             marker.position = CLLocationCoordinate2D(latitude: friend.friendLat, longitude: friend.friendLng)
             marker.title = friend.friendName
             marker.map = mapView
         }
         
-        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -104,6 +108,15 @@ class MapViewController: UIViewController {
         lobbyFunctions.updateLobbySource(data: self.friendData)
         self.present(lobbyViewController, animated: true, completion: nil)
     }
+}
+
+extension MapViewController: GMSMapViewDelegate {
+    
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        mapView.selectedMarker = marker
+        return true
+    }
+    
 }
 
 extension MapViewController: CLLocationManagerDelegate {
