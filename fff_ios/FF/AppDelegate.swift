@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
 //        self.window?.rootViewController = SelectionViewController()
-        self.window?.rootViewController = MapViewController()
+        self.window?.rootViewController = MapViewController(friendData: Fake.Friends.one)
 //        self.window?.rootViewController = LobbyViewController()
         self.window?.makeKeyAndVisible()
         

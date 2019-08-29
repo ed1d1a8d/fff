@@ -31,4 +31,22 @@ struct Fake {
             
             ]
     }
+    
+    struct Friends {
+        static let one:[FriendData] = [
+            FriendData(friendName: "Tony Wang",
+                       friendID: "twang",
+                       friendLat: 42.3621,
+                       friendLng: -71.0962),
+            FriendData(friendName: "Stella Yang",
+                       friendID: "syang",
+                       friendLat: 42.3631,
+                       friendLng: -71.0982),
+            FriendData(friendName: "Gilbert Yan",
+                       friendID: "gyan",
+                       friendLat: 42.3581,
+                       friendLng: -71.0962),
+        ]
+    }
+    
 }
