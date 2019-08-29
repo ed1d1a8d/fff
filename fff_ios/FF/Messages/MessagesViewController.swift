@@ -13,10 +13,19 @@ class MessagesViewController: KeyboardViewController {
     let messagesTableView:MessagesTableView
     let keyboard:InputContainer = InputContainer()
     
-    init(messages: [MessageData]) {
+    var messages:[MessageData]
+    let senderID:String
+    let recipientID:String
+    
+    init(senderID: String, recipientID: String, messages: [MessageData]) {
+        self.senderID = senderID
+        self.recipientID = recipientID
+        self.messages = messages
         self.messagesTableView = MessagesTableView(messages: messages)
         super.init()
         
+        self.keyboard.sendButton.addTarget(self, action: #selector(MessagesViewController.sendMessage), for: .touchUpInside)
+    
         self.view.addSubview(self.messagesTableView)
         self.view.addSubview(self.keyboard)
         addConstraints()
@@ -39,6 +48,27 @@ class MessagesViewController: KeyboardViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.white
+    }
+}
+
+extension MessagesViewController {
+    
+    @objc func sendMessage() {
+        let message = self.keyboard.fetchText()
+        if (message.count == 0) {
+            return
+        }
+        
+        let newMessage = MessageData(
+            message: message,
+            timestamp: NSDate(),
+            senderName: self.senderID,
+            receiverName: self.recipientID)
+        self.messages.append(newMessage)
+        self.messagesTableView.messages.append(newMessage)
+        
+        self.messagesTableView.reloadData()
+        self.messagesTableView.layoutIfNeeded()
     }
     
 }
