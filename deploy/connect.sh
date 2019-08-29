@@ -1,0 +1,1 @@
+ssh -i "fff-1.pem" ubuntu@ec2-13-58-69-6.us-east-2.compute.amazonaws.com
