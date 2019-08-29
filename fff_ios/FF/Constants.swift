@@ -13,6 +13,7 @@ struct Dimensions {
     static let contactsWidth:CGFloat = UIScreen.main.bounds.width - (30 + 10)
     
     static let width:CGFloat = UIScreen.main.bounds.width
+    static let height:CGFloat = UIScreen.main.bounds.height
 }
 
 struct MessagesList {

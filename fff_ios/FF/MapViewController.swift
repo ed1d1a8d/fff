@@ -7,11 +7,29 @@
 //
 
 import UIKit
+import GoogleMaps
 
 class MapViewController: UIViewController {
 
+    let camera:GMSCameraPosition
+    let mapView:GMSMapView
     let friendButton = FButton(titleText: "5 friends nearby")
     let lobbyViewController = FFNavigationController(rootViewController: LobbyViewController())
+    
+    init() {
+        self.camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
+        self.mapView = GMSMapView.map(withFrame: CGRect(x: 0, y: 0, width: Dimensions.width, height: Dimensions.height), camera: camera)
+        
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
+        marker.map = mapView
+
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,14 +39,16 @@ class MapViewController: UIViewController {
         
         self.friendButton.addTarget(self, action: #selector(MapViewController.friendClick), for: .touchUpInside)
         
+        self.view.addSubview(self.mapView)
         self.view.addSubview(self.friendButton)
         
         addConstraints()
     }
     
     func addConstraints() {
-        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.friendButton, sides: [.left, .right], padding: 40))
-        self.view.addConstraint(FConstraint.paddingPositionConstraint(view: self.friendButton, side: .bottom, padding: 40))
+//        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.mapView, sides: [.left, .top, .right, .bottom], padding: 0))
+        
+        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.friendButton, sides: [.left, .bottom, .right], padding: 40))
         self.view.addConstraint(FConstraint.fillYConstraints(view: self.friendButton, heightRatio: 0.07))
     }
 
