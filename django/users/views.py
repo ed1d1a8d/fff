@@ -1,4 +1,4 @@
-from django.core import HttpRequest
+from django.http import HttpRequest
 from friendship.models import Friend
 from rest_framework import generics
 from rest_framework import permissions
