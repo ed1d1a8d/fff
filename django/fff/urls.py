@@ -16,9 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from django.http import HttpResponse
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("rest_auth.urls")),
     path("auth/registration/", include("rest_auth.registration.urls")),
     path("users/", include("users.urls")),
+
+    path("dumb/", lambda request: HttpResponse("dumb"))
 ]
