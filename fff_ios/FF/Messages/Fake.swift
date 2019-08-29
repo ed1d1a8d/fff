@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 struct Fake {
     
@@ -47,6 +48,7 @@ struct Fake {
                        friendLat: 42.3581,
                        friendLng: -71.0962),
         ]
+        static let currLocation = CLLocation(latitude: 42.3591, longitude: -71.0967)
     }
     
 }
