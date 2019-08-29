@@ -23,8 +23,13 @@ class FriendList(generics.ListAPIView):
 
 # TODO: Friend request system
 
-# class FriendDetail(generics.RetrieveAPIView):
-#    serializer_class = UserSerializer
-#
-#    def get_queryset(self):
-#        return Friend.objects.friends(self.request.user)
+class FriendDetail(generics.RetrieveAPIView):
+   serializer_class = UserSerializer
+
+   def get_object(self):
+       pk = self.kwargs["pk"]
+       other = User.objects.get(pk=pk)
+       print("pk", pk)
+       if Friend.objects.are_friends(self.request.user, other) != True:
+           return other
+       return other
