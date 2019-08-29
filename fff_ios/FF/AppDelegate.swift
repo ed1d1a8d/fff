@@ -9,6 +9,8 @@
 import UIKit
 import GoogleMaps
 import GooglePlaces
+import FacebookCore
+import FBSDKCoreKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,10 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         GMSServices.provideAPIKey(APIKeys.GoogleMaps)
         GMSPlacesClient.provideAPIKey(APIKeys.GoogleMaps)
-
+        
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = SelectionViewController()
+//        self.window?.rootViewController = SelectionViewController()
+          self.window?.rootViewController = FBLoginViewController()
+//        self.window?.rootViewController = MapViewController(friendData: Fake.Friends.one)
+//        self.window?.rootViewController = SelectionViewController()
 //        self.window?.rootViewController = MapViewController(currLocation: Fake.Friends.currLocation, friendData: Fake.Friends.one)
 //        self.window?.rootViewController = LobbyViewController()
         self.window?.makeKeyAndVisible()
@@ -51,6 +58,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+      return ApplicationDelegate.shared.application(app, open: url, options: options)
+    }
 
 }
 
