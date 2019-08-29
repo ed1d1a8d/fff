@@ -25,6 +25,8 @@ SECRET_KEY = "satz2(3xpikdd_7qi0twe!2_k_f_3mk%@m87kdsq48f&4%%lv="
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
     "mus.icu",
 ]
 
