@@ -8,15 +8,20 @@
 
 import SwiftUI
 import FacebookLogin
+import FBSDKLoginKit
 
-struct FBLoginViewController: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello World!"/*@END_MENU_TOKEN@*/)
+class FBLoginViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let loginButton = FBLoginButton(permissions: [ .publicProfile, .email, .userFriends ])
+        loginButton.center = view.center
+
+        self.view.addSubview(loginButton)
+        
+        if let accessToken = AccessToken.current {
+            print(AccessToken.current)
+        }
     }
 }
 
-struct FBLoginViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        FBLoginViewController()
-    }
-}

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9EA31E5C23183CF900F7F08D /* FBLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */; };
+		9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */; };
 		D67A06E03CE96A151BF6A1A2 /* Pods_FF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FF29206999566E042D7056 /* Pods_FF.framework */; };
 		DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */; };
 		DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */; };
@@ -48,6 +49,7 @@
 		226DD5459D3E1E085E5D09CF /* Pods-FF.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FF.debug.xcconfig"; path = "Target Support Files/Pods-FF/Pods-FF.debug.xcconfig"; sourceTree = "<group>"; };
 		22FF29206999566E042D7056 /* Pods_FF.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FF.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBLoginViewController.swift; sourceTree = "<group>"; };
+		9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A1A9FF87F9D9146A3182065A /* Pods-FF.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FF.release.xcconfig"; path = "Target Support Files/Pods-FF/Pods-FF.release.xcconfig"; sourceTree = "<group>"; };
 		DCDA5DD52315FCE7007F9155 /* FF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 		DCDA5DCC2315FCE6007F9155 = {
 			isa = PBXGroup;
 			children = (
+				9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */,
 				9EA31E5A23183CE500F7F08D /* FBLogin */,
 				DCDA5DD72315FCE7007F9155 /* FF */,
 				DCDA5DD62315FCE7007F9155 /* Products */,
@@ -270,6 +273,7 @@
 			files = (
 				DCDA5DE32315FCE8007F9155 /* LaunchScreen.storyboard in Resources */,
 				DCDA5DE02315FCE8007F9155 /* Assets.xcassets in Resources */,
+				9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
