@@ -7,23 +7,21 @@ from .serializers import UserSerializer
 
 
 class SelfDetail(generics.RetrieveUpdateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
     def get_object(self):
         return self.request.user
 
 
 class FriendList(generics.ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
     def get_queryset(self):
         return Friend.objects.friends(self.request.user)
 
+# TODO: Friend request system
 
-class FriendDetail(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = UserSerializer
-
-    def get_queryset(self):
-        return Friend.objects.friends(self.request.user)
+# class FriendDetail(generics.RetrieveAPIView):
+#    serializer_class = UserSerializer
+#
+#    def get_queryset(self):
+#        return Friend.objects.friends(self.request.user)
