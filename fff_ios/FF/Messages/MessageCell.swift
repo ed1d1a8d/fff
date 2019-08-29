@@ -17,10 +17,14 @@ class MessageCell: UITableViewCell {
     
     let messageBubble = MessageBubble()
     let messageType:MessageType
+    let alternateOffset:CGFloat
     
-    init(messageData: MessageData, messageType: MessageType) {
+    init(messageData: MessageData, messageType: MessageType, alternate: Bool) {
         self.messageType = messageType
+        self.alternateOffset = alternate ? 15.0 : 0
         super.init(style: .default, reuseIdentifier: "incomingMessageCell")
+        
+        self.selectionStyle = .none
         
         messageBubble.text = messageData.message
         messageBubble.layer.backgroundColor = messageType == .Incoming ? UIColor.cyan.cgColor : UIColor.orange.cgColor
@@ -39,7 +43,7 @@ class MessageCell: UITableViewCell {
         let offset = self.messageType == MessageType.Outgoing ? Bubble.offset - bubbleLength : 0
         
         messageBubble.frame = CGRect(x: offset,
-                                     y: 0,
+                                     y: alternateOffset,
                                      width: bubbleLength,
                                      height: bubbleHeight)
     }
