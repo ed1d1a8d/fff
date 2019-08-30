@@ -11,7 +11,7 @@ import Foundation
 struct endpoints {
     struct musicu {
         static let base = "https://mus.icu"
-        static let auth = "\(base)/auth/registration"
+        static let auth = "\(base)/auth/registration/.json"
     }
 }
 
