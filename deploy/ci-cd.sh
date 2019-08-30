@@ -1,1 +1,1 @@
-while true; do git fetch; git reset --hard origin/production; python ../django/manage.py createstatic --no-input; python ../django/manage.py makemigrations; python ../django/manage.py migrate; sleep 30; done
+while true; do git fetch; git reset --hard origin/production; python ../django/manage.py collectstatic --no-input; python ../django/manage.py makemigrations; python ../django/manage.py migrate; sleep 30; done
