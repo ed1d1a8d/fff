@@ -10,6 +10,7 @@
 		9EA31E5C23183CF900F7F08D /* FBLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */; };
 		9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */; };
 		9EA31E60231891BE00F7F08D /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5F231891BE00F7F08D /* Secret.swift */; };
+		9EA31E62231974EE00F7F08D /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E61231974EE00F7F08D /* DemoViewController.swift */; };
 		D67A06E03CE96A151BF6A1A2 /* Pods_FF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FF29206999566E042D7056 /* Pods_FF.framework */; };
 		DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */; };
 		DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */; };
@@ -52,6 +53,7 @@
 		9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBLoginViewController.swift; sourceTree = "<group>"; };
 		9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EA31E5F231891BE00F7F08D /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		9EA31E61231974EE00F7F08D /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DemoViewController.swift; path = /Users/stellayang/Desktop/fff/fff_ios/DemoViewController.swift; sourceTree = "<absolute>"; };
 		A1A9FF87F9D9146A3182065A /* Pods-FF.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FF.release.xcconfig"; path = "Target Support Files/Pods-FF/Pods-FF.release.xcconfig"; sourceTree = "<group>"; };
 		DCDA5DD52315FCE7007F9155 /* FF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 			children = (
 				9EA31E5F231891BE00F7F08D /* Secret.swift */,
 				9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */,
+				9EA31E61231974EE00F7F08D /* DemoViewController.swift */,
 				9EA31E5A23183CE500F7F08D /* FBLogin */,
 				DCDA5DD72315FCE7007F9155 /* FF */,
 				DCDA5DD62315FCE7007F9155 /* Products */,
@@ -363,6 +366,7 @@
 				DCDA5DFB23163E01007F9155 /* SelectionViewController.swift in Sources */,
 				DCDA5DEF2316029F007F9155 /* LobbyViewController.swift in Sources */,
 				DCDA5E0F23173DE3007F9155 /* InputContainer.swift in Sources */,
+				9EA31E62231974EE00F7F08D /* DemoViewController.swift in Sources */,
 				DCDA5E1123173E63007F9155 /* Constants.swift in Sources */,
 				DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */,
 				DCDA5E2A23183508007F9155 /* Networking.swift in Sources */,
