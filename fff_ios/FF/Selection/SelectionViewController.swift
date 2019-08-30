@@ -41,7 +41,7 @@ class SelectionViewController: UIViewController {
         params["password2"] = "crazyrichbayesians"
         
         HTTPAPI.instance().call(url: endpoints.musicu.auth, params: params, method: .POST, success: { (data, response, error) in
-            print("SUCCESS")
+//            print("SUCCESS")
             guard let unwrappedData = data else {
                 return
             }
@@ -50,7 +50,7 @@ class SelectionViewController: UIViewController {
                 print(data)
             } catch {}
         }) { (data, response, error) in
-            print("FAILEDFAILED")
+//            print("FAILEDFAILED")
             guard let unwrappedData = data else {
                 return
             }

@@ -22,6 +22,9 @@ class FLabel: UILabel {
         
         self.font = font
         self.textColor = color
+        self.backgroundColor = UIColor.clear
+        self.numberOfLines = 0
+        self.lineBreakMode = .byWordWrapping
         
         self.text = text
     }

@@ -16,6 +16,12 @@ struct Dimensions {
     static let height:CGFloat = UIScreen.main.bounds.height
 }
 
+struct Colors {
+    static let background = UIColor(rgb: 0xFFF5E2)
+    static let fb = UIColor(rgb: 0x3E68C1)
+    static let fbDown = fb.darker(by: 20)
+}
+
 struct MessagesList {
     static let hPadding:CGFloat = 20
     static let padding:CGFloat = 15

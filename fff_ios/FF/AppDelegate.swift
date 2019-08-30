@@ -25,18 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = SelectionViewController()
-//          self.window?.rootViewController = FBLoginViewController()
-||||||| merged common ancestors
-        self.window?.rootViewController = SelectionViewController()
-//          self.window?.rootViewController = FBLoginViewController()
-//        self.window?.rootViewController = MapViewController(friendData: Fake.Friends.one)
-=======
-//        self.window?.rootViewController = SelectionViewController()
-          self.window?.rootViewController = FFNavigationController(rootViewController: FBLoginViewController())
-//        self.window?.rootViewController = MapViewController(friendData: Fake.Friends.one)
->>>>>>> 9fbb8066c7c29fcf543fa6546cfa31822dde446e
-//        self.window?.rootViewController = SelectionViewController()
+        if (AccessToken.current != nil) {
+            self.window?.rootViewController = SelectionViewController()
+        } else {
+            self.window?.rootViewController = FBLoginViewController()
+        }
+        
 //        self.window?.rootViewController = MapViewController(currLocation: Fake.Friends.currLocation, friendData: Fake.Friends.one)
 //        self.window?.rootViewController = LobbyViewController()
         self.window?.makeKeyAndVisible()
