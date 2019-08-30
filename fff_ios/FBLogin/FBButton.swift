@@ -12,7 +12,7 @@ class FBButton: UIView {
     
     let fbIcon = UIImageView(image: UIImage(named: "fbIcon"))
     let text = FLabel(text: "Login with Facebook",
-                      font: UIFont.systemFont(ofSize: 20.0),
+                      font: LoginVC.buttonFont,
                       color: UIColor.white)
     
     init() {

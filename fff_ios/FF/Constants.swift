@@ -20,6 +20,13 @@ struct Colors {
     static let background = UIColor(rgb: 0xFFF5E2)
     static let fb = UIColor(rgb: 0x3E68C1)
     static let fbDown = fb.darker(by: 20)
+    
+    static let reg = UIColor.white
+    static let regDown = reg.darker(by: 20)
+}
+
+struct LoginVC {
+    static let buttonFont = UIFont.systemFont(ofSize: 20.0)
 }
 
 struct MessagesList {

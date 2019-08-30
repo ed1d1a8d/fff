@@ -22,6 +22,7 @@ class FBLoginViewController: UIViewController {
     
     let loginManager = LoginManager()
     let fbButton = FBButton()
+    let otherRegButton = OtherRegButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,12 +35,7 @@ class FBLoginViewController: UIViewController {
         self.view.addSubview(self.titleLabel)
         self.view.addSubview(self.descLabel)
         self.view.addSubview(self.fbButton)
-        
-//        // add lobin button to the container
-//        let loginButton = FBLoginButton(permissions: [ .publicProfile, .email, .userFriends ])
-//        loginButton.delegate = self
-//        loginButton.center = view.center
-//        self.container.addSubview(loginButton)
+        self.view.addSubview(self.otherRegButton)
         
         addConstraints()
     }
@@ -47,11 +43,14 @@ class FBLoginViewController: UIViewController {
     func addConstraints() {
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.titleLabel, sides: [.left, .top], padding: 40))
         self.view.addConstraints(FConstraint.centerAlignConstraints(firstView: self.descLabel, secondView: self.view))
-        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.fbButton, sides: [.left, .bottom, .right], padding: 40))
+        
+        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.fbButton, sides: [.left, .right], padding: 40))
+        self.view.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.fbButton, lowerView: self.otherRegButton, spacing: 20))
+        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.otherRegButton, sides: [.left, .bottom, .right], padding: 40))
     }
     
     @objc func fetchFacebookUserInfo() {
-        self.loginManager.logIn(permissions: [.email], viewController: self) { (result) in
+        self.loginManager.logIn(permissions: [.email, .userFriends], viewController: self) { (result) in
             switch result {
             case .cancelled:
                 print("Cancelled")
