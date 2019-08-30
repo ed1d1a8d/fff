@@ -13,6 +13,7 @@
 		D67A06E03CE96A151BF6A1A2 /* Pods_FF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FF29206999566E042D7056 /* Pods_FF.framework */; };
 		DC6EF0542319A236006DD060 /* FBButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF0532319A236006DD060 /* FBButton.swift */; };
 		DC6EF0572319CD76006DD060 /* OtherRegButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF0562319CD76006DD060 /* OtherRegButton.swift */; };
+		DC6EF0592319DC66006DD060 /* FImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF0582319DC66006DD060 /* FImageView.swift */; };
 		DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */; };
 		DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */; };
 		DCDA5DE02315FCE8007F9155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCDA5DDF2315FCE8007F9155 /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 		DC6EF0522318C2C0006DD060 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		DC6EF0532319A236006DD060 /* FBButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBButton.swift; sourceTree = "<group>"; };
 		DC6EF0562319CD76006DD060 /* OtherRegButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherRegButton.swift; sourceTree = "<group>"; };
+		DC6EF0582319DC66006DD060 /* FImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FImageView.swift; sourceTree = "<group>"; };
 		DCDA5DD52315FCE7007F9155 /* FF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				DCDA5DF423161971007F9155 /* LobbyCell.swift */,
 				DCDA5DF023160A74007F9155 /* FLabel.swift */,
 				DCDA5DDF2315FCE8007F9155 /* Assets.xcassets */,
+				DC6EF0582319DC66006DD060 /* FImageView.swift */,
 				DCDA5DE12315FCE8007F9155 /* LaunchScreen.storyboard */,
 				DCDA5DE42315FCE8007F9155 /* Info.plist */,
 			);
@@ -380,6 +383,7 @@
 				DCDA5DED2315FF30007F9155 /* FButton.swift in Sources */,
 				9EA31E5C23183CF900F7F08D /* FBLoginViewController.swift in Sources */,
 				DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */,
+				DC6EF0592319DC66006DD060 /* FImageView.swift in Sources */,
 				DCDA5E1923174072007F9155 /* KeyboardButton.swift in Sources */,
 				DCDA5DFF2316DC58007F9155 /* SelectionToggle.swift in Sources */,
 				DCDA5E2123174B4F007F9155 /* MessageCell.swift in Sources */,
