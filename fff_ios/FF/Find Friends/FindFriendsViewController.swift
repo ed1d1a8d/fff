@@ -15,7 +15,7 @@ class FindFriendsViewController: UIViewController {
                            font: UIFont.systemFont(ofSize: 30, weight: .medium),
                            color: UIColor.black)
     
-    let searchBarUI = UISearchBar.init(frame: <#T##CGRect#>)
+    let searchBarUI = UISearchBar.init()
     
     init() {
         super.init(nibName: nil, bundle: nil)
