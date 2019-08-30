@@ -23,12 +23,12 @@ from django.views.generic.base import RedirectView
 favicon_view = RedirectView.as_view(url="/static/favicon.ico", permanent=True)
 
 urlpatterns = [
-    path("admin", admin.site.urls),
-    path("auth", include("rest_auth.urls")),
-    path("auth/registration", include("rest_auth.registration.urls")),
-    path("users", include("users.urls")),
+    path("admin/", admin.site.urls),
+    path("auth/", include("rest_auth.urls")),
+    path("auth/registration/", include("rest_auth.registration.urls")),
+    path("users/", include("users.urls")),
 
-    path("dumb", lambda request: HttpResponse("dumb")),
+    path("dumb/", lambda request: HttpResponse("dumb")),
     path("favicon.ico", favicon_view),
 ]
 
