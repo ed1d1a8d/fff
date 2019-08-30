@@ -10,6 +10,7 @@
 		9EA31E5C23183CF900F7F08D /* FBLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */; };
 		9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */; };
 		D67A06E03CE96A151BF6A1A2 /* Pods_FF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FF29206999566E042D7056 /* Pods_FF.framework */; };
+		DC6EF0502318B4EA006DD060 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF04F2318B4EA006DD060 /* Secret.swift */; };
 		DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */; };
 		DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */; };
 		DCDA5DE02315FCE8007F9155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCDA5DDF2315FCE8007F9155 /* Assets.xcassets */; };
@@ -43,7 +44,6 @@
 		DCDA5E2323174B67007F9155 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E2223174B67007F9155 /* MessageBubble.swift */; };
 		DCDA5E2823178C6E007F9155 /* FriendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E2723178C6E007F9155 /* FriendData.swift */; };
 		DCDA5E2A23183508007F9155 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E2923183508007F9155 /* Networking.swift */; };
-		DCDA5E2C2318819C007F9155 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5E2B2318819B007F9155 /* Secret.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +52,7 @@
 		9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBLoginViewController.swift; sourceTree = "<group>"; };
 		9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A1A9FF87F9D9146A3182065A /* Pods-FF.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FF.release.xcconfig"; path = "Target Support Files/Pods-FF/Pods-FF.release.xcconfig"; sourceTree = "<group>"; };
+		DC6EF04F2318B4EA006DD060 /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		DCDA5DD52315FCE7007F9155 /* FF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -87,7 +88,6 @@
 		DCDA5E2223174B67007F9155 /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
 		DCDA5E2723178C6E007F9155 /* FriendData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendData.swift; sourceTree = "<group>"; };
 		DCDA5E2923183508007F9155 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
-		DCDA5E2B2318819B007F9155 /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,7 +141,7 @@
 		DCDA5DD72315FCE7007F9155 /* FF */ = {
 			isa = PBXGroup;
 			children = (
-				DCDA5E2B2318819B007F9155 /* Secret.swift */,
+				DC6EF04F2318B4EA006DD060 /* Secret.swift */,
 				DCDA5E1023173E63007F9155 /* Constants.swift */,
 				DCDA5E2923183508007F9155 /* Networking.swift */,
 				DCDA5E0A23173A81007F9155 /* FFNavigationController.swift */,
@@ -349,7 +349,6 @@
 				DCDA5E2823178C6E007F9155 /* FriendData.swift in Sources */,
 				DCDA5DEB2315FEF6007F9155 /* FConstraint.swift in Sources */,
 				DCDA5DF9231635F0007F9155 /* Extensions.swift in Sources */,
-				DCDA5E2C2318819C007F9155 /* Secret.swift in Sources */,
 				DCDA5DF123160A74007F9155 /* FLabel.swift in Sources */,
 				DCDA5E092317391A007F9155 /* MessagesViewController.swift in Sources */,
 				DCDA5E1523173F1E007F9155 /* TextPlaceholder.swift in Sources */,
@@ -373,6 +372,7 @@
 				DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */,
 				DCDA5E1923174072007F9155 /* KeyboardButton.swift in Sources */,
 				DCDA5DFF2316DC58007F9155 /* SelectionToggle.swift in Sources */,
+				DC6EF0502318B4EA006DD060 /* Secret.swift in Sources */,
 				DCDA5E2123174B4F007F9155 /* MessageCell.swift in Sources */,
 				DCDA5DF323160FFF007F9155 /* LobbyTableView.swift in Sources */,
 				DCDA5DFD2316D92B007F9155 /* SButton.swift in Sources */,
