@@ -7,110 +7,82 @@
 //
 
 import UIKit
-import SwiftUI
 import FacebookLogin
 import FBSDKLoginKit
+import FBSDKCoreKit
 
 class FBLoginViewController: UIViewController {
     
-    let titleLabel = FLabel(text: "Let's Get Food",
-                           font: UIFont.systemFont(ofSize: 32, weight: .medium),
+    let titleLabel = FLabel(text: "Free\nFor\nFood?",
+                           font: UIFont.systemFont(ofSize: 56, weight: .regular),
+                           color: UIColor.black)
+    let descLabel = FLabel(text: "Find friends who\nwant to eat right now",
+                           font: UIFont.systemFont(ofSize: 20, weight: .regular),
                            color: UIColor.black)
     
-    let p1 = FLabel(text: "Let’s Get Food helps you find friends who are down to eat.",
-                           font: UIFont.systemFont(ofSize: 16, weight: .medium),
-                           color: UIColor.black)
-    
-    let p2 = FLabel(text: "To get started, please register so we can sync your friends:",
-                           font: UIFont.systemFont(ofSize: 16, weight: .medium),
-                           color: UIColor.black)
-    
-    let container = FView(baseColor: UIColor.white)
-    
-    var fbLoginSuccess = false
+    let loginManager = LoginManager()
+    let fbButton = FBButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = Colors.background
         
-        // add title and text to the container
-        self.container.addSubview(self.titleLabel)
-        self.container.addSubview(self.p1)
-        self.container.addSubview(self.p2)
+        self.descLabel.textAlignment = .center
+        self.fbButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FBLoginViewController.fetchFacebookUserInfo)))
         
-        // add lobin button to the container
-        let loginButton = FBLoginButton(permissions: [ .publicProfile, .email, .userFriends ])
-        loginButton.delegate = self
-        loginButton.center = view.center
-        self.container.addSubview(loginButton)
+        self.view.addSubview(self.titleLabel)
+        self.view.addSubview(self.descLabel)
+        self.view.addSubview(self.fbButton)
         
-        // add container to the subview
-        self.view.addSubview(self.container)
+//        // add lobin button to the container
+//        let loginButton = FBLoginButton(permissions: [ .publicProfile, .email, .userFriends ])
+//        loginButton.delegate = self
+//        loginButton.center = view.center
+//        self.container.addSubview(loginButton)
         
         addConstraints()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-//        print(AccessToken.current)
-//        if let accessToken = AccessToken.current {
-//            print(AccessToken.current)
-//            let nextViewController = SelectionViewController()
-//            self.navigationController?.pushViewController(nextViewController, animated: true)
-//        }
-        
-        if (AccessToken.current != nil && fbLoginSuccess == true)
-        {
-            print("Running 1")
-            performSegue(withIdentifier: "loginSegue", sender: self)
-        }
+    func addConstraints() {
+        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.titleLabel, sides: [.left, .top], padding: 40))
+        self.view.addConstraints(FConstraint.centerAlignConstraints(firstView: self.descLabel, secondView: self.view))
+        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.fbButton, sides: [.left, .bottom, .right], padding: 40))
     }
     
-    func loginButton(loginButton: FBLoginButton!, didCompleteWithResult result: LoginManagerLoginResult!, error: NSError!) {
-        print("User Logged In")
-
-        if ((error) != nil) {
-            // Process error
-            print(error)
-        }
-        else if result.isCancelled {
-            // Handle cancellations
-        }
-        else {
-            fbLoginSuccess = true
-            // If you ask for multiple permissions at once, you
-            // should check if specific permissions missing
-            if result.grantedPermissions.contains("email") {
-                // Do work
-                print("HELLO WORLD")
+    @objc func fetchFacebookUserInfo() {
+        self.loginManager.logIn(permissions: [.email], viewController: self) { (result) in
+            switch result {
+            case .cancelled:
+                print("Cancelled")
+                self.fbButton.backgroundColor = Colors.fb
+            case .success:
+                let params = ["fields": "id, name, picture.type(small), email"]
+                let graphRequest = GraphRequest(graphPath: "/me", parameters: params)
+                let connection = GraphRequestConnection()
+                connection.add(graphRequest, completionHandler: { (connection, result, error) in
+                    let info = result as! [String: AnyObject]
+                    print(info)
+                    let selectionViewController = SelectionViewController()
+                    self.present(selectionViewController, animated: true, completion: nil)
+                })
+                connection.start()
+            default:
+                print("Nothing")
+                self.fbButton.backgroundColor = Colors.fb
             }
         }
     }
     
-    func addConstraints() {
-        self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.titleLabel, sides: [.left, .top, .right], padding: 20))
-        
-        self.container.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.titleLabel, lowerView: self.p1, spacing: 25))
-
-        self.container.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.p1, lowerView: self.p2, spacing: 25))
-        
-        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.container, sides: [.left, .top, .right], padding: 0))
-        self.view.addConstraints(FConstraint.centerAlignConstraints(firstView: self.container, secondView: self.view))
-    }
 }
 
 extension FBLoginViewController: LoginButtonDelegate {
     func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
-        if let error = error {
+        if error != nil  || result!.isCancelled {
             return
         }
-        if (result!.isCancelled) {
-            return
-        }
-        let nextViewController = SelectionViewController()
-        self.navigationController?.pushViewController(nextViewController, animated: true)
+        let selectionViewController = SelectionViewController()
+        self.present(selectionViewController, animated: true, completion: nil)
 
     }
     
