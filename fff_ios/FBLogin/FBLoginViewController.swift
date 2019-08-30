@@ -19,7 +19,9 @@ class FBLoginViewController: UIViewController {
     let descLabel = FLabel(text: "Find friends who\nwant to eat right now",
                            font: UIFont.systemFont(ofSize: 20, weight: .regular),
                            color: UIColor.black)
-    
+    let fffIcon = FImageView(name: "fffIcon",
+                             height: Dimensions.height * 0.15)
+
     let loginManager = LoginManager()
     let fbButton = FBButton()
     let otherRegButton = OtherRegButton()
@@ -31,8 +33,9 @@ class FBLoginViewController: UIViewController {
         
         self.descLabel.textAlignment = .center
         self.fbButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FBLoginViewController.fetchFacebookUserInfo)))
-        
+                
         self.view.addSubview(self.titleLabel)
+        self.view.addSubview(self.fffIcon)
         self.view.addSubview(self.descLabel)
         self.view.addSubview(self.fbButton)
         self.view.addSubview(self.otherRegButton)
@@ -42,7 +45,12 @@ class FBLoginViewController: UIViewController {
     
     func addConstraints() {
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.titleLabel, sides: [.left, .top], padding: 40))
-        self.view.addConstraints(FConstraint.centerAlignConstraints(firstView: self.descLabel, secondView: self.view))
+        
+        self.view.addConstraint(FConstraint.equalConstraint(firstView: self.view, secondView: self.fffIcon, attribute: .centerX))
+        self.view.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.titleLabel, lowerView: self.fffIcon, spacing: 20))
+
+        self.view.addConstraint(FConstraint.equalConstraint(firstView: self.fffIcon, secondView: self.descLabel, attribute: .centerX))
+        self.view.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.fffIcon, lowerView: self.descLabel, spacing: 20))
         
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.fbButton, sides: [.left, .right], padding: 40))
         self.view.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.fbButton, lowerView: self.otherRegButton, spacing: 20))

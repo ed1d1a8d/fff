@@ -10,7 +10,11 @@ import UIKit
 
 class FBButton: UIView {
     
-    let fbIcon = UIImageView(image: UIImage(named: "fbIcon"))
+    let fbIcon = FImageView(name: "fbIcon",
+                            height: heightForUILabel(
+                                text: "Login",
+                                font: LoginVC.buttonFont,
+                                width: Dimensions.width))
     let text = FLabel(text: "Login with Facebook",
                       font: LoginVC.buttonFont,
                       color: UIColor.white)
@@ -19,9 +23,6 @@ class FBButton: UIView {
         super.init(frame: .zero)
         
         self.translatesAutoresizingMaskIntoConstraints = false
-        
-        self.fbIcon.translatesAutoresizingMaskIntoConstraints = false
-        self.fbIcon.contentMode = .scaleAspectFit
         
         self.text.numberOfLines = 1
         self.backgroundColor = Colors.fb
@@ -38,15 +39,12 @@ class FBButton: UIView {
     }
     
     func addConstraints() {
-        let square = heightForUILabel(text: self.text.text!, font: self.text.font, width: Dimensions.width)
-        self.addConstraint(FConstraint.constantConstraint(view: self.fbIcon, attribute: .height, value: square))
-        self.addConstraint(FConstraint.constantConstraint(view: self.fbIcon, attribute: .width, value: square))
-        
+        self.addConstraint(FConstraint.paddingPositionConstraint(view: self.text, side: .right, padding: 25))
+        self.addConstraints(FConstraint.paddingPositionConstraints(view: self.text, sides: [.top, .bottom], padding: 14))
+
         self.addConstraint(FConstraint.paddingPositionConstraint(view: self.fbIcon, side: .left, padding: 25))
         self.addConstraints(FConstraint.paddingPositionConstraints(view: self.fbIcon, sides: [.top, .bottom], padding: 14))
         
-        self.addConstraint(FConstraint.paddingPositionConstraint(view: self.text, side: .right, padding: 25))
-        self.addConstraints(FConstraint.paddingPositionConstraints(view: self.text, sides: [.top, .bottom], padding: 14))
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
