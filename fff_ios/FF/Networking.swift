@@ -8,7 +8,12 @@
 
 import Foundation
 
-let ENDPOINT = "https://mus.icu"
+struct endpoints {
+    struct musicu {
+        static let base = "https://mus.icu"
+        static let auth = "\(base)/auth/registration"
+    }
+}
 
 enum HTTPMethod: String {
     case GET
