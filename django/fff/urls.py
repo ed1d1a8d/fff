@@ -27,7 +27,6 @@ urlpatterns = [
     path("auth/", include("rest_auth.urls")),
     path("auth/registration/", include("rest_auth.registration.urls")),
     path("users/", include("users.urls")),
-    re_path(r'^friendship/', include('friendship.urls')),
 
     path("dumb/", lambda request: HttpResponse("dumb")),
     path("favicon.ico/", favicon_view),
