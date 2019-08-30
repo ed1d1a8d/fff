@@ -6,7 +6,6 @@
 //  Copyright © 2019 Jing Lin. All rights reserved.
 //
 
-import SwiftUI
 import FacebookLogin
 import FBSDKLoginKit
 
