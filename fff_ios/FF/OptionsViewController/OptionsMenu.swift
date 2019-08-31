@@ -36,6 +36,16 @@ class OptionsMenu: UIView {
         self.addConstraint(FConstraint.constantConstraint(view: self, attribute: .height, value: OptionsVC.menu))
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        self.backgroundColor = Colors.navDown
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        self.backgroundColor = Colors.nav
+    }
+    
 }
 
 
