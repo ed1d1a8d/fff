@@ -22,6 +22,8 @@ class LobbyTableView: UITableView, UITableViewDelegate {
     var outgoingRequests:[EatRequestData] = []
     var notYetSentRequests:[EatRequestData] = []
     
+    var incomingDelegate:IncomingEatRequestProtocol!
+    
     init() {
         super.init(frame: .zero, style: .plain)
         
@@ -39,8 +41,9 @@ class LobbyTableView: UITableView, UITableViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateData(data: [EatRequestData]) {
+    func updateData(data: [EatRequestData], incomingEatRequestDelegate: IncomingEatRequestProtocol) {
         self.lobbySource = data
+        self.incomingDelegate = incomingEatRequestDelegate
         
         for request in data {
             switch (request.requestType) {
@@ -105,7 +108,9 @@ extension LobbyTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch (indexPath.section) {
             case 0:
-                return IncomingRequestCell(data: self.incomingRequests[indexPath.row])
+                let cell = IncomingRequestCell(data: self.incomingRequests[indexPath.row])
+                cell.incomingDelegate = self.incomingDelegate
+                return cell
             case 1:
                 return OutgoingRequestCell(data: self.outgoingRequests[indexPath.row])
             default:
@@ -125,7 +130,7 @@ extension LobbyTableView: EatRequestProtocol {
         self.outgoingRequests.append(eatRequestData)
         
         self.reloadData()
-        // TODO: TONY AND GILBERT
+        // TODO: TONY GILBERT SET TO OUTGOING
     }
     
 }
