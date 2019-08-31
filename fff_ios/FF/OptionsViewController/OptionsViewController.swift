@@ -84,7 +84,10 @@ class OptionsViewController: UIViewController {
                 }
                 lobbyViewController.updateLobbySource(data: Fake.EatRequests.one)
             } else if detailType == "Friends" {
-                // TODO: something here
+                let findFriendsViewController = FindFriendsViewController(friendData: Fake.Friends.one)
+                let vc = FFNavigationController(rootViewController: findFriendsViewController)
+                self.present(vc, animated: true, completion: nil)
+                return
             } else {
                 LoginManager().logOut()
                 if (UserData.shared.fbAuth) {
