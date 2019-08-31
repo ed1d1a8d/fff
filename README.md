@@ -8,6 +8,8 @@ FFF
 
 ## django
 
+### Endpoints
+
 Endpoint|Purpose
 -|-
 `/auth/login`|Login and get a session token (which never expires).
@@ -23,6 +25,14 @@ Endpoint|Purpose
 `/users/friends/actions/remove/x`|200 or 400 to remove a friend with pk x.
 
 Add `.json` suffix to an endpoint to get the JSON version instead of HTML version i.e. `/auth/user.json`.
+
+This endpoints list may not always be up to date. Please refer to the *self-documenting* code for more info.
+
+### Commands
+
+* `pg_ctl -D /usr/local/var/postgres start`
+* `pg_ctl -D /usr/local/var/postgres stop`
+* `brew services restart postgresql`
 
 ### AWS
 
