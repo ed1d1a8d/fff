@@ -39,9 +39,17 @@ class SuccessfulAcceptViewController: UIViewController {
     let fakeProfPic = FImageView(name: "fakeProfPic",
                                  height: Dimensions.height * 0.055)
     
-    let blackX = FImageView(name: "blackX",
-                                 height: Dimensions.height * 0.022)
+    let happyLabel = FLabel(text: "Have a good meal!",
+                           font: UIFont.systemFont(ofSize: 24, weight: .medium),
+                           color: UIColor.black)
     
+    let fffIcon = FImageView(name: "fffIcon",
+                             height: Dimensions.height * 0.1)
+    
+    let againButton = FButton(titleText: "Find Another Friend")
+    
+    let selectionViewController = FFNavigationController(rootViewController: SelectionViewController())
+
     init(eatRequestInfo: EatRequestData) {
         self.eatRequestData = eatRequestInfo
                 
@@ -62,6 +70,8 @@ class SuccessfulAcceptViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.againButton.addTarget(self, action: #selector(SuccessfulAcceptViewController.againClick), for: .touchUpInside)
+
         self.view.backgroundColor = UIColor.white
         
         self.topBannerContainer.addSubview(self.successLabel)
@@ -71,16 +81,22 @@ class SuccessfulAcceptViewController: UIViewController {
         self.bottomContainer.addSubview(self.friendsLabel)
         
         self.container.addSubview(self.fakeProfPic)
-        self.container.addSubview(self.blackX)
         self.container.addSubview(self.nameLabel)
         self.container.addSubview(self.distLabel)
         self.container.addSubview(self.messageLabel)
         self.bottomContainer.addSubview(self.container)
-
+        
+        self.bottomContainer.addSubview(self.happyLabel)
+        self.bottomContainer.addSubview(self.fffIcon)
+        self.bottomContainer.addSubview(self.againButton)
+        
         self.view.addSubview(self.bottomContainer)
         
-        
         addConstraints()
+    }
+    
+    @objc func againClick() {
+        self.present(selectionViewController, animated: true, completion: nil)
     }
     
     func addConstraints() {
@@ -92,7 +108,7 @@ class SuccessfulAcceptViewController: UIViewController {
         
         self.topBannerContainer.addConstraints(FConstraint.paddingPositionConstraints(view: self.successLabel, sides: [.top], padding: 75))
 
-        self.topBannerContainer.addConstraints(FConstraint.paddingPositionConstraints(view: self.successLabel, sides: [.left], padding: 40))
+        self.topBannerContainer.addConstraint(FConstraint.equalConstraint(firstView: self.successLabel, secondView: self.topBannerContainer, attribute: .centerX))
 
         // Bottom Banner Placement
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.bottomContainer, sides: [.left, .bottom, .right], padding: 0))
@@ -100,12 +116,12 @@ class SuccessfulAcceptViewController: UIViewController {
         self.view.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.topBannerContainer, lowerView: self.bottomContainer, spacing: 0))
     
         // Friends label placement
-        self.bottomContainer.addConstraints(FConstraint.paddingPositionConstraints(view: self.friendsLabel, sides: [.left, .top, .right], padding: 40))
+        self.bottomContainer.addConstraints(FConstraint.paddingPositionConstraints(view: self.friendsLabel, sides: [.top], padding: 40))
+        
+        self.bottomContainer.addConstraint(FConstraint.equalConstraint(firstView: self.friendsLabel, secondView: self.bottomContainer, attribute: .centerX))
         
         // Container cell specs
-        
-       self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.blackX, sides: [.right, .top], padding: 20))
-       
+               
        self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.fakeProfPic, sides: [.left], padding: 20))
        
        self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.nameLabel, sides: [.top], padding: 20))
@@ -132,6 +148,24 @@ class SuccessfulAcceptViewController: UIViewController {
         self.bottomContainer.addConstraint(FConstraint.paddingPositionConstraint(view: self.container, side: .top, padding: 95))
         self.bottomContainer.addConstraint(FConstraint.fillYConstraints(view: self.container, heightRatio: 0.15))
 
+        // Happy Label Positioning
+        self.bottomContainer.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.container, lowerView: self.happyLabel, spacing: 70))
+                
+        self.bottomContainer.addConstraint(FConstraint.equalConstraint(firstView: self.happyLabel, secondView: self.bottomContainer, attribute: .centerX))
+
+        // FFF Icon Positioning
+        self.bottomContainer.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.happyLabel, lowerView: self.fffIcon, spacing: 70))
+        
+        self.bottomContainer.addConstraint(FConstraint.equalConstraint(firstView: self.fffIcon, secondView: self.bottomContainer, attribute: .centerX))
+        
+        // Again Button Positioning
+        self.bottomContainer.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.fffIcon, lowerView: self.againButton, spacing: 70))
+        
+        self.bottomContainer.addConstraint(FConstraint.equalConstraint(firstView: self.againButton, secondView: self.bottomContainer, attribute: .centerX))
+        
+        // Again Button styling
+        self.bottomContainer.addConstraints(FConstraint.paddingPositionConstraints(view: self.againButton, sides: [.left, .right], padding: 45))
+        
     }
     
 }
