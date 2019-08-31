@@ -20,7 +20,7 @@ class LobbyTableView: UITableView, UITableViewDelegate {
     
     var incomingRequests:[EatRequestData] = []
     var outgoingRequests:[EatRequestData] = []
-    var notYetSentReqeusts:[EatRequestData] = []
+    var notYetSentRequests:[EatRequestData] = []
     
     init() {
         super.init(frame: .zero, style: .plain)
@@ -56,25 +56,18 @@ extension LobbyTableView: UITableViewDataSource {
             case 1:
                 return outgoingRequests.count
             default:
-                return notYetSentReqeusts.count
+                return notYetSentRequests.count
          }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let data = self.lobbySource[indexPath.row]
-//        let cell = LobbyCell(data: data)
-//
-//        return cell
-//
-//
-        
         switch (indexPath.section) {
             case 0:
                 return LobbyCell(data: self.incomingRequests[indexPath.row])
             case 1:
                 return LobbyCell(data: self.outgoingRequests[indexPath.row])
             default:
-                return LobbyCell(data: self.notYetSentReqeusts[indexPath.row])
+                return LobbyCell(data: self.notYetSentRequests[indexPath.row])
          }
     }
     
@@ -88,9 +81,13 @@ extension LobbyTableView: UITableViewDataSource {
                 case "outgoing":
                     self.outgoingRequests.append(request)
                 default:
-                    self.notYetSentReqeusts.append(request)
+                    self.notYetSentRequests.append(request)
              }
         }
+        
+        self.incomingRequests = self.incomingRequests.sorted(by: { $0.distance < $1.distance })
+        self.outgoingRequests = self.outgoingRequests.sorted(by: { $0.distance < $1.distance })
+        self.notYetSentRequests = self.notYetSentRequests.sorted(by: { $0.distance < $1.distance })
         
         self.reloadData()
         self.layoutIfNeeded()
