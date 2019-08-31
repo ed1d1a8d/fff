@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import FacebookLogin
 
 class OptionsViewController: UIViewController {
     
     let optionsNavbar = OptionsNavbar()
     let menuOverview = OptionsDetailView()
+    let darkView = FView(baseColor: Colors.navDark)
     
     var xConstraint:NSLayoutConstraint!
     
@@ -20,11 +22,14 @@ class OptionsViewController: UIViewController {
         
         self.view.backgroundColor = Colors.background
         
+        LoginManager().logOut()
+        
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(OptionsViewController.hideMenuOptions)))
         self.optionsNavbar.menu.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(OptionsViewController.showMenuOptions)))
         
         self.view.addSubview(self.optionsNavbar)
         self.view.addSubview(self.menuOverview)
+        self.view.addSubview(self.darkView)
         addConstraints()
     }
     
@@ -33,6 +38,8 @@ class OptionsViewController: UIViewController {
     }
     
     func addConstraints() {
+        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.darkView, sides: [.top, .left, .bottom, .right], padding: 0))
+        
         self.view.addConstraint(FConstraint.paddingPositionConstraint(view: self.optionsNavbar, side: .top, padding: 30))
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.optionsNavbar, sides: [.left, .right], padding: 0))
         
