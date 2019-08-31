@@ -14,8 +14,8 @@ class SelectionViewController: OptionsViewController {
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation!
 
-    let titleLabel = FLabel(text: "I want to eat with",
-                           font: UIFont.systemFont(ofSize: 32, weight: .medium),
+    let titleLabel = FLabel(text: "I want to eat with...",
+                           font: UIFont.systemFont(ofSize: 30, weight: .medium),
                            color: UIColor.black)
     let selectionToggle = SelectionToggle()
     let timeLabel = FLabel(text: "within the next",
