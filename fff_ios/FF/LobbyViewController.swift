@@ -41,10 +41,19 @@ class LobbyViewController: UIViewController {
     }
     
     func updateLobbySource(data: [EatRequestData]) {
-        self.lobbyTableView.updateData(data: data)
+        self.lobbyTableView.updateData(data: data, incomingEatRequestDelegate: self)
     }
     
     @objc func dismissSelf() {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension LobbyViewController: IncomingEatRequestProtocol {
+    
+    func accept(eatRequestData: EatRequestData) {
+        // TODO TONY GILBERT CONFIRMATION TO SERVER
+        let vc = SuccessfulAcceptViewController(eatRequestInfo: eatRequestData)
+        self.present(vc, animated: true, completion: nil)
     }
 }
