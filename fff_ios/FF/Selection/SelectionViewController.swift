@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class SelectionViewController: UIViewController {
+class SelectionViewController: OptionsViewController {
     
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation!
@@ -29,8 +29,8 @@ class SelectionViewController: UIViewController {
 
     let container = FView(baseColor: UIColor.white)
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
+    override init() {
+        super.init()
         
         enableBasicLocationServices()
     }

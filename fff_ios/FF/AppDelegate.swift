@@ -33,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
 
 		// self.window?.rootViewController = FBLoginViewController()
-		
         if let currentToken = AccessToken.current {
 			// login to the backend using the current access token
 			// TODO unify this with the helper in FBLoginViewController
@@ -44,10 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			print(params["access_token"])
 			
 			HTTPAPI.instance().call(url: endpoints.musicu.facebookAuth, params: params, method: .POST, success: { (data, response, error) in
-				
 				// DEBUG
 				print("Facebook login into FFF backend success!")
-				
 				guard let unwrappedData = data else {
 					return
 				}
@@ -67,15 +64,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				
 				// TODO URGENT handle
 			}
-			
-//            self.window?.rootViewController = SelectionViewController()
-            self.window?.rootViewController = OptionsViewController()
+            UserData.shared.fbAuth = true
+            self.window?.rootViewController = SelectionViewController()
         } else {
             self.window?.rootViewController = FBLoginViewController()
         }
-        
-//        self.window?.rootViewController = FindFriendsViewController(friendData: Fake.Friends.one)
-//        self.window?.rootViewController = MapViewController(currLocation: Fake.EatRequests.currLocation, eatRequestData: Fake.EatRequests.one)
         self.window?.makeKeyAndVisible()
         
         return true
