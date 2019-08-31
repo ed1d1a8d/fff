@@ -12,7 +12,7 @@ class User(AbstractUser):
     lat = models.FloatField(null=True, blank=True)
 
     # Always in utc
-    lobby_expiration = models.DateTimeField(default=datetime.utcnow())
+    #lobby_expiration = models.DateTimeField(default=datetime.utcnow())
 
 
 class Request(models.Model):
