@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
+
 		// self.window?.rootViewController = FBLoginViewController()
 		
         if let currentToken = AccessToken.current {
@@ -38,6 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			// TODO unify this with the helper in FBLoginViewController
 			var params = Dictionary<String, Any>()
 			params["access_token"] = currentToken.tokenString
+			
+			// DEBUG
+			print(params["access_token"])
 			
 			HTTPAPI.instance().call(url: endpoints.musicu.facebookAuth, params: params, method: .POST, success: { (data, response, error) in
 				
@@ -71,12 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
 //        self.window?.rootViewController = FindFriendsViewController(friendData: Fake.Friends.one)
-//        self.window?.rootViewController = SelectionViewController()
-//          self.window?.rootViewController = FFNavigationController(rootViewController: FBLoginViewController())
-//        self.window?.rootViewController = MapViewController(friendData: Fake.Friends.one)
-//        self.window?.rootViewController = SelectionViewController()
-//        self.window?.rootViewController = MapViewController(currLocation: Fake.Friends.currLocation, friendData: Fake.Friends.one)
-//        self.window?.rootViewController = LobbyViewController()
+//        self.window?.rootViewController = MapViewController(currLocation: Fake.EatRequests.currLocation, eatRequestData: Fake.EatRequests.one)
         self.window?.makeKeyAndVisible()
         
         return true
