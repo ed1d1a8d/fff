@@ -14,3 +14,8 @@ class RequestSerializer(serializers.ModelSerializer):
         model = models.Request
         fields = ["created_at", "message", "status", "sender", "receiver"]
         read_only_fields = ["status", "sender"]
+
+class RequestStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Request
+        fields = ["status"]
