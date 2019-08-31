@@ -31,7 +31,7 @@ class LobbyTableView: UITableView, UITableViewDelegate {
         
         self.dataSource = self
         self.delegate = self
-        
+                
         self.separatorColor = UIColor.clear
     }
     
@@ -63,11 +63,11 @@ extension LobbyTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch (indexPath.section) {
             case 0:
-                return LobbyCell(data: self.incomingRequests[indexPath.row])
+                return IncomingRequestCell(data: self.incomingRequests[indexPath.row])
             case 1:
-                return LobbyCell(data: self.outgoingRequests[indexPath.row])
+                return OutgoingRequestCell(data: self.outgoingRequests[indexPath.row])
             default:
-                return LobbyCell(data: self.notYetSentRequests[indexPath.row])
+                return NotYetSentRequestCell(data: self.notYetSentRequests[indexPath.row])
          }
     }
     
