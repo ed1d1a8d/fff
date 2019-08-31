@@ -14,8 +14,8 @@ class SelectionViewController: OptionsViewController {
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation!
 
-    let titleLabel = FLabel(text: "I want to eat with",
-                           font: UIFont.systemFont(ofSize: 32, weight: .medium),
+    let titleLabel = FLabel(text: "I want to eat with...",
+                           font: UIFont.systemFont(ofSize: 30, weight: .medium),
                            color: UIColor.black)
     let selectionToggle = SelectionToggle()
     let timeLabel = FLabel(text: "within the next",
@@ -27,7 +27,7 @@ class SelectionViewController: OptionsViewController {
     let friendButton = SButton(titleText: "Find friends!",
                                font: UIFont.systemFont(ofSize: 24))
 
-    let container = FView(baseColor: UIColor.white)
+    let container = FView(baseColor: UIColor(red: 255.0/255.0, green: 245.0/255.0, blue: 225.0/255.0, alpha: 1))
     
     override init() {
         super.init()

@@ -1,7 +1,9 @@
 from datetime import datetime
+from enum import Enum
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -12,15 +14,25 @@ class User(AbstractUser):
     lat = models.FloatField(null=True, blank=True)
 
     # Always in utc
-    #lobby_expiration = models.DateTimeField(default=datetime.utcnow())
+    lobby_expiration = models.DateTimeField(default=timezone.now())
+
+class StatusEnum(Enum):
+    PENDING = "pending"
+    ACCEPTED = "accepted"
+    REJECTED = "rejected"
+    EXPIRED = "expired" # Due to time
+    CANCELLED = "cancelled"
 
 
 class Request(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     message = models.TextField(max_length=140)
 
-    # Pending, Accepted, Rejected, Expired, Cancelled
-    status = models.CharField(blank=False, max_length=255)
+    status = models.CharField(
+        blank=False,
+        max_length=255,
+        choices=[(tag, tag.value) for tag in StatusEnum],
+    )
 
     sender = models.ForeignKey(User,
                                related_name="request_sender_set",

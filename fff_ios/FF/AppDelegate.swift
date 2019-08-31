@@ -41,9 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			
 			// DEBUG
 			print(params["access_token"])
-			
-            self.window?.rootViewController = SuccessfulAcceptViewController(eatRequestInfo: Fake.EatRequests.one[0])
-            
+			            
 			HTTPAPI.instance().call(url: endpoints.musicu.facebookAuth, params: params, method: .POST, success: { (data, response, error) in
 				// DEBUG
 				print("Facebook login into FFF backend success!")
@@ -69,7 +67,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserData.shared.fbAuth = true
             self.window?.rootViewController = SelectionViewController()
 //            self.window?.rootViewController = SuccessfulAcceptViewController(eatRequestInfo: Fake.EatRequests.one[0])
-
         } else {
             self.window?.rootViewController = FBLoginViewController()
 //            self.window?.rootViewController = SuccessfulAcceptViewController(eatRequestInfo: Fake.EatRequests.one[0])
