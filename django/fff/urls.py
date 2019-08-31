@@ -19,12 +19,23 @@ from django.http import HttpResponse
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic.base import RedirectView
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from rest_auth.registration.views import SocialLoginView
+
+
+# view for fb oath
+class FacebookLogin(SocialLoginView):
+    adapter_class = FacebookOAuth2Adapter
+
 
 urlpatterns = [
     path("auth/", include("rest_auth.urls")),
 
-    # registration has no trailing slash because we'll be using suffix patterns on it anyway
+    # registration has no trailing slash because we'll be using suffix patterns on it anyway, and it's a single url and not a view
     path("auth/registration", include("rest_auth.registration.urls")),
+
+    # social oath for fb
+    path("auth/facebook/", FacebookLogin.as_view())
 ]
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=["json"])
 
