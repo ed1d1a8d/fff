@@ -10,7 +10,7 @@ import UIKit
 
 class FriendsTableView: UITableView, UITableViewDelegate {
     
-    var lobbySource:[FriendData] = []
+    var friendsList:[FriendData] = []
     
     init() {
         super.init(frame: .zero, style: .plain)
@@ -33,18 +33,20 @@ class FriendsTableView: UITableView, UITableViewDelegate {
 extension FriendsTableView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.lobbySource.count
+        return self.friendsList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let data = self.lobbySource[indexPath.row]
-        let cell = LobbyCell(data: data)
+        let data = self.friendsList[indexPath.row]
+        let cell = FriendCell(data: data)
         
         return cell
     }
     
     func updateData(data: [FriendData]) {
-        self.lobbySource = data
+        self.friendsList = data
+        print("HELLOWORLD")
+        print(self.friendsList)
         self.reloadData()
         self.layoutIfNeeded()
     }
