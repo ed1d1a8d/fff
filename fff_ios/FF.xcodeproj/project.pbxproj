@@ -11,6 +11,7 @@
 		9E9C678C231A17FE0003510F /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C678B231A17FE0003510F /* FriendCell.swift */; };
 		9E9C678E231A2FCB0003510F /* EatRequestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C678D231A2FCB0003510F /* EatRequestData.swift */; };
 		9E9C6790231ACD560003510F /* IncomingRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C678F231ACD560003510F /* IncomingRequestCell.swift */; };
+		9E9C6792231AEAEB0003510F /* OutgoingRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C6791231AEAEB0003510F /* OutgoingRequestCell.swift */; };
 		9EA31E5C23183CF900F7F08D /* FBLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */; };
 		9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */; };
 		9EA31E60231891BE00F7F08D /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5F231891BE00F7F08D /* Secret.swift */; };
@@ -70,6 +71,7 @@
 		9E9C678B231A17FE0003510F /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		9E9C678D231A2FCB0003510F /* EatRequestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatRequestData.swift; sourceTree = "<group>"; };
 		9E9C678F231ACD560003510F /* IncomingRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingRequestCell.swift; sourceTree = "<group>"; };
+		9E9C6791231AEAEB0003510F /* OutgoingRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingRequestCell.swift; sourceTree = "<group>"; };
 		9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBLoginViewController.swift; sourceTree = "<group>"; };
 		9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EA31E5F231891BE00F7F08D /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				DCDA5DF8231635F0007F9155 /* Extensions.swift */,
 				DCDA5DF423161971007F9155 /* LobbyCell.swift */,
 				9E9C678F231ACD560003510F /* IncomingRequestCell.swift */,
+				9E9C6791231AEAEB0003510F /* OutgoingRequestCell.swift */,
 				DCDA5DF023160A74007F9155 /* FLabel.swift */,
 				DCDA5DDF2315FCE8007F9155 /* Assets.xcassets */,
 				DC6EF0582319DC66006DD060 /* FImageView.swift */,
@@ -422,6 +425,7 @@
 				DC6EF05E2319EE93006DD060 /* OptionsNavbar.swift in Sources */,
 				DC85E53F231A2D2D004905F0 /* OptionDetail.swift in Sources */,
 				DCDA5DF123160A74007F9155 /* FLabel.swift in Sources */,
+				9E9C6792231AEAEB0003510F /* OutgoingRequestCell.swift in Sources */,
 				DC6EF0572319CD76006DD060 /* OtherRegButton.swift in Sources */,
 				9EA31E60231891BE00F7F08D /* Secret.swift in Sources */,
 				DCDA5E092317391A007F9155 /* MessagesViewController.swift in Sources */,
