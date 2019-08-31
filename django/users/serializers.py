@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Request
-        fields = ["created_at", "message", "status", "sender", "receiver"]
+        fields = ["id", "created_at", "message", "status", "sender", "receiver"]
         read_only_fields = ["status", "sender"]
 
 class RequestStatusSerializer(serializers.ModelSerializer):
