@@ -11,7 +11,7 @@ class FindFriendsViewController: UIViewController {
     
     let friendData:[FriendData]
     
-    let topBannerContainer = FView(baseColor: UIColor.yellow)
+    let topBannerContainer = FView(baseColor: UIColor(red: 253.0/255.0, green: 240.0/255.0, blue: 196.0/255.0, alpha: 1))
         
     let searchPeopleLabel = FLabel(text: "Friends List",
                            font: UIFont.systemFont(ofSize: 30, weight: .medium),
