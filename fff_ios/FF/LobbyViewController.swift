@@ -22,7 +22,7 @@ class LobbyViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = cancelButton
     
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = UIColor.white
+        self.navigationController?.navigationBar.barTintColor = Colors.background
         self.navigationController?.navigationBar.shadowImage = UIImage() //remove pesky 1 pixel line
         
         self.view.backgroundColor = UIColor.white

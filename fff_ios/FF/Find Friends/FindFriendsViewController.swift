@@ -45,6 +45,12 @@ class FindFriendsViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.white
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(FindFriendsViewController.dismissSelf))
+        self.navigationItem.rightBarButtonItem = cancelButton
+
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = Colors.background
+        self.navigationController?.navigationBar.shadowImage = UIImage() //remove pesky 1 pixel line
         
         self.topBannerContainer.addSubview(self.friendsIcon)
         self.topBannerContainer.addSubview(self.searchPeopleLabel)
@@ -93,6 +99,10 @@ class FindFriendsViewController: UIViewController {
     
     func updateFriendsSource(data: [FriendData]) {
         self.friendsTableView.updateData(data: data)
+    }
+    
+    @objc func dismissSelf() {
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
