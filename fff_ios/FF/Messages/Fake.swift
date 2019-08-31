@@ -51,4 +51,31 @@ struct Fake {
         static let currLocation = CLLocation(latitude: 42.3591, longitude: -71.0967)
     }
     
+    struct EatRequests {
+        static let one:[EatRequestData] = [
+            EatRequestData(friendName: "Stella Yang",
+                       friendID: "syang",
+                       friendLat: 42.3621,
+                       friendLng: -71.0962,
+                       distance: 0.1,
+                       message: "Let's get ramen",
+                       requestType: "incoming"),
+            EatRequestData(friendName: "Tony Wang",
+                       friendID: "twang",
+                       friendLat: 42.3631,
+                       friendLng: -71.0982,
+                       distance: 0.2,
+                       message: "Yo wanna get food",
+                       requestType: "outgoing"),
+            EatRequestData(friendName: "Gilbert Yan",
+                       friendID: "gyan",
+                       friendLat: 42.3581,
+                       friendLng: -71.0962,
+                       distance: 0.3,
+                       message: "",
+                       requestType: "notYetSent"),
+        ]
+        static let currLocation = CLLocation(latitude: 42.3591, longitude: -71.0967)
+    }
+    
 }

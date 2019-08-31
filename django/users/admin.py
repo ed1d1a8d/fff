@@ -11,7 +11,8 @@ class UserAdmin(auth.admin.UserAdmin):
     model = models.User
     list_display = [
         "username",
-        "email",
+        "name",
+        "facebook_id",
     ]
 
 
