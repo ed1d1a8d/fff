@@ -11,7 +11,7 @@ urlpatterns = [
     path("requests/respond/<int:pk>/<str:action>/", views.RespondToRequest.as_view()),
     # Friends
     path("friends/", views.FriendList.as_view()),
-    path("friends/requests/<str:actions>/", views.FriendsRequests.as_view()),
+    path("friends/requests/<str:action>/", views.FriendsRequests.as_view()),
     path("friends/actions/<str:action>/<int:pk>/",
          views.FriendsActions.as_view()),
 ]

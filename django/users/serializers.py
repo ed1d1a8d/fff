@@ -1,3 +1,4 @@
+from friendship.models import FriendshipRequest
 from rest_framework import serializers
 
 from . import models
@@ -25,3 +26,8 @@ class RequestStatusSerializer(serializers.ModelSerializer):
         model = models.Request
         fields = ["status"]
 """
+
+class FriendshipRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendshipRequest
+        fields = ["from_user", "to_user", "created"]
