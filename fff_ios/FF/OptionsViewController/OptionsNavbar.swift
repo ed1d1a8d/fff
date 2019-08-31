@@ -16,6 +16,7 @@ class OptionsNavbar: UIView {
         super.init(frame: .zero)
         
         self.translatesAutoresizingMaskIntoConstraints = false
+        self.isUserInteractionEnabled = true
 //        self.backgroundColor = UIColor.cyan
         
         self.addSubview(self.menu)
