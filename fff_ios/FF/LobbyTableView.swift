@@ -65,7 +65,7 @@ extension LobbyTableView: UITableViewDataSource {
             case 0:
                 return IncomingRequestCell(data: self.incomingRequests[indexPath.row])
             case 1:
-                return LobbyCell(data: self.outgoingRequests[indexPath.row])
+                return OutgoingRequestCell(data: self.outgoingRequests[indexPath.row])
             default:
                 return LobbyCell(data: self.notYetSentRequests[indexPath.row])
          }
