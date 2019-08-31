@@ -73,7 +73,6 @@ class FBLoginViewController: UIViewController {
 					
 					// DEBUG
 					print(info)
-					print(fbToken)
 					
 					// the login completed successfully
 					// login to our backend as well, and store the auth key in ios core storage
@@ -81,6 +80,9 @@ class FBLoginViewController: UIViewController {
 					// it always returns a key which we can use in the future
 					var params = Dictionary<String, Any>()
 					params["access_token"] = fbToken
+					
+					// DEBUG
+					print(params["access_token"])
 					
 					HTTPAPI.instance().call(url: endpoints.musicu.facebookAuth, params: params, method: .POST, success: { (data, response, error) in
 						
