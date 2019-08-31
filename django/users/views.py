@@ -1,3 +1,5 @@
+from django.db import transaction
+from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
 from rest_framework import permissions
@@ -25,19 +27,53 @@ class CreateRequest(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(
-            status=StatusEnum.PENDING,
+            status=StatusEnum.PENDING.value,
             sender=self.request.user,
         )
 
 
+"""
+# TODO: Restrict to only accept/reject
 class RespondToRequest(generics.UpdateAPIView):
     serializer_class = RequestStatusSerializer
 
     def get_queryset(self):
         return Request.objects.filter(
-            status=StatusEnum.PENDING,
+            status=StatusEnum.PENDING.value,
             receiver=self.request.user,
         )
+"""
+
+
+class RespondToRequest(generics.GenericAPIView):
+    def post(self, request, pk, action):  # TODO: Redo status codes
+        try:
+            req = Request.objects.get(pk=pk)
+        except:
+            return HttpResponse(f"Request {pk} does not exist", status=400)
+
+        if req.status != StatusEnum.PENDING.value:
+            return HttpResponse("Can't act on non-PENDING request", status=400)
+
+        if action == StatusEnum.ACCEPTED.value:
+            with transaction.atomic():
+                req.status = action
+                req.save()
+
+                Request.objects.filter(status=StatusEnum.PENDING.value,
+                                       sender=request.user).update(
+                                           status=StatusEnum.CANCELLED.value)
+                Request.objects.filter(status=StatusEnum.PENDING.value,
+                                       receiver=request.user).update(
+                                           status=StatusEnum.REJECTED.value)
+            return HttpResponse(status=200)
+        elif action == StatusEnum.REJECTED.value:
+            #Request.objects.filter(pk=pk).update(status=action)
+            req.status = action
+            req.save()
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(f"Invalid action: {action}", status=400)
 
 
 class IncomingRequests(generics.ListAPIView):
