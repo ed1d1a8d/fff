@@ -16,6 +16,39 @@ struct Dimensions {
     static let height:CGFloat = UIScreen.main.bounds.height
 }
 
+struct Colors {
+    static let background = UIColor(rgb: 0xFFF5E2)
+    static let backgroundNav = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0.6)
+
+    static let slideMenu = UIColor(rgb: 0xFED997)
+    
+    static let fb = UIColor(rgb: 0x3E68C1)
+    static let fbDown = fb.darker(by: 20)
+    
+    static let reg = UIColor.white
+    static let regDown = reg.darker(by: 20)
+    
+    static let nav = UIColor.white
+    static let navDown = nav.darker(by: 20)
+}
+
+struct OptionsVC {
+    static let navbarHeight:CGFloat = 44.0
+    static let menu:CGFloat = 44.0
+    
+    static let dWidth:CGFloat = Dimensions.width * 0.7
+    static let dHeight:CGFloat = Dimensions.height
+    
+    static let optionDetailFont = UIFont.systemFont(ofSize: 18.0, weight: .medium)
+    static let optionDetailHeight = heightForUILabel(text: "Hi",
+                                                     font: optionDetailFont,
+                                                     width: Dimensions.width)
+}
+
+struct LoginVC {
+    static let buttonFont = UIFont.systemFont(ofSize: 20.0)
+}
+
 struct MessagesList {
     static let hPadding:CGFloat = 20
     static let padding:CGFloat = 15

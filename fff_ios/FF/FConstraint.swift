@@ -66,7 +66,7 @@ class FConstraint {
     static func lessThanOrEqualConstraint(view: UIView, attribute: NSLayoutConstraint.Attribute, value: CGFloat) -> NSLayoutConstraint {
         return NSLayoutConstraint(item: view, attribute: attribute, relatedBy: .lessThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 0.0, constant: value)
     }
-    
+        
     static func paddingPositionConstraint(view: UIView, side: NSLayoutConstraint.Attribute, padding: CGFloat) -> NSLayoutConstraint {
         let actualPadding = (side == .bottom || side == .right) ? -padding : padding
         

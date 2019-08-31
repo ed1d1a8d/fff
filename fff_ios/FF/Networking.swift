@@ -11,7 +11,8 @@ import Foundation
 struct endpoints {
     struct musicu {
         static let base = "https://mus.icu"
-        static let auth = "\(base)/auth/registration"
+        static let registration = "\(base)/auth/registration.json"
+		static let facebookAuth = "\(base)/auth/facebook.json"
     }
 }
 
@@ -23,31 +24,30 @@ enum HTTPMethod: String {
 }
 
 class HTTPAPI {
-    
     var request:URLRequest!
     var session:URLSession!
     var configuration:URLSessionConfiguration
-    
+
     private init() {
         self.configuration = URLSessionConfiguration.default
         self.configuration.timeoutIntervalForRequest = 30
         self.configuration.timeoutIntervalForResource = 30
     }
-    
+
     static func instance() -> HTTPAPI {
         return HTTPAPI()
     }
-    
+
     func call(url: String, params: Dictionary<String, Any>?, method: HTTPMethod, success:@escaping (Data?, HTTPURLResponse?, NSError?) -> Void, failure:@escaping (Data?, HTTPURLResponse?, NSError?) -> Void) {
         self.request = URLRequest(url: URL(string: url)!)
-        
+
         if let params = params {
             let jsonData = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted)
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
         }
         request.httpMethod = method.rawValue
-        
+
         session = URLSession(configuration: self.configuration)
         session.dataTask(with: request) { (data, response, error) -> Void in
             if let data = data {
@@ -61,7 +61,6 @@ class HTTPAPI {
             }
         }.resume()
     }
-
 }
 
 // TODO: Functions for updating lobby expiration

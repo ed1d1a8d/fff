@@ -19,18 +19,40 @@ from django.http import HttpResponse
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic.base import RedirectView
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from rest_auth.registration.views import SocialLoginView
 
-favicon_view = RedirectView.as_view(url="/static/favicon.ico", permanent=True)
+
+# view for fb oath
+class FacebookLogin(SocialLoginView):
+    adapter_class = FacebookOAuth2Adapter
+
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("auth/", include("rest_auth.urls")),
-    path("auth/registration/", include("rest_auth.registration.urls")),
-    path("users/", include("users.urls")),
 
-    path("dumb/", lambda request: HttpResponse("dumb")),
-    path("favicon.ico", favicon_view),
+    # registration has no trailing slash because we'll be using suffix patterns on it anyway, and it's a single url and not a view
+    path("auth/registration", include("rest_auth.registration.urls")),
+
+    # social oath for fb
+    path("auth/facebook/", FacebookLogin.as_view())
 ]
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=["json"])
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+# all the following urlpatterns end in /, since django will by default redirect
+# patterns to / if it's a 404
+urlpatterns += [
+    # test endpoint for sanity checking
+    path("dumb/", lambda request: HttpResponse("dumb")),
+
+    # default endpoint for admin actions
+    path("admin/", admin.site.urls),
+
+    # joke endpoint for the favicon which probably won't be used
+    path("favicon.ico/",
+         RedirectView.as_view(url="/static/favicon.ico", permanent=True)),
+
+    # auth'd endpoint for user stuff
+    path("users/", include("users.urls")),
+]
 urlpatterns += staticfiles_urlpatterns()
