@@ -12,6 +12,7 @@
 		9E9C678E231A2FCB0003510F /* EatRequestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C678D231A2FCB0003510F /* EatRequestData.swift */; };
 		9E9C6790231ACD560003510F /* IncomingRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C678F231ACD560003510F /* IncomingRequestCell.swift */; };
 		9E9C6792231AEAEB0003510F /* OutgoingRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C6791231AEAEB0003510F /* OutgoingRequestCell.swift */; };
+		9E9C6794231AEDF60003510F /* NotYetSentRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C6793231AEDF60003510F /* NotYetSentRequestCell.swift */; };
 		9EA31E5C23183CF900F7F08D /* FBLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */; };
 		9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */; };
 		9EA31E60231891BE00F7F08D /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5F231891BE00F7F08D /* Secret.swift */; };
@@ -72,6 +73,7 @@
 		9E9C678D231A2FCB0003510F /* EatRequestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatRequestData.swift; sourceTree = "<group>"; };
 		9E9C678F231ACD560003510F /* IncomingRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingRequestCell.swift; sourceTree = "<group>"; };
 		9E9C6791231AEAEB0003510F /* OutgoingRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingRequestCell.swift; sourceTree = "<group>"; };
+		9E9C6793231AEDF60003510F /* NotYetSentRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotYetSentRequestCell.swift; sourceTree = "<group>"; };
 		9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBLoginViewController.swift; sourceTree = "<group>"; };
 		9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EA31E5F231891BE00F7F08D /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				DCDA5DF423161971007F9155 /* LobbyCell.swift */,
 				9E9C678F231ACD560003510F /* IncomingRequestCell.swift */,
 				9E9C6791231AEAEB0003510F /* OutgoingRequestCell.swift */,
+				9E9C6793231AEDF60003510F /* NotYetSentRequestCell.swift */,
 				DCDA5DF023160A74007F9155 /* FLabel.swift */,
 				DCDA5DDF2315FCE8007F9155 /* Assets.xcassets */,
 				DC6EF0582319DC66006DD060 /* FImageView.swift */,
@@ -440,6 +443,7 @@
 				DCDA5E012316F22E007F9155 /* SelectionSlider.swift in Sources */,
 				DCDA5E2323174B67007F9155 /* MessageBubble.swift in Sources */,
 				DCDA5DFB23163E01007F9155 /* SelectionViewController.swift in Sources */,
+				9E9C6794231AEDF60003510F /* NotYetSentRequestCell.swift in Sources */,
 				DCDA5DEF2316029F007F9155 /* LobbyViewController.swift in Sources */,
 				67E4FBE32319E9E900A538CB /* LobbyExpirationViewController.swift in Sources */,
 				DCDA5E0F23173DE3007F9155 /* InputContainer.swift in Sources */,
