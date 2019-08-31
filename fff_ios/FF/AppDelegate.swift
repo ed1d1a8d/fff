@@ -40,6 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			var params = Dictionary<String, Any>()
 			params["access_token"] = currentToken.tokenString
 			
+			// DEBUG
+			print(params["access_token"])
+			
 			HTTPAPI.instance().call(url: endpoints.musicu.facebookAuth, params: params, method: .POST, success: { (data, response, error) in
 				
 				// DEBUG
