@@ -53,14 +53,50 @@ INSTALLED_APPS = [
     # fb oath
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.twitter',
     # Friendship
     "friendship",
     # My Users
     "users",
 ]
 
-SITE_ID = 1
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD':
+        'oauth2',
+        'SDK_URL':
+        '//connect.facebook.net/{locale}/sdk.js',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {
+            'auth_type': 'reauthenticate'
+        },
+        'INIT_PARAMS': {
+            'cookie': True
+        },
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN':
+        True,
+        'LOCALE_FUNC':
+        'path.to.callable',
+        'VERIFIED_EMAIL':
+        False,
+        'VERSION':
+        'v2.12',
+    }
+}
+
+SITE_ID = 2
 
 # Don"t actually send emails
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
