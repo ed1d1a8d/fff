@@ -18,7 +18,7 @@ func timeIntervalString(_ interval: TimeInterval) -> String {
     return String(format:"%02i:%02i:%02i", hours, minutes, seconds)
 }
 
-class MapViewController: UIViewController {
+class MapViewController: OptionsViewController {
 
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation = CLLocation(latitude: 42.3600, longitude: -71.0972)
@@ -47,7 +47,7 @@ class MapViewController: UIViewController {
         self.mapView = GMSMapView.map(withFrame: CGRect(x: 0, y: 0, width: Dimensions.width, height:
             Dimensions.height), camera: camera)
 
-        super.init(nibName: nil, bundle: nil)
+        super.init()
 
         self.mapView.delegate = self
 
