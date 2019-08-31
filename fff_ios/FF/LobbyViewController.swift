@@ -74,7 +74,6 @@ extension LobbyViewController: UITableViewDelegate {
     //      return 0
         }
         
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
           let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: SectionHeaderHeight))
           view.backgroundColor = UIColor(red: 253.0/255.0, green: 240.0/255.0, blue: 196.0/255.0, alpha: 1)
@@ -100,11 +99,11 @@ extension LobbyViewController: UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let messagesViewController = MessagesViewController(senderID: "Jing Lin", recipientID: "Corrine Li", messages: Fake.Conversations.one)
-        let title = (lobbyTableView.cellForRow(at: indexPath) as! LobbyCell).nameLabel.text!
-            
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: title, style: .plain, target: nil, action: nil)
-        self.navigationController?.pushViewController(messagesViewController, animated: true)
+//        let messagesViewController = MessagesViewController(senderID: "Jing Lin", recipientID: "Corrine Li", messages: Fake.Conversations.one)
+//        let title = (lobbyTableView.cellForRow(at: indexPath) as! LobbyCell).nameLabel.text!
+//
+//        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: title, style: .plain, target: nil, action: nil)
+//        self.navigationController?.pushViewController(messagesViewController, animated: true)
     }
     
 }
