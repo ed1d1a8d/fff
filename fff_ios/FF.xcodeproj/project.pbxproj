@@ -11,11 +11,15 @@
 		9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */; };
 		9EA31E60231891BE00F7F08D /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5F231891BE00F7F08D /* Secret.swift */; };
 		9EA31E6B2319C55900F7F08D /* FindFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E6A2319C55900F7F08D /* FindFriendsViewController.swift */; };
-		9EA31E6D2319CB2900F7F08D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E6C2319CB2900F7F08D /* User.swift */; };
+		9EE9ECF3231A047E00DD0744 /* FriendsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE9ECF2231A047E00DD0744 /* FriendsTableView.swift */; };
 		D67A06E03CE96A151BF6A1A2 /* Pods_FF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FF29206999566E042D7056 /* Pods_FF.framework */; };
 		DC6EF0542319A236006DD060 /* FBButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF0532319A236006DD060 /* FBButton.swift */; };
 		DC6EF0572319CD76006DD060 /* OtherRegButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF0562319CD76006DD060 /* OtherRegButton.swift */; };
 		DC6EF0592319DC66006DD060 /* FImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF0582319DC66006DD060 /* FImageView.swift */; };
+		DC6EF05B2319E4FB006DD060 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF05A2319E4FB006DD060 /* OptionsViewController.swift */; };
+		DC6EF05E2319EE93006DD060 /* OptionsNavbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF05D2319EE93006DD060 /* OptionsNavbar.swift */; };
+		DC6EF0602319F01B006DD060 /* OptionsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF05F2319F01B006DD060 /* OptionsMenu.swift */; };
+		DC85E53B2319FB9E004905F0 /* OptionsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85E53A2319FB9E004905F0 /* OptionsDetailView.swift */; };
 		DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */; };
 		DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */; };
 		DCDA5DE02315FCE8007F9155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCDA5DDF2315FCE8007F9155 /* Assets.xcassets */; };
@@ -58,12 +62,16 @@
 		9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EA31E5F231891BE00F7F08D /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		9EA31E6A2319C55900F7F08D /* FindFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsViewController.swift; sourceTree = "<group>"; };
-		9EA31E6C2319CB2900F7F08D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		9EE9ECF2231A047E00DD0744 /* FriendsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableView.swift; sourceTree = "<group>"; };
 		A1A9FF87F9D9146A3182065A /* Pods-FF.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FF.release.xcconfig"; path = "Target Support Files/Pods-FF/Pods-FF.release.xcconfig"; sourceTree = "<group>"; };
 		DC6EF0522318C2C0006DD060 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		DC6EF0532319A236006DD060 /* FBButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBButton.swift; sourceTree = "<group>"; };
 		DC6EF0562319CD76006DD060 /* OtherRegButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherRegButton.swift; sourceTree = "<group>"; };
 		DC6EF0582319DC66006DD060 /* FImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FImageView.swift; sourceTree = "<group>"; };
+		DC6EF05A2319E4FB006DD060 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
+		DC6EF05D2319EE93006DD060 /* OptionsNavbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsNavbar.swift; sourceTree = "<group>"; };
+		DC6EF05F2319F01B006DD060 /* OptionsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsMenu.swift; sourceTree = "<group>"; };
+		DC85E53A2319FB9E004905F0 /* OptionsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsDetailView.swift; sourceTree = "<group>"; };
 		DCDA5DD52315FCE7007F9155 /* FF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -135,9 +143,20 @@
 			isa = PBXGroup;
 			children = (
 				9EA31E6A2319C55900F7F08D /* FindFriendsViewController.swift */,
-				9EA31E6C2319CB2900F7F08D /* User.swift */,
+				9EE9ECF2231A047E00DD0744 /* FriendsTableView.swift */,
 			);
 			path = "Find Friends";
+			sourceTree = "<group>";
+		};
+		DC6EF05C2319ECB5006DD060 /* OptionsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DC6EF05A2319E4FB006DD060 /* OptionsViewController.swift */,
+				DC6EF05D2319EE93006DD060 /* OptionsNavbar.swift */,
+				DC6EF05F2319F01B006DD060 /* OptionsMenu.swift */,
+				DC85E53A2319FB9E004905F0 /* OptionsDetailView.swift */,
+			);
+			path = OptionsViewController;
 			sourceTree = "<group>";
 		};
 		DCDA5DCC2315FCE6007F9155 = {
@@ -145,7 +164,6 @@
 			children = (
 				9EA31E5F231891BE00F7F08D /* Secret.swift */,
 				9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */,
-				9EA31E5A23183CE500F7F08D /* FBLogin */,
 				DCDA5DD72315FCE7007F9155 /* FF */,
 				DCDA5DD62315FCE7007F9155 /* Products */,
 				ED42EB17BD263A12061583CC /* Pods */,
@@ -164,7 +182,9 @@
 		DCDA5DD72315FCE7007F9155 /* FF */ = {
 			isa = PBXGroup;
 			children = (
+				9EA31E5A23183CE500F7F08D /* FBLogin */,
 				9EA31E692319C54B00F7F08D /* Find Friends */,
+				DC6EF05C2319ECB5006DD060 /* OptionsViewController */,
 				DCDA5E1023173E63007F9155 /* Constants.swift */,
 				DCDA5E2923183508007F9155 /* Networking.swift */,
 				DCDA5E0A23173A81007F9155 /* FFNavigationController.swift */,
@@ -373,10 +393,12 @@
 				DCDA5E2823178C6E007F9155 /* FriendData.swift in Sources */,
 				DCDA5DEB2315FEF6007F9155 /* FConstraint.swift in Sources */,
 				DCDA5DF9231635F0007F9155 /* Extensions.swift in Sources */,
+				DC6EF05E2319EE93006DD060 /* OptionsNavbar.swift in Sources */,
 				DCDA5DF123160A74007F9155 /* FLabel.swift in Sources */,
 				DC6EF0572319CD76006DD060 /* OtherRegButton.swift in Sources */,
 				9EA31E60231891BE00F7F08D /* Secret.swift in Sources */,
 				DCDA5E092317391A007F9155 /* MessagesViewController.swift in Sources */,
+				9EE9ECF3231A047E00DD0744 /* FriendsTableView.swift in Sources */,
 				DCDA5E1523173F1E007F9155 /* TextPlaceholder.swift in Sources */,
 				DCDA5E0323171A58007F9155 /* SelectionTime.swift in Sources */,
 				DCDA5DF523161971007F9155 /* LobbyCell.swift in Sources */,
@@ -386,14 +408,16 @@
 				DCDA5E012316F22E007F9155 /* SelectionSlider.swift in Sources */,
 				DCDA5E2323174B67007F9155 /* MessageBubble.swift in Sources */,
 				DCDA5DFB23163E01007F9155 /* SelectionViewController.swift in Sources */,
-				9EA31E6D2319CB2900F7F08D /* User.swift in Sources */,
 				DCDA5DEF2316029F007F9155 /* LobbyViewController.swift in Sources */,
 				DCDA5E0F23173DE3007F9155 /* InputContainer.swift in Sources */,
 				DC6EF0542319A236006DD060 /* FBButton.swift in Sources */,
 				DCDA5E1123173E63007F9155 /* Constants.swift in Sources */,
+				DC6EF05B2319E4FB006DD060 /* OptionsViewController.swift in Sources */,
 				DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */,
+				DC85E53B2319FB9E004905F0 /* OptionsDetailView.swift in Sources */,
 				DCDA5E2A23183508007F9155 /* Networking.swift in Sources */,
 				DCDA5E0D23173CA1007F9155 /* KeyboardViewController.swift in Sources */,
+				DC6EF0602319F01B006DD060 /* OptionsMenu.swift in Sources */,
 				DCDA5E0523172ADB007F9155 /* SelectionProtocol.swift in Sources */,
 				DCDA5DED2315FF30007F9155 /* FButton.swift in Sources */,
 				9EA31E5C23183CF900F7F08D /* FBLoginViewController.swift in Sources */,
