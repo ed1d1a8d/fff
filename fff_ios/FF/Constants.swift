@@ -18,7 +18,9 @@ struct Dimensions {
 
 struct Colors {
     static let background = UIColor(rgb: 0xFFF5E2)
-    static let backgroundNav = UIColor(rgb: 0x222222)
+    static let backgroundNav = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0.6)
+
+    static let slideMenu = UIColor(rgb: 0xFED997)
     
     static let fb = UIColor(rgb: 0x3E68C1)
     static let fbDown = fb.darker(by: 20)
@@ -28,7 +30,6 @@ struct Colors {
     
     static let nav = UIColor.white
     static let navDown = nav.darker(by: 20)
-    static let navDark = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0.5)
 }
 
 struct OptionsVC {
