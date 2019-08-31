@@ -16,7 +16,7 @@ class OptionsDetailView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.isUserInteractionEnabled = true
         
-        self.backgroundColor = UIColor.orange
+        self.backgroundColor = Colors.slideMenu
         
         addConstraints()
     }
