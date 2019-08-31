@@ -33,33 +33,6 @@ class SelectionViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         enableBasicLocationServices()
-        
-        var params = Dictionary<String, Any>()
-        params["username"] = "hsoule"
-        params["email"] = "hsoule@mit.edu"
-        params["password1"] = "crazyrichbayesians"
-        params["password2"] = "crazyrichbayesians"
-        
-        HTTPAPI.instance().call(url: endpoints.musicu.auth, params: params, method: .POST, success: { (data, response, error) in
-//            print("SUCCESS")
-            guard let unwrappedData = data else {
-                return
-            }
-            do {
-                let data = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments)
-                print(data)
-            } catch {}
-        }) { (data, response, error) in
-//            print("FAILEDFAILED")
-            guard let unwrappedData = data else {
-                return
-            }
-            do {
-                let data = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments)
-                print(data)
-            } catch {}
-        }
-        
     }
     
     func enableBasicLocationServices() {
