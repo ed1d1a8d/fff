@@ -23,6 +23,17 @@ struct Colors {
     
     static let reg = UIColor.white
     static let regDown = reg.darker(by: 20)
+    
+    static let nav = UIColor.white
+    static let navDown = nav.darker(by: 20)
+}
+
+struct OptionsVC {
+    static let navbarHeight:CGFloat = 44.0
+    static let menu:CGFloat = 44.0
+    
+    static let dWidth:CGFloat = Dimensions.width * 0.7
+    static let dHeight:CGFloat = Dimensions.height
 }
 
 struct LoginVC {
