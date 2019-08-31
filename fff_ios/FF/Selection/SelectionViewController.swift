@@ -87,7 +87,7 @@ class SelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = Colors.background
         
         self.selectionSlider.addTarget(self, action: #selector(SelectionViewController.sliderChanged), for: .valueChanged)
         self.friendButton.addTarget(self, action: #selector(SelectionViewController.showMapView), for: .touchUpInside)
