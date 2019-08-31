@@ -21,12 +21,12 @@ class MapViewController: UIViewController {
     let friendButton:FButton
     let lobbyViewController = FFNavigationController(rootViewController: LobbyViewController())
     
-    let friendData:[FriendData]
+    let eatRequestData:[EatRequestData]
     
-    init(currLocation: CLLocation, friendData: [FriendData]) {
-        self.friendButton = FButton(titleText: "\(friendData.count) friends nearby")
+    init(currLocation: CLLocation, eatRequestData: [EatRequestData]) {
+        self.friendButton = FButton(titleText: "\(eatRequestData.count) friends nearby")
 
-        self.friendData = friendData
+        self.eatRequestData = eatRequestData
         self.camera = GMSCameraPosition.camera(withLatitude: 42.3601, longitude: -71.0942, zoom: 15.0)
         self.mapView = GMSMapView.map(withFrame: CGRect(x: 0, y: 0, width: Dimensions.width, height: Dimensions.height), camera: camera)
 
@@ -34,7 +34,7 @@ class MapViewController: UIViewController {
         
         self.mapView.delegate = self
         
-        for friend in friendData {
+        for friend in eatRequestData {
             let marker = GMSMarker()
             
             marker.position = CLLocationCoordinate2D(latitude: friend.friendLat, longitude: friend.friendLng)
@@ -94,7 +94,7 @@ class MapViewController: UIViewController {
     @objc func friendClick() {
         let lobbyFunctions = lobbyViewController.topViewController as! LobbyViewController
         
-        for friend in self.friendData {
+        for friend in self.eatRequestData {
             let friendLocation = CLLocation(latitude: friend.friendLat, longitude: friend.friendLng)
             let distance = self.currentLocation.distance(from: friendLocation)
             friend.distance = distance
@@ -105,7 +105,7 @@ class MapViewController: UIViewController {
         print(self.currentLocation)
 
         
-        lobbyFunctions.updateLobbySource(data: self.friendData)
+        lobbyFunctions.updateLobbySource(data: self.eatRequestData)
         self.present(lobbyViewController, animated: true, completion: nil)
     }
 }

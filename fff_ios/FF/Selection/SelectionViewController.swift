@@ -111,7 +111,7 @@ class SelectionViewController: UIViewController {
     }
     
     @objc func showMapView() {
-        let mapView = MapViewController(currLocation: Fake.Friends.currLocation, friendData: Fake.Friends.one)
+        let mapView = MapViewController(currLocation: Fake.EatRequests.currLocation, eatRequestData: Fake.EatRequests.one)
         self.present(mapView, animated: true, completion: nil)
     }
 }
