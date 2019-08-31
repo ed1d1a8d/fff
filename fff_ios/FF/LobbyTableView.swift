@@ -107,17 +107,25 @@ extension LobbyTableView: UITableViewDataSource {
             case 0:
                 return IncomingRequestCell(data: self.incomingRequests[indexPath.row])
             case 1:
-                let cell = OutgoingRequestCell(data: self.outgoingRequests[indexPath.row])
-                cell.blackX.tag = indexPath.row
-                cell.blackX.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(LobbyTableView.deleteRequest)))
-                return cell
+                return OutgoingRequestCell(data: self.outgoingRequests[indexPath.row])
             default:
-                return NotYetSentRequestCell(data: self.notYetSentRequests[indexPath.row])
+                let cell = NotYetSentRequestCell(data: self.notYetSentRequests[indexPath.row])
+                cell.requestDataDelegate = self
+                return cell
          }
     }
+}
+
+extension LobbyTableView: EatRequestProtocol {
     
-    @objc func deleteRequest() {
+    func sendRequest(cell: NotYetSentRequestCell, message: String, eatRequestData: EatRequestData) {
+        self.notYetSentRequests.removeAll{$0 == eatRequestData}
         
+        eatRequestData.message = message
+        self.outgoingRequests.append(eatRequestData)
+        
+        self.reloadData()
+        // TODO: TONY AND GILBERT
     }
     
 }

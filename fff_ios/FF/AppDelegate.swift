@@ -67,11 +67,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				// TODO URGENT handle
 			}
             UserData.shared.fbAuth = true
-//            self.window?.rootViewController = SelectionViewController()
-            self.window?.rootViewController = SuccessfulAcceptViewController(eatRequestInfo: Fake.EatRequests.one[0])
+            self.window?.rootViewController = SelectionViewController()
+//            self.window?.rootViewController = SuccessfulAcceptViewController(eatRequestInfo: Fake.EatRequests.one[0])
 
         } else {
-            self.window?.rootViewController = SelectionViewController()
+            self.window?.rootViewController = FBLoginViewController()
+//            self.window?.rootViewController = SuccessfulAcceptViewController(eatRequestInfo: Fake.EatRequests.one[0])
         }
         self.window?.makeKeyAndVisible()
         
