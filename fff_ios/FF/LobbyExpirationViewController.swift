@@ -23,12 +23,12 @@ class LobbyExpirationViewController: UIViewController {
 
     let expirationPickerContainer = FView(baseColor: UIColor.white)
     let expirationPicker: UIDatePicker = UIDatePicker()
-    var expirationPicked: TimeInterval
 
     let onDismissCallback: ((Date) -> Void)?
 
     init(oldExpirationDate: Date, onDismissCallback: ((Date) -> Void)?) {
-        self.expirationPicked = oldExpirationDate.timeIntervalSinceNow
+        self.expirationPicker.datePickerMode = .countDownTimer
+        self.expirationPicker.countDownDuration = oldExpirationDate.timeIntervalSinceNow
         self.onDismissCallback = onDismissCallback
         super.init(nibName: nil, bundle: nil)
     }
@@ -55,8 +55,6 @@ class LobbyExpirationViewController: UIViewController {
         self.view.addSubview(self.text2)
 
         self.expirationPicker.datePickerMode = .countDownTimer
-        self.expirationPicker.countDownDuration = self.expirationPicked
-        self.expirationPicker.addTarget(self, action: #selector(expirationPickerValueChanged), for: .valueChanged)
         self.expirationPickerContainer.addSubview(self.expirationPicker)
         self.view.addSubview(self.expirationPickerContainer)
 
@@ -77,12 +75,8 @@ class LobbyExpirationViewController: UIViewController {
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.expirationPickerContainer, sides: [.left, .bottom, .right], padding: 0))
     }
 
-    @objc func expirationPickerValueChanged(_ sender: UIDatePicker) {
-        self.expirationPicked = sender.countDownDuration
-    }
-
     @objc func dismissSelf() {
         self.dismiss(animated: true, completion: nil)
-        self.onDismissCallback?(Date.init(timeIntervalSinceNow: self.expirationPicked))
+        self.onDismissCallback?(Date.init(timeIntervalSinceNow: self.expirationPicker.countDownDuration))
     }
 }
