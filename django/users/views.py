@@ -15,6 +15,7 @@ from .serializers import (
     LobbyExpirationSerializer,
     RequestSerializer,
     UserSerializer,
+    FriendshipRequestSerializer,
 )
 
 
@@ -42,7 +43,7 @@ class LobbyExpiration(generics.GenericAPIView):
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
 
-        new_lobby_expiration = serializer.validated_data['lobby_expiration']
+        new_lobby_expiration = serializer.validated_data["lobby_expiration"]
 
         with transaction.atomic():
             if min(request.user.lobby_expiration,
@@ -65,6 +66,19 @@ class CreateRequest(generics.CreateAPIView):
             status=StatusEnum.PENDING.value,
             sender=self.request.user,
         )
+
+    def create(self, request, *args, **kwargs):
+        serializer = RequestSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+        receiver = serializer.validated_data["receiver"]
+        if Friend.objects.are_friends(
+                request.user, User.objects.get(pk=receiver.id)) != True:
+            return HttpResponse(f"Can't send request to non-friends",
+                                status=400)
+
+        return super().create(request, *args, **kwargs)
 
 
 """
@@ -145,14 +159,14 @@ class FriendsRequests(generics.GenericAPIView):
         if action == "unrejected":
             try:
                 pending = Friend.objects.unrejected_requests(user=request.user)
-                serializer = UserSerializer(pending, many=True)
+                serializer = FriendshipRequestSerializer(pending, many=True)
                 return JsonResponse(serializer.data, safe=False)
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
         elif action == "unread":
             try:
                 unread = Friend.objects.unread_requests(user=request.user)
-                serializer = UserSerializer(unread, many=True)
+                serializer = FriendshipRequestSerializer(unread, many=True)
                 return JsonResponse(serializer.data, safe=False)
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
@@ -184,8 +198,8 @@ class FriendsActions(generics.GenericAPIView):
                 friend_request = FriendshipRequest.objects.get(
                     to_user=request.user.id, from_user=pk)
                 friend_request.accept()
-                return HttpResponse("Accepted friendship request from " + pk +
-                                    ".")
+                return HttpResponse("Accepted friendship request from " +
+                                    str(pk) + ".")
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
         elif action == "decline":
@@ -193,14 +207,14 @@ class FriendsActions(generics.GenericAPIView):
                 friend_request = FriendshipRequest.objects.get(
                     to_user=request.user.id, from_user=pk)
                 friend_request.decline()
-                return HttpResponse("Declined friendship request from " + pk +
-                                    ".")
+                return HttpResponse("Declined friendship request from " +
+                                    str(pk) + ".")
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
         elif action == "remove":
             try:
                 Friend.objects.remove_friend(request.user, other_user)
-                return HttpResponse("Removed friend " + pk + ".")
+                return HttpResponse("Removed friend " + str(pk) + ".")
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
 
