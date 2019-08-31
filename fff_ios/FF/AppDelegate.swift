@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = FBLoginViewController()
         }
         
-//        self.window?.rootViewController = FindFriendsViewController()
+//        self.window?.rootViewController = FindFriendsViewController(friendData: Fake.Friends.one)
 //        self.window?.rootViewController = SelectionViewController()
 //          self.window?.rootViewController = FFNavigationController(rootViewController: FBLoginViewController())
 //        self.window?.rootViewController = MapViewController(friendData: Fake.Friends.one)

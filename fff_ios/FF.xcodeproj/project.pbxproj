@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E9C678C231A17FE0003510F /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C678B231A17FE0003510F /* FriendCell.swift */; };
 		9EA31E5C23183CF900F7F08D /* FBLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */; };
 		9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */; };
 		9EA31E60231891BE00F7F08D /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5F231891BE00F7F08D /* Secret.swift */; };
@@ -58,6 +59,7 @@
 /* Begin PBXFileReference section */
 		226DD5459D3E1E085E5D09CF /* Pods-FF.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FF.debug.xcconfig"; path = "Target Support Files/Pods-FF/Pods-FF.debug.xcconfig"; sourceTree = "<group>"; };
 		22FF29206999566E042D7056 /* Pods_FF.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FF.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E9C678B231A17FE0003510F /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBLoginViewController.swift; sourceTree = "<group>"; };
 		9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EA31E5F231891BE00F7F08D /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			children = (
 				9EA31E6A2319C55900F7F08D /* FindFriendsViewController.swift */,
 				9EE9ECF2231A047E00DD0744 /* FriendsTableView.swift */,
+				9E9C678B231A17FE0003510F /* FriendCell.swift */,
 			);
 			path = "Find Friends";
 			sourceTree = "<group>";
@@ -424,6 +427,7 @@
 				DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */,
 				DC6EF0592319DC66006DD060 /* FImageView.swift in Sources */,
 				DCDA5E1923174072007F9155 /* KeyboardButton.swift in Sources */,
+				9E9C678C231A17FE0003510F /* FriendCell.swift in Sources */,
 				DCDA5DFF2316DC58007F9155 /* SelectionToggle.swift in Sources */,
 				DCDA5E2123174B4F007F9155 /* MessageCell.swift in Sources */,
 				DCDA5DF323160FFF007F9155 /* LobbyTableView.swift in Sources */,
