@@ -11,29 +11,45 @@ import CoreLocation
 
 import GoogleMaps
 
+func timeIntervalString(_ interval: TimeInterval) -> String {
+    let hours = Int(interval) / 3600
+    let minutes = Int(interval) / 60 % 60
+    let seconds = Int(interval) % 60
+    return String(format:"%02i:%02i:%02i", hours, minutes, seconds)
+}
+
 class MapViewController: UIViewController {
 
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation = CLLocation(latitude: 42.3600, longitude: -71.0972)
     
-    let camera:GMSCameraPosition
-    let mapView:GMSMapView
-    let friendButton:FButton
-    let lobbyViewController = FFNavigationController(rootViewController: LobbyViewController())
-    
+    var lobbyExpirationDate: Date
+    let lobbyExpirationButton: FButton
+    var lobbyExpirationDisplayLink: CADisplayLink = CADisplayLink()
+
+    let camera: GMSCameraPosition
+    let mapView: GMSMapView
+    let friendButton: FButton
+
     let friendData:[FriendData]
-    
-    init(currLocation: CLLocation, friendData: [FriendData]) {
+
+    let lobbyViewController = FFNavigationController(rootViewController: LobbyViewController())
+
+    init(currLocation: CLLocation, friendData: [FriendData], lobbyExpirationDate: Date?) {
+        self.lobbyExpirationDate = lobbyExpirationDate ?? Date.distantFuture // TODO: Use backend for default
+        self.lobbyExpirationButton = FButton(titleText: timeIntervalString(self.lobbyExpirationDate.timeIntervalSinceNow))
+
         self.friendButton = FButton(titleText: "\(friendData.count) friends nearby")
 
         self.friendData = friendData
         self.camera = GMSCameraPosition.camera(withLatitude: 42.3601, longitude: -71.0942, zoom: 15.0)
-        self.mapView = GMSMapView.map(withFrame: CGRect(x: 0, y: 0, width: Dimensions.width, height: Dimensions.height), camera: camera)
+        self.mapView = GMSMapView.map(withFrame: CGRect(x: 0, y: 0, width: Dimensions.width, height:
+            Dimensions.height), camera: camera)
 
         super.init(nibName: nil, bundle: nil)
-        
+
         self.mapView.delegate = self
-        
+
         for friend in friendData {
             let marker = GMSMarker()
             
@@ -41,7 +57,6 @@ class MapViewController: UIViewController {
             marker.title = friend.friendName
             marker.map = mapView
         }
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -50,20 +65,32 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
+
         self.view.backgroundColor = UIColor.orange
         
         self.friendButton.addTarget(self, action: #selector(MapViewController.friendClick), for: .touchUpInside)
-        
+        self.lobbyExpirationButton.addTarget(self, action: #selector(MapViewController.lobbyExpirationButtonClick), for: .touchUpInside)
+
         self.view.addSubview(self.mapView)
         self.view.addSubview(self.friendButton)
+        self.view.addSubview(self.lobbyExpirationButton)
         
         addConstraints()
         
         enableBasicLocationServices()
     }
-    
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.lobbyExpirationDisplayLink = CADisplayLink(target: self, selector: #selector(updateLobbyExpirationButton))
+        self.lobbyExpirationDisplayLink.add(to: .current, forMode: .common)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.lobbyExpirationDisplayLink.invalidate()
+    }
+
     func enableBasicLocationServices() {
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -89,6 +116,10 @@ class MapViewController: UIViewController {
     func addConstraints() {        
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.friendButton, sides: [.left, .bottom, .right], padding: 40))
         self.view.addConstraint(FConstraint.fillYConstraints(view: self.friendButton, heightRatio: 0.07))
+
+        self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.lobbyExpirationButton, sides: [.right, .top], padding: 40))
+        self.view.addConstraint(FConstraint.fillXConstraints(view: self.lobbyExpirationButton, widthRatio: 0.3))
+        self.view.addConstraint(FConstraint.fillYConstraints(view: self.lobbyExpirationButton, heightRatio: 0.1))
     }
 
     @objc func friendClick() {
@@ -107,6 +138,20 @@ class MapViewController: UIViewController {
         
         lobbyFunctions.updateLobbySource(data: self.friendData)
         self.present(lobbyViewController, animated: true, completion: nil)
+    }
+
+    @objc func updateLobbyExpirationButton() {
+        let timeTillExpiration: TimeInterval = self.lobbyExpirationDate.timeIntervalSinceNow
+        guard timeTillExpiration >= 0 else {
+            self.dismiss(animated: true, completion: nil)
+            return
+        }
+        self.lobbyExpirationButton.setTitle(timeIntervalString(timeTillExpiration), for: .normal)
+    }
+
+    @objc func lobbyExpirationButtonClick() {
+        let vc = FFNavigationController(rootViewController: LobbyExpirationViewController(oldExpirationDate: self.lobbyExpirationDate, onDismissCallback: {self.lobbyExpirationDate = $0}))
+        self.present(vc, animated: true, completion: nil)
     }
 }
 

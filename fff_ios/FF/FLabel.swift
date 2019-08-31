@@ -22,6 +22,7 @@ class FLabel: UILabel {
         
         self.font = font
         self.textColor = color
+        self.numberOfLines = 0
         
         self.text = text
     }

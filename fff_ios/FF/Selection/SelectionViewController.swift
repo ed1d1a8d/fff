@@ -138,7 +138,15 @@ class SelectionViewController: UIViewController {
     }
     
     @objc func showMapView() {
-        let mapView = MapViewController(currLocation: Fake.Friends.currLocation, friendData: Fake.Friends.one)
+        let lobbyExpirationDate = Date(timeIntervalSinceNow: 20 * 60) // TODO(Tony): Actually get real time interval
+        // TODO(Tony): Send lobbyExpiration to backend.
+        
+        let mapView = MapViewController(
+            currLocation: Fake.Friends.currLocation,
+            friendData: Fake.Friends.one,
+            lobbyExpirationDate: lobbyExpirationDate
+        )
+        
         self.present(mapView, animated: true, completion: nil)
     }
 }
