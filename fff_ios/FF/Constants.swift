@@ -38,6 +38,11 @@ struct OptionsVC {
     
     static let dWidth:CGFloat = Dimensions.width * 0.7
     static let dHeight:CGFloat = Dimensions.height
+    
+    static let optionDetailFont = UIFont.systemFont(ofSize: 18.0, weight: .medium)
+    static let optionDetailHeight = heightForUILabel(text: "Hi",
+                                                     font: optionDetailFont,
+                                                     width: Dimensions.width)
 }
 
 struct LoginVC {
