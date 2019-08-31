@@ -45,7 +45,6 @@ extension FriendsTableView: UITableViewDataSource {
     
     func updateData(data: [FriendData]) {
         self.friendsList = data
-        print("HELLOWORLD")
         print(self.friendsList)
         self.reloadData()
         self.layoutIfNeeded()
