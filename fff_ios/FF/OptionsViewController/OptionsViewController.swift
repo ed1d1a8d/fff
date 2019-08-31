@@ -7,13 +7,13 @@
 //
 
 import UIKit
-import FacebookLogin
+//import FacebookLogin
 
 class OptionsViewController: UIViewController {
     
     let optionsNavbar = OptionsNavbar()
     let menuOverview = OptionsDetailView()
-    let darkView = FView(baseColor: Colors.navDark)
+    let darkView = OptionsDark()
     
     var xConstraint:NSLayoutConstraint!
     
@@ -22,14 +22,14 @@ class OptionsViewController: UIViewController {
         
         self.view.backgroundColor = Colors.background
         
-        LoginManager().logOut()
+//        LoginManager().logOut()
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(OptionsViewController.hideMenuOptions)))
         self.optionsNavbar.menu.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(OptionsViewController.showMenuOptions)))
         
         self.view.addSubview(self.optionsNavbar)
-        self.view.addSubview(self.menuOverview)
         self.view.addSubview(self.darkView)
+        self.view.addSubview(self.menuOverview)
         addConstraints()
     }
     
@@ -52,6 +52,7 @@ class OptionsViewController: UIViewController {
     @objc func showMenuOptions() {
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
             self.xConstraint.constant = 0
+            self.darkView.layer.opacity = 1.0
             self.view.layoutIfNeeded()
         }, completion: { completin in
             self.optionsNavbar.menu.backgroundColor = Colors.nav
@@ -66,6 +67,7 @@ class OptionsViewController: UIViewController {
         
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
             self.xConstraint.constant = -OptionsVC.dWidth
+            self.darkView.layer.opacity = 0.0
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
