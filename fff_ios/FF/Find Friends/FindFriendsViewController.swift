@@ -30,11 +30,6 @@ class FindFriendsViewController: UIViewController {
         
     init(friendData: [FriendData]) {
         self.friendData = friendData
-
-//        for friend in friendData {
-//            print("HELLO")
-//            print(friend)
-//        }
         
         friendsTableView.updateData(data: friendData)
         

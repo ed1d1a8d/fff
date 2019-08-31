@@ -18,7 +18,7 @@ class LobbyCell: UITableViewCell {
                            font: UIFont.systemFont(ofSize: 18.0),
                            color: UIColor.black)
     
-    init(data: FriendData) {
+    init(data: EatRequestData) {
         super.init(style: .default, reuseIdentifier: "lobbyCell")
         
         self.translatesAutoresizingMaskIntoConstraints = false

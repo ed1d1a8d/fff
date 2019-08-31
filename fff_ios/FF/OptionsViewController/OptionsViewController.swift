@@ -77,12 +77,12 @@ class OptionsViewController: UIViewController {
                 let lobbyViewController = LobbyViewController()
                 viewController = FFNavigationController(rootViewController: lobbyViewController)
                 
-                for friend in Fake.Friends.one {
-                    let friendLocation = CLLocation(latitude: friend.friendLat, longitude: friend.friendLng)
-                    let distance = Fake.Friends.currLocation.distance(from: friendLocation)
-                    friend.distance = distance
+                for eatRequest in Fake.EatRequests.one {
+                    let friendLocation = CLLocation(latitude: eatRequest.friendLat, longitude: eatRequest.friendLng)
+                    let distance = Fake.EatRequests.currLocation.distance(from: friendLocation)
+                    eatRequest.distance = distance
                 }
-                lobbyViewController.updateLobbySource(data: Fake.Friends.one)
+                lobbyViewController.updateLobbySource(data: Fake.EatRequests.one)
             }
             self.menuOverview.clickedDetail = nil
             
