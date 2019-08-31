@@ -11,7 +11,7 @@
 		9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */; };
 		9EA31E60231891BE00F7F08D /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5F231891BE00F7F08D /* Secret.swift */; };
 		9EA31E6B2319C55900F7F08D /* FindFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E6A2319C55900F7F08D /* FindFriendsViewController.swift */; };
-		9EA31E6D2319CB2900F7F08D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E6C2319CB2900F7F08D /* User.swift */; };
+		9EE9ECF3231A047E00DD0744 /* FriendsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE9ECF2231A047E00DD0744 /* FriendsTableView.swift */; };
 		D67A06E03CE96A151BF6A1A2 /* Pods_FF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FF29206999566E042D7056 /* Pods_FF.framework */; };
 		DC6EF0542319A236006DD060 /* FBButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF0532319A236006DD060 /* FBButton.swift */; };
 		DC6EF0572319CD76006DD060 /* OtherRegButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6EF0562319CD76006DD060 /* OtherRegButton.swift */; };
@@ -58,7 +58,7 @@
 		9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EA31E5F231891BE00F7F08D /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		9EA31E6A2319C55900F7F08D /* FindFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsViewController.swift; sourceTree = "<group>"; };
-		9EA31E6C2319CB2900F7F08D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		9EE9ECF2231A047E00DD0744 /* FriendsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableView.swift; sourceTree = "<group>"; };
 		A1A9FF87F9D9146A3182065A /* Pods-FF.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FF.release.xcconfig"; path = "Target Support Files/Pods-FF/Pods-FF.release.xcconfig"; sourceTree = "<group>"; };
 		DC6EF0522318C2C0006DD060 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		DC6EF0532319A236006DD060 /* FBButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBButton.swift; sourceTree = "<group>"; };
@@ -135,7 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				9EA31E6A2319C55900F7F08D /* FindFriendsViewController.swift */,
-				9EA31E6C2319CB2900F7F08D /* User.swift */,
+				9EE9ECF2231A047E00DD0744 /* FriendsTableView.swift */,
 			);
 			path = "Find Friends";
 			sourceTree = "<group>";
@@ -377,6 +377,7 @@
 				DC6EF0572319CD76006DD060 /* OtherRegButton.swift in Sources */,
 				9EA31E60231891BE00F7F08D /* Secret.swift in Sources */,
 				DCDA5E092317391A007F9155 /* MessagesViewController.swift in Sources */,
+				9EE9ECF3231A047E00DD0744 /* FriendsTableView.swift in Sources */,
 				DCDA5E1523173F1E007F9155 /* TextPlaceholder.swift in Sources */,
 				DCDA5E0323171A58007F9155 /* SelectionTime.swift in Sources */,
 				DCDA5DF523161971007F9155 /* LobbyCell.swift in Sources */,
@@ -386,7 +387,6 @@
 				DCDA5E012316F22E007F9155 /* SelectionSlider.swift in Sources */,
 				DCDA5E2323174B67007F9155 /* MessageBubble.swift in Sources */,
 				DCDA5DFB23163E01007F9155 /* SelectionViewController.swift in Sources */,
-				9EA31E6D2319CB2900F7F08D /* User.swift in Sources */,
 				DCDA5DEF2316029F007F9155 /* LobbyViewController.swift in Sources */,
 				DCDA5E0F23173DE3007F9155 /* InputContainer.swift in Sources */,
 				DC6EF0542319A236006DD060 /* FBButton.swift in Sources */,
