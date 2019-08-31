@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserData.shared.fbAuth = true
             self.window?.rootViewController = SelectionViewController()
         } else {
-            self.window?.rootViewController = FBLoginViewController()
+            self.window?.rootViewController = SelectionViewController()
         }
         self.window?.makeKeyAndVisible()
         

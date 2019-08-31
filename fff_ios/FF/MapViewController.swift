@@ -151,7 +151,9 @@ class MapViewController: OptionsViewController {
     }
 
     @objc func lobbyExpirationButtonClick() {
-        let vc = FFNavigationController(rootViewController: LobbyExpirationViewController(oldExpirationDate: self.lobbyExpirationDate, onDismissCallback: {self.lobbyExpirationDate = $0}))
+        let vc = FFNavigationController(rootViewController: LobbyExpirationViewController(oldExpirationDate: self.lobbyExpirationDate, onDismissCallback: {
+            self.lobbyExpirationDate = $0
+        }))
         self.present(vc, animated: true, completion: nil)
     }
 }

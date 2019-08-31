@@ -10,7 +10,6 @@ import UIKit
 
 class IncomingRequestCell: UITableViewCell {
     
-    
     let container = FView(baseColor: UIColor.white)
     let nameLabel = FLabel(text: "",
                            font: UIFont.systemFont(ofSize: 18.0),
@@ -46,8 +45,6 @@ class IncomingRequestCell: UITableViewCell {
         self.nameLabel.text = data.friendName
         self.distLabel.text = String(format: "%.2fm", distance)
 
-        print("HELLO")
-        print(data.message)
         self.messageLabel.text = data.message
         
         self.container.layer.cornerRadius = 10
