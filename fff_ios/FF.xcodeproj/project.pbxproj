@@ -13,6 +13,7 @@
 		9E9C6790231ACD560003510F /* IncomingRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C678F231ACD560003510F /* IncomingRequestCell.swift */; };
 		9E9C6792231AEAEB0003510F /* OutgoingRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C6791231AEAEB0003510F /* OutgoingRequestCell.swift */; };
 		9E9C6794231AEDF60003510F /* NotYetSentRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C6793231AEDF60003510F /* NotYetSentRequestCell.swift */; };
+		9E9C6796231AFBFB0003510F /* SuccessfulAcceptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C6795231AFBFB0003510F /* SuccessfulAcceptViewController.swift */; };
 		9EA31E5C23183CF900F7F08D /* FBLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */; };
 		9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */; };
 		9EA31E60231891BE00F7F08D /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5F231891BE00F7F08D /* Secret.swift */; };
@@ -74,6 +75,7 @@
 		9E9C678F231ACD560003510F /* IncomingRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingRequestCell.swift; sourceTree = "<group>"; };
 		9E9C6791231AEAEB0003510F /* OutgoingRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingRequestCell.swift; sourceTree = "<group>"; };
 		9E9C6793231AEDF60003510F /* NotYetSentRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotYetSentRequestCell.swift; sourceTree = "<group>"; };
+		9E9C6795231AFBFB0003510F /* SuccessfulAcceptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessfulAcceptViewController.swift; sourceTree = "<group>"; };
 		9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBLoginViewController.swift; sourceTree = "<group>"; };
 		9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EA31E5F231891BE00F7F08D /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -149,6 +151,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9E9C6797231AFD9A0003510F /* AcceptScreens */ = {
+			isa = PBXGroup;
+			children = (
+				9E9C6795231AFBFB0003510F /* SuccessfulAcceptViewController.swift */,
+			);
+			path = AcceptScreens;
+			sourceTree = "<group>";
+		};
 		9EA31E5A23183CE500F7F08D /* FBLogin */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +196,7 @@
 		DCDA5DCC2315FCE6007F9155 = {
 			isa = PBXGroup;
 			children = (
+				9E9C6797231AFD9A0003510F /* AcceptScreens */,
 				9EA31E5F231891BE00F7F08D /* Secret.swift */,
 				9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */,
 				DCDA5DD72315FCE7007F9155 /* FF */,
@@ -455,6 +466,7 @@
 				DC85E53B2319FB9E004905F0 /* OptionsDetailView.swift in Sources */,
 				DCDA5E2A23183508007F9155 /* Networking.swift in Sources */,
 				DCDA5E0D23173CA1007F9155 /* KeyboardViewController.swift in Sources */,
+				9E9C6796231AFBFB0003510F /* SuccessfulAcceptViewController.swift in Sources */,
 				DC6EF0602319F01B006DD060 /* OptionsMenu.swift in Sources */,
 				DCDA5E0523172ADB007F9155 /* SelectionProtocol.swift in Sources */,
 				DCDA5DED2315FF30007F9155 /* FButton.swift in Sources */,
