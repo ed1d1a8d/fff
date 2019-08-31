@@ -70,7 +70,7 @@ class FBLoginViewController: UIViewController {
                 connection.add(graphRequest, completionHandler: { (connection, result, error) in
                     let info = result as! [String: AnyObject]
 					print(info)
-					print(accessToken.currentAccessToken().tokenString)
+					print(accessToken.tokenString)
 					
 					// TODO
 					

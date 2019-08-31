@@ -25,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
+		// self.window?.rootViewController = FBLoginViewController()
+		
         if (AccessToken.current != nil) {
 //            self.window?.rootViewController = SelectionViewController()
             self.window?.rootViewController = OptionsViewController()
