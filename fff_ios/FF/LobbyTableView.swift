@@ -18,6 +18,10 @@ class LobbyTableView: UITableView, UITableViewDelegate {
     
     var lobbySource:[EatRequestData] = []
     
+    var incomingRequests:[EatRequestData] = []
+    var outgoingRequests:[EatRequestData] = []
+    var notYetSentReqeusts:[EatRequestData] = []
+    
     init() {
         super.init(frame: .zero, style: .plain)
         
@@ -46,18 +50,48 @@ extension LobbyTableView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.lobbySource.count
+        switch (section) {
+            case 0:
+                return incomingRequests.count
+            case 1:
+                return outgoingRequests.count
+            default:
+                return notYetSentReqeusts.count
+         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let data = self.lobbySource[indexPath.row]
-        let cell = LobbyCell(data: data)
+//        let data = self.lobbySource[indexPath.row]
+//        let cell = LobbyCell(data: data)
+//
+//        return cell
+//
+//
         
-        return cell
+        switch (indexPath.section) {
+            case 0:
+                return LobbyCell(data: self.incomingRequests[indexPath.row])
+            case 1:
+                return LobbyCell(data: self.outgoingRequests[indexPath.row])
+            default:
+                return LobbyCell(data: self.notYetSentReqeusts[indexPath.row])
+         }
     }
     
     func updateData(data: [EatRequestData]) {
         self.lobbySource = data
+        
+        for request in data {
+            switch (request.requestType) {
+                case "incoming":
+                    self.incomingRequests.append(request)
+                case "outgoing":
+                    self.outgoingRequests.append(request)
+                default:
+                    self.notYetSentReqeusts.append(request)
+             }
+        }
+        
         self.reloadData()
         self.layoutIfNeeded()
     }
