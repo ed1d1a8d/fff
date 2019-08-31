@@ -36,8 +36,8 @@ class NotYetSentRequestCell: UITableViewCell {
         
         let distance = data.distance * 1.6 / 1000
         
-        self.backgroundColor = UIColor(red: 253.0/255.0, green: 240.0/255.0, blue: 196.0/255.0, alpha: 1)
-        
+        self.backgroundColor = UIColor(red: 255.0/255.0, green: 245.0/255.0, blue: 225/255.0, alpha: 1)
+
         self.nameLabel.text = data.friendName
         self.distLabel.text = String(format: "%.2fm", distance)
         
