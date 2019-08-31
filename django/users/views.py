@@ -5,8 +5,8 @@ from rest_framework import permissions
 from friendship.models import Friend
 from friendship.models import FriendshipRequest
 
-from .models import User
-from .serializers import UserSerializer
+from .models import Request, User
+from .serializers import RequestSerializer, UserSerializer
 
 
 class SelfDetail(generics.RetrieveUpdateAPIView):
@@ -14,6 +14,33 @@ class SelfDetail(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class CreateRequest(generics.CreateAPIView):
+    serializer_class = RequestSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(status="pending", sender=self.request.user)
+
+
+class IncomingRequests(generics.ListAPIView):
+    serializer_class = RequestSerializer
+
+    def get_queryset(self):
+        return Request.objects.filter(
+            status=self.kwargs["status"],
+            receiver=self.request.user,
+        )
+
+
+class OutgoingRequests(generics.ListAPIView):
+    serializer_class = RequestSerializer
+
+    def get_queryset(self):
+        return Request.objects.filter(
+            status=self.kwargs["status"],
+            sender=self.request.user,
+        )
 
 
 class FriendList(generics.ListAPIView):
