@@ -69,43 +69,38 @@ class FBLoginViewController: UIViewController {
                 let connection = GraphRequestConnection()
                 connection.add(graphRequest, completionHandler: { (connection, result, error) in
                     let info = result as! [String: AnyObject]
-					print(info)
-					print(accessToken.currentAccessToken().tokenString)
 					
-					// TODO
-					
-					
-					// the login completed successfully
-					// login to our backend as well, and store the auth key in ios core storage
-					
-					// first, check if the user already exists
-					
-					
-					var params = Dictionary<String, Any>()
-					params["username"] = "hsoule"
-					params["email"] = "hsoule@mit.edu"
-					params["password1"] = "crazyrichbayesians"
-					params["password2"] = "crazyrichbayesians"
-					
-					HTTPAPI.instance().call(url: endpoints.musicu.auth, params: params, method: .POST, success: { (data, response, error) in
-						//            print("SUCCESS")
-						guard let unwrappedData = data else {
-							return
-						}
-						do {
-							let data = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments)
-							print(data)
-						} catch {}
-					}) { (data, response, error) in
-						//            print("FAILEDFAILED")
-						guard let unwrappedData = data else {
-							return
-						}
-						do {
-							let data = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments)
-							print(data)
-						} catch {}
-					}
+//                     the login completed successfully
+//                     login to our backend as well, and store the auth key in ios core storage
+//
+//                     first, check if the user already exists
+//
+//
+//                    var params = Dictionary<String, Any>()
+//                    params["username"] = "hsoule"
+//                    params["email"] = "hsoule@mit.edu"
+//                    params["password1"] = "crazyrichbayesians"
+//                    params["password2"] = "crazyrichbayesians"
+//
+//                    HTTPAPI.instance().call(url: endpoints.musicu.auth, params: params, method: .POST, success: { (data, response, error) in
+//                        //            print("SUCCESS")
+//                        guard let unwrappedData = data else {
+//                            return
+//                        }
+//                        do {
+//                            let data = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments)
+//                            print(data)
+//                        } catch {}
+//                    }) { (data, response, error) in
+//                        //            print("FAILEDFAILED")
+//                        guard let unwrappedData = data else {
+//                            return
+//                        }
+//                        do {
+//                            let data = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments)
+//                            print(data)
+//                        } catch {}
+//                    }
 					
                     let selectionViewController = SelectionViewController()
                     self.present(selectionViewController, animated: true, completion: nil)
