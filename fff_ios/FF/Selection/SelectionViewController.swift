@@ -27,7 +27,7 @@ class SelectionViewController: OptionsViewController {
     let friendButton = SButton(titleText: "Find friends!",
                                font: UIFont.systemFont(ofSize: 24))
 
-    let container = FView(baseColor: UIColor.white)
+    let container = FView(baseColor: UIColor(red: 255.0/255.0, green: 245.0/255.0, blue: 225.0/255.0, alpha: 1))
     
     override init() {
         super.init()

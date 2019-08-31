@@ -19,7 +19,8 @@ class FButton: UIButton {
         
         self.translatesAutoresizingMaskIntoConstraints = false
         
-        self.backgroundColor = UIColor.red
+        self.setTitleColor(UIColor.black, for: .normal)
+        self.backgroundColor = UIColor(red: 255.0/255.0, green: 218/255.0, blue: 147/255.0, alpha: 1)
         self.setTitle(titleText, for: .normal)
         self.titleLabel!.font = font
     }
