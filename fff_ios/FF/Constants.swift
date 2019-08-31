@@ -78,7 +78,7 @@ struct Keyboard {
     static let appearance = UIKeyboardAppearance.alert
 
     static let font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
-    static let defaultHeight = font.lineHeight
+    static let defaultHeight = font.lineHeight * 3
     
     static let tintColor = UIColor.magenta
     

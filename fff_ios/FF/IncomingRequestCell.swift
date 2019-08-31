@@ -10,7 +10,6 @@ import UIKit
 
 class IncomingRequestCell: UITableViewCell {
     
-    
     let container = FView(baseColor: UIColor.white)
     let nameLabel = FLabel(text: "",
                            font: UIFont.systemFont(ofSize: 18.0),
@@ -31,8 +30,11 @@ class IncomingRequestCell: UITableViewCell {
     
     let redX = FImageView(name: "redX",
                                  height: Dimensions.height * 0.022)
+    let eatRequestData:EatRequestData
+    var incomingDelegate:IncomingEatRequestProtocol!
     
     init(data: EatRequestData) {
+        self.eatRequestData = data
         super.init(style: .default, reuseIdentifier: "IncomingRequestCell")
         
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -46,12 +48,13 @@ class IncomingRequestCell: UITableViewCell {
         self.nameLabel.text = data.friendName
         self.distLabel.text = String(format: "%.2fm", distance)
 
-        print("HELLO")
-        print(data.message)
         self.messageLabel.text = data.message
         
         self.container.layer.cornerRadius = 10
         self.container.clipsToBounds = true
+        
+        self.checkMark.isUserInteractionEnabled = true
+        self.checkMark.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(IncomingRequestCell.acceptEatRequest)))
         
         self.container.addSubview(self.fakeProfPic)
         self.container.addSubview(self.checkMark)
@@ -111,6 +114,10 @@ class IncomingRequestCell: UITableViewCell {
         } else {
             self.container.backgroundColor = self.container.baseColor
         }
+    }
+    
+    @objc func acceptEatRequest() {
+        self.incomingDelegate.accept(eatRequestData: self.eatRequestData)
     }
     
 }

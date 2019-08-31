@@ -62,44 +62,24 @@ class OutgoingRequestCell: UITableViewCell {
     }
     
     func addConstraints() {
-        
         self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.blackX, sides: [.right, .top], padding: 20))
-        
         self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.fakeProfPic, sides: [.left], padding: 20))
-        
         self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.nameLabel, sides: [.top], padding: 20))
         
         self.container.addConstraint(FConstraint.horizontalSpacingConstraint(leftView: self.fakeProfPic, rightView: self.nameLabel, spacing: 15))
-        
         self.container.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.fakeProfPic, lowerView: self.messageLabel, spacing: 10))
-        
         
         self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.nameLabel, sides: [.top], padding: 20))
         self.container.addConstraint(FConstraint.fillXConstraints(view: self.nameLabel, widthRatio: 0.8))
         
-        
         self.container.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.nameLabel, lowerView: self.distLabel, spacing: 3))
         self.container.addConstraint(FConstraint.horizontalSpacingConstraint(leftView: self.fakeProfPic, rightView: self.distLabel, spacing: 15))
 
-        
         self.container.addConstraint(FConstraint.verticalSpacingConstraint(upperView: self.distLabel, lowerView: self.messageLabel, spacing: 10))
-
-        self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.messageLabel, sides: [.left], padding: 15))
-
-        self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.messageLabel, sides: [.bottom], padding: 15))
+        self.container.addConstraints(FConstraint.paddingPositionConstraints(view: self.messageLabel, sides: [.bottom, .left], padding: 15))
     
-        
         self.contentView.addConstraints(FConstraint.paddingPositionConstraints(view: self.container, sides: [.left, .right], padding: 45))
-        self.contentView.addConstraint(FConstraint.paddingPositionConstraint(view: self.container, side: .top, padding: 15))
-        self.contentView.addConstraint(FConstraint.paddingPositionConstraint(view: self.container, side: .bottom, padding: 15))
-    }
-    
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if (highlighted) {
-            self.container.backgroundColor = self.container.darkerColor
-        } else {
-            self.container.backgroundColor = self.container.baseColor
-        }
+        self.contentView.addConstraints(FConstraint.paddingPositionConstraints(view: self.container, sides: [.top, .bottom], padding: 15))
     }
     
 }

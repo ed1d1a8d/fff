@@ -22,6 +22,8 @@ class LobbyTableView: UITableView, UITableViewDelegate {
     var outgoingRequests:[EatRequestData] = []
     var notYetSentRequests:[EatRequestData] = []
     
+    var incomingDelegate:IncomingEatRequestProtocol!
+    
     init() {
         super.init(frame: .zero, style: .plain)
         
@@ -39,50 +41,19 @@ class LobbyTableView: UITableView, UITableViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-}
-
-extension LobbyTableView: UITableViewDataSource {
-    
-    // As long as `total` is the last case in our TableSection enum,
-    // this method will always be dynamically correct no mater how many table sections we add or remove.
-    func numberOfSections(in tableView: UITableView) -> Int {
-      return TableSection.total.rawValue
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch (section) {
-            case 0:
-                return incomingRequests.count
-            case 1:
-                return outgoingRequests.count
-            default:
-                return notYetSentRequests.count
-         }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch (indexPath.section) {
-            case 0:
-                return IncomingRequestCell(data: self.incomingRequests[indexPath.row])
-            case 1:
-                return OutgoingRequestCell(data: self.outgoingRequests[indexPath.row])
-            default:
-                return NotYetSentRequestCell(data: self.notYetSentRequests[indexPath.row])
-         }
-    }
-    
-    func updateData(data: [EatRequestData]) {
+    func updateData(data: [EatRequestData], incomingEatRequestDelegate: IncomingEatRequestProtocol) {
         self.lobbySource = data
+        self.incomingDelegate = incomingEatRequestDelegate
         
         for request in data {
             switch (request.requestType) {
-                case "incoming":
-                    self.incomingRequests.append(request)
-                case "outgoing":
-                    self.outgoingRequests.append(request)
-                default:
-                    self.notYetSentRequests.append(request)
-             }
+            case "incoming":
+                self.incomingRequests.append(request)
+            case "outgoing":
+                self.outgoingRequests.append(request)
+            default:
+                self.notYetSentRequests.append(request)
+            }
         }
         
         self.incomingRequests = self.incomingRequests.sorted(by: { $0.distance < $1.distance })
@@ -91,6 +62,75 @@ extension LobbyTableView: UITableViewDataSource {
         
         self.reloadData()
         self.layoutIfNeeded()
+    }
+    
+}
+
+extension LobbyTableView: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+      return TableSection.total.rawValue
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch (section) {
+        case 0:
+            return incomingRequests.count
+        case 1:
+            return outgoingRequests.count
+        default:
+            return notYetSentRequests.count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: SectionHeaderHeight))
+        view.backgroundColor = UIColor(red: 255.0/255.0, green: 245.0/255.0, blue: 225/255.0, alpha: 1)
+        let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.bounds.width - 30, height: SectionHeaderHeight))
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.textColor = UIColor.black
+        if let tableSection = TableSection(rawValue: section) {
+            switch tableSection {
+            case .incoming:
+                label.text = "Incoming Requests"
+            case .outgoing:
+                label.text = "Sent Requests"
+            case .notYetSent:
+                label.text = "Friends"
+            default:
+                label.text = ""
+            }
+        }
+        view.addSubview(label)
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch (indexPath.section) {
+            case 0:
+                let cell = IncomingRequestCell(data: self.incomingRequests[indexPath.row])
+                cell.incomingDelegate = self.incomingDelegate
+                return cell
+            case 1:
+                return OutgoingRequestCell(data: self.outgoingRequests[indexPath.row])
+            default:
+                let cell = NotYetSentRequestCell(data: self.notYetSentRequests[indexPath.row])
+                cell.requestDataDelegate = self
+                return cell
+         }
+    }
+}
+
+extension LobbyTableView: EatRequestProtocol {
+    
+    func sendRequest(cell: NotYetSentRequestCell, message: String, eatRequestData: EatRequestData) {
+        self.notYetSentRequests.removeAll{$0 == eatRequestData}
+        
+        eatRequestData.message = message
+        self.outgoingRequests.append(eatRequestData)
+        
+        self.reloadData()
+        // TODO: TONY GILBERT SET TO OUTGOING
     }
     
 }

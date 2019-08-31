@@ -14,6 +14,7 @@
 		9E9C6792231AEAEB0003510F /* OutgoingRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C6791231AEAEB0003510F /* OutgoingRequestCell.swift */; };
 		9E9C6794231AEDF60003510F /* NotYetSentRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C6793231AEDF60003510F /* NotYetSentRequestCell.swift */; };
 		9E9C6796231AFBFB0003510F /* SuccessfulAcceptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C6795231AFBFB0003510F /* SuccessfulAcceptViewController.swift */; };
+		9E9C6799231B238F0003510F /* TheyAcceptedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C6798231B238F0003510F /* TheyAcceptedViewController.swift */; };
 		9EA31E5C23183CF900F7F08D /* FBLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */; };
 		9EA31E5E2318552500F7F08D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */; };
 		9EA31E60231891BE00F7F08D /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA31E5F231891BE00F7F08D /* Secret.swift */; };
@@ -31,6 +32,8 @@
 		DC85E53F231A2D2D004905F0 /* OptionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85E53E231A2D2D004905F0 /* OptionDetail.swift */; };
 		DC85E541231A34FE004905F0 /* OptionsShowVCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85E540231A34FE004905F0 /* OptionsShowVCDelegate.swift */; };
 		DC85E543231A46AC004905F0 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85E542231A46AC004905F0 /* UserData.swift */; };
+		DC85E545231B1E79004905F0 /* EatRequestProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85E544231B1E79004905F0 /* EatRequestProtocol.swift */; };
+		DC85E547231B22DF004905F0 /* IncomingEatRequestProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85E546231B22DF004905F0 /* IncomingEatRequestProtocol.swift */; };
 		DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */; };
 		DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */; };
 		DCDA5DE02315FCE8007F9155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCDA5DDF2315FCE8007F9155 /* Assets.xcassets */; };
@@ -76,6 +79,7 @@
 		9E9C6791231AEAEB0003510F /* OutgoingRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingRequestCell.swift; sourceTree = "<group>"; };
 		9E9C6793231AEDF60003510F /* NotYetSentRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotYetSentRequestCell.swift; sourceTree = "<group>"; };
 		9E9C6795231AFBFB0003510F /* SuccessfulAcceptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessfulAcceptViewController.swift; sourceTree = "<group>"; };
+		9E9C6798231B238F0003510F /* TheyAcceptedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheyAcceptedViewController.swift; sourceTree = "<group>"; };
 		9EA31E5B23183CF900F7F08D /* FBLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBLoginViewController.swift; sourceTree = "<group>"; };
 		9EA31E5D2318552500F7F08D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EA31E5F231891BE00F7F08D /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -94,6 +98,8 @@
 		DC85E53E231A2D2D004905F0 /* OptionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionDetail.swift; sourceTree = "<group>"; };
 		DC85E540231A34FE004905F0 /* OptionsShowVCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsShowVCDelegate.swift; sourceTree = "<group>"; };
 		DC85E542231A46AC004905F0 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		DC85E544231B1E79004905F0 /* EatRequestProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatRequestProtocol.swift; sourceTree = "<group>"; };
+		DC85E546231B22DF004905F0 /* IncomingEatRequestProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingEatRequestProtocol.swift; sourceTree = "<group>"; };
 		DCDA5DD52315FCE7007F9155 /* FF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				9E9C6795231AFBFB0003510F /* SuccessfulAcceptViewController.swift */,
+				9E9C6798231B238F0003510F /* TheyAcceptedViewController.swift */,
 			);
 			path = AcceptScreens;
 			sourceTree = "<group>";
@@ -217,6 +224,8 @@
 		DCDA5DD72315FCE7007F9155 /* FF */ = {
 			isa = PBXGroup;
 			children = (
+				DC85E544231B1E79004905F0 /* EatRequestProtocol.swift */,
+				DC85E546231B22DF004905F0 /* IncomingEatRequestProtocol.swift */,
 				DC85E542231A46AC004905F0 /* UserData.swift */,
 				9EA31E5A23183CE500F7F08D /* FBLogin */,
 				9EA31E692319C54B00F7F08D /* Find Friends */,
@@ -431,13 +440,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC85E547231B22DF004905F0 /* IncomingEatRequestProtocol.swift in Sources */,
 				DCDA5E2823178C6E007F9155 /* FriendData.swift in Sources */,
 				DCDA5DEB2315FEF6007F9155 /* FConstraint.swift in Sources */,
 				DCDA5DF9231635F0007F9155 /* Extensions.swift in Sources */,
+				DC85E545231B1E79004905F0 /* EatRequestProtocol.swift in Sources */,
 				9E9C678E231A2FCB0003510F /* EatRequestData.swift in Sources */,
 				DC85E53D231A20B9004905F0 /* OptionsDark.swift in Sources */,
 				DC6EF05E2319EE93006DD060 /* OptionsNavbar.swift in Sources */,
 				DC85E53F231A2D2D004905F0 /* OptionDetail.swift in Sources */,
+				9E9C6799231B238F0003510F /* TheyAcceptedViewController.swift in Sources */,
 				DCDA5DF123160A74007F9155 /* FLabel.swift in Sources */,
 				9E9C6792231AEAEB0003510F /* OutgoingRequestCell.swift in Sources */,
 				DC6EF0572319CD76006DD060 /* OtherRegButton.swift in Sources */,
