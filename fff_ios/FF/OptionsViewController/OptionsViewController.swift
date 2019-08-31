@@ -7,7 +7,9 @@
 //
 
 import UIKit
-//import FacebookLogin
+import CoreLocation
+
+import FacebookLogin
 
 class OptionsViewController: UIViewController {
     
@@ -19,6 +21,7 @@ class OptionsViewController: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
+        self.menuOverview.optionsDelegate = self
         
         self.view.backgroundColor = Colors.background
         
@@ -59,17 +62,49 @@ class OptionsViewController: UIViewController {
         })
     }
     
+    func _hideMenuAnimations(detailType: String) {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+            self.xConstraint.constant = -OptionsVC.dWidth
+            self.darkView.layer.opacity = 0.0
+            self.view.layoutIfNeeded()
+        }, completion: { completion in
+            if (self.menuOverview.clickedDetail == nil || detailType == "") {
+                return
+            }
+            
+            var viewController:UIViewController!
+            if detailType == "Lobby" {
+                let lobbyViewController = LobbyViewController()
+                viewController = FFNavigationController(rootViewController: lobbyViewController)
+                
+                for friend in Fake.Friends.one {
+                    let friendLocation = CLLocation(latitude: friend.friendLat, longitude: friend.friendLng)
+                    let distance = Fake.Friends.currLocation.distance(from: friendLocation)
+                    friend.distance = distance
+                }
+                lobbyViewController.updateLobbySource(data: Fake.Friends.one)
+            }
+            self.menuOverview.clickedDetail = nil
+            
+            self.present(viewController, animated: true, completion: nil)
+        })
+    }
+    
     @objc func hideMenuOptions(recognizer: UITapGestureRecognizer) {
         let location = recognizer.location(in: recognizer.view)
         if recognizer.view!.hitTest(location, with: nil) == self.menuOverview {
             return
         }
         
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
-            self.xConstraint.constant = -OptionsVC.dWidth
-            self.darkView.layer.opacity = 0.0
-            self.view.layoutIfNeeded()
-        }, completion: nil)
+        _hideMenuAnimations(detailType: "")
+    }
+    
+}
+
+extension OptionsViewController: OptionsShowVCDelegate {
+    
+    func showVC(detailType: String) {
+        _hideMenuAnimations(detailType: detailType)
     }
     
 }

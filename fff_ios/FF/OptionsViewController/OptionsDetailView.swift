@@ -16,14 +16,22 @@ class OptionsDetailView: UIView {
     let lobbyDetail = OptionDetail(iconName: "lobbyIcon", vcName: "Lobby")
     let friendDetail = OptionDetail(iconName: "friendsIcon", vcName: "Friends")
     let logoutDetail = OptionDetail(iconName: "logoutIcon", vcName: "Logout")
+    let details:[OptionDetail]
+    
+    var clickedDetail:OptionDetail?
+    var optionsDelegate:OptionsShowVCDelegate!
     
     init() {
+        self.details = [self.lobbyDetail, self.friendDetail, self.logoutDetail]
         super.init(frame: .zero)
         
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.isUserInteractionEnabled = true
         
         self.backgroundColor = Colors.slideMenu
+        
+        for detail in self.details {
+            detail.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.updateClickedDetail)))
+        }
         
         self.addSubview(self.fff)
         self.addSubview(self.lobbyDetail)
@@ -45,12 +53,17 @@ class OptionsDetailView: UIView {
         self.addConstraint(FConstraint.paddingPositionConstraint(view: self.fff, side: .top, padding: topPadding))
         
         var topView:UIView = self.fff
-        for view in [self.lobbyDetail, self.friendDetail, self.logoutDetail] {
-            self.addConstraints(FConstraint.paddingPositionConstraints(view: view, sides: [.left, .right], padding: 25))
-            self.addConstraint(FConstraint.verticalSpacingConstraint(upperView: topView, lowerView: view, spacing: 20))
+        for detail in self.details {
+            self.addConstraints(FConstraint.paddingPositionConstraints(view: detail, sides: [.left, .right], padding: 25))
+            self.addConstraint(FConstraint.verticalSpacingConstraint(upperView: topView, lowerView: detail, spacing: 20))
             
-            topView = view
+            topView = detail
         }
+    }
+    
+    @objc func updateClickedDetail(recognizer: UIGestureRecognizer) {
+        self.clickedDetail = recognizer.view as! OptionDetail
+        self.optionsDelegate.showVC(detailType: self.clickedDetail!.vcText.text!)
     }
     
 }
