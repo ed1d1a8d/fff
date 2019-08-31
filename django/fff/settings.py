@@ -96,7 +96,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SITE_ID = 2
+SITE_ID = 1
 
 # Don"t actually send emails
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

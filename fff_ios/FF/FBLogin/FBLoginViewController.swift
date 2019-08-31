@@ -69,13 +69,17 @@ class FBLoginViewController: UIViewController {
                 let connection = GraphRequestConnection()
                 connection.add(graphRequest, completionHandler: { (connection, result, error) in
                     let info = result as! [String: AnyObject]
+//                    print(info)
+//                    print(accessToken.currentAccessToken().tokenString)
 					
+//                     TODO
+//
+//
 //                     the login completed successfully
 //                     login to our backend as well, and store the auth key in ios core storage
 //
 //                     first, check if the user already exists
-//
-//
+					
 //                    var params = Dictionary<String, Any>()
 //                    params["username"] = "hsoule"
 //                    params["email"] = "hsoule@mit.edu"
@@ -100,6 +104,43 @@ class FBLoginViewController: UIViewController {
 //                            let data = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments)
 //                            print(data)
 //                        } catch {}
+//                    }
+//                    let fbToken = accessToken.tokenString
+//
+					// DEBUG
+//                    print(info)
+//                    print(fbToken)
+					
+//                     the login completed successfully
+//                     login to our backend as well, and store the auth key in ios core storage
+//                     the facebook endpoint creates the account if not created already
+//                     it always returns a key which we can use in the future
+//                    var params = Dictionary<String, Any>()
+//                    params["access_token"] = fbToken
+//
+//                    HTTPAPI.instance().call(url: endpoints.musicu.facebookAuth, params: params, method: .POST, success: { (data, response, error) in
+//
+//                        // DEBUG
+//                        print("Facebook login into FFF backend success!")
+//
+//                        guard let unwrappedData = data else {
+//                            return
+//                        }
+//                        do {
+//                            let data = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments) as! [String: Any]
+//
+//                            // DEBUG
+//                            print(data)
+//
+//                            // we want to take the key from here
+//                            fffKey = data["key"] as! String
+//                        } catch {}
+//                    }) { (data, response, error) in
+//
+//                        // DEBUG
+//                        print("Facebook login into FFF backend failure :(")
+//
+//                        // TODO URGENT handle
 //                    }
 					
                     let selectionViewController = SelectionViewController()

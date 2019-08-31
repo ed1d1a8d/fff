@@ -11,7 +11,8 @@ import Foundation
 struct endpoints {
     struct musicu {
         static let base = "https://mus.icu"
-        static let auth = "\(base)/auth/registration/.json"
+        static let registration = "\(base)/auth/registration.json"
+		static let facebookAuth = "\(base)/auth/facebook.json"
     }
 }
 
@@ -23,7 +24,6 @@ enum HTTPMethod: String {
 }
 
 class HTTPAPI {
-    
     var request:URLRequest!
     var session:URLSession!
     var configuration:URLSessionConfiguration
@@ -61,6 +61,4 @@ class HTTPAPI {
             }
         }.resume()
     }
-
 }
-
