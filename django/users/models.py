@@ -3,6 +3,7 @@ from enum import Enum
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -13,7 +14,7 @@ class User(AbstractUser):
     lat = models.FloatField(null=True, blank=True)
 
     # Always in utc
-    lobby_expiration = models.DateTimeField(default=datetime.utcnow())
+    lobby_expiration = models.DateTimeField(default=timezone.now())
 
 class StatusEnum(Enum):
     PENDING = "pending"

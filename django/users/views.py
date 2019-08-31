@@ -1,16 +1,19 @@
 from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
+from django.utils import timezone
 from rest_framework import generics
 from rest_framework import permissions
+from rest_framework import status
+from rest_framework.response import Response
 
 from friendship.models import Friend
 from friendship.models import FriendshipRequest
 
 from .models import StatusEnum, Request, User
 from .serializers import (
+    LobbyExpirationSerializer,
     RequestSerializer,
-    RequestStatusSerializer,
     UserSerializer,
 )
 
@@ -20,6 +23,38 @@ class SelfDetail(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class LobbyExpiration(generics.GenericAPIView):
+    def get(self, request):
+        serializer = LobbyExpirationSerializer(request.user)
+        return JsonResponse(serializer.data, safe=False)
+
+    def post(self, request):
+        """
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        new_lobby_expiration = body["lobby_expiration"]
+        """
+
+        serializer = LobbyExpirationSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        new_lobby_expiration = serializer.validated_data['lobby_expiration']
+
+        with transaction.atomic():
+            if min(request.user.lobby_expiration,
+                   new_lobby_expiration) < timezone.now():
+                Request.objects.filter(status=StatusEnum.PENDING.value,
+                                       sender=request.user).update(
+                                           status=StatusEnum.EXPIRED.value)
+
+            request.user.lobby_expiration = new_lobby_expiration
+            request.user.save()
+
+        return HttpResponse(status=200)
 
 
 class CreateRequest(generics.CreateAPIView):
