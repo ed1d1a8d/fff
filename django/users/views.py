@@ -19,26 +19,28 @@ class SelfDetail(generics.RetrieveUpdateAPIView):
 class CreateRequest(generics.CreateAPIView):
     serializer_class = RequestSerializer
 
-    #def perform_create(self, serializer):
-    #    serializer.save(sender=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(status="pending", sender=self.request.user)
 
 
-class PendingIncomingRequests(generics.ListAPIView):
+class IncomingRequests(generics.ListAPIView):
     serializer_class = RequestSerializer
 
     def get_queryset(self):
         return Request.objects.filter(
-            status="pending",
+            status=self.kwargs["status"],
             receiver=self.request.user,
         )
 
 
-class PendingOutgoingRequests(generics.ListAPIView):
+class OutgoingRequests(generics.ListAPIView):
     serializer_class = RequestSerializer
 
     def get_queryset(self):
-        return Request.objects.filter(status="pending",
-                                      sender=self.request.user)
+        return Request.objects.filter(
+            status=self.kwargs["status"],
+            sender=self.request.user,
+        )
 
 
 class FriendList(generics.ListAPIView):
