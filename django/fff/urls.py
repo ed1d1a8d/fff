@@ -35,7 +35,10 @@ urlpatterns = [
     path("auth/registration", include("rest_auth.registration.urls")),
 
     # social oath for fb
-    path("auth/facebook/", FacebookLogin.as_view())
+    path("auth/facebook/", FacebookLogin.as_view()),
+
+    # auth'd endpoint for user stuff
+    path("users/", include("users.urls")),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=["json"])
 
@@ -51,8 +54,5 @@ urlpatterns += [
     # joke endpoint for the favicon which probably won't be used
     path("favicon.ico/",
          RedirectView.as_view(url="/static/favicon.ico", permanent=True)),
-
-    # auth'd endpoint for user stuff
-    path("users/", include("users.urls")),
 ]
 urlpatterns += staticfiles_urlpatterns()
