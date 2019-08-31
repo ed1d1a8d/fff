@@ -74,6 +74,13 @@ struct Fake {
                        distance: 0.3,
                        message: "",
                        requestType: "notYetSent"),
+            EatRequestData(friendName: "Jing Lin",
+                       friendID: "jlin",
+                       friendLat: 42.3589,
+                       friendLng: -71.0964,
+                       distance: 0.3,
+                       message: "",
+                       requestType: "notYetSent"),
         ]
         static let currLocation = CLLocation(latitude: 42.3591, longitude: -71.0967)
     }
