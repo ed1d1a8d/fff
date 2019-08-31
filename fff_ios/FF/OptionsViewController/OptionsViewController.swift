@@ -33,14 +33,14 @@ class OptionsViewController: UIViewController {
         self.view.addSubview(self.optionsNavbar)
         self.view.addSubview(self.darkView)
         self.view.addSubview(self.menuOverview)
-        addConstraints()
+        _addConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addConstraints() {
+    func _addConstraints() {
         self.view.addConstraints(FConstraint.paddingPositionConstraints(view: self.darkView, sides: [.top, .left, .bottom, .right], padding: 0))
         
         self.view.addConstraint(FConstraint.paddingPositionConstraint(view: self.optionsNavbar, side: .top, padding: 30))
@@ -83,6 +83,18 @@ class OptionsViewController: UIViewController {
                     eatRequest.distance = distance
                 }
                 lobbyViewController.updateLobbySource(data: Fake.EatRequests.one)
+            } else if detailType == "Friends" {
+                // TODO: something here
+            } else {
+                LoginManager().logOut()
+                if (UserData.shared.fbAuth) {
+                    self.present(FBLoginViewController(), animated: false, completion: nil)
+                    UserData.shared.fbAuth = false
+                } else {
+                    self.dismiss(animated: true, completion: nil)
+                }
+                
+                return
             }
             self.menuOverview.clickedDetail = nil
             

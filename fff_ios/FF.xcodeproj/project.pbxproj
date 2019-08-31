@@ -25,6 +25,7 @@
 		DC85E53D231A20B9004905F0 /* OptionsDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85E53C231A20B9004905F0 /* OptionsDark.swift */; };
 		DC85E53F231A2D2D004905F0 /* OptionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85E53E231A2D2D004905F0 /* OptionDetail.swift */; };
 		DC85E541231A34FE004905F0 /* OptionsShowVCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85E540231A34FE004905F0 /* OptionsShowVCDelegate.swift */; };
+		DC85E543231A46AC004905F0 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85E542231A46AC004905F0 /* UserData.swift */; };
 		DCDA5DD92315FCE7007F9155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */; };
 		DCDA5DDB2315FCE7007F9155 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */; };
 		DCDA5DE02315FCE8007F9155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCDA5DDF2315FCE8007F9155 /* Assets.xcassets */; };
@@ -82,6 +83,7 @@
 		DC85E53C231A20B9004905F0 /* OptionsDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsDark.swift; sourceTree = "<group>"; };
 		DC85E53E231A2D2D004905F0 /* OptionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionDetail.swift; sourceTree = "<group>"; };
 		DC85E540231A34FE004905F0 /* OptionsShowVCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsShowVCDelegate.swift; sourceTree = "<group>"; };
+		DC85E542231A46AC004905F0 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		DCDA5DD52315FCE7007F9155 /* FF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCDA5DD82315FCE7007F9155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCDA5DDA2315FCE7007F9155 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 		DCDA5DD72315FCE7007F9155 /* FF */ = {
 			isa = PBXGroup;
 			children = (
+				DC85E542231A46AC004905F0 /* UserData.swift */,
 				9EA31E5A23183CE500F7F08D /* FBLogin */,
 				9EA31E692319C54B00F7F08D /* Find Friends */,
 				DC6EF05C2319ECB5006DD060 /* OptionsViewController */,
@@ -423,6 +426,7 @@
 				DCDA5E1323173EB1007F9155 /* TextContainer.swift in Sources */,
 				DCDA5DF723161FF6007F9155 /* FView.swift in Sources */,
 				DCDA5E1B231749DD007F9155 /* MessagesTableView.swift in Sources */,
+				DC85E543231A46AC004905F0 /* UserData.swift in Sources */,
 				DCDA5E012316F22E007F9155 /* SelectionSlider.swift in Sources */,
 				DCDA5E2323174B67007F9155 /* MessageBubble.swift in Sources */,
 				DCDA5DFB23163E01007F9155 /* SelectionViewController.swift in Sources */,

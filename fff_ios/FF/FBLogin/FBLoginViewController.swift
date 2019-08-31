@@ -59,10 +59,10 @@ class FBLoginViewController: UIViewController {
     
     @objc func fetchFacebookUserInfo() {
         self.loginManager.logIn(permissions: [.email, .userFriends], viewController: self) { (result) in
+            self.fbButton.backgroundColor = Colors.fb
             switch result {
             case .cancelled:
                 print("Cancelled")
-                self.fbButton.backgroundColor = Colors.fb
             case .success(_, _, let accessToken):
 				let params = ["fields": "id, name, picture.type(small), email"]
                 let graphRequest = GraphRequest(graphPath: "/me", parameters: params)
