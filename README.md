@@ -1,6 +1,11 @@
-# fff
+# FFF
 
-FFF
+Free for Food?\
+Yang Yan, Stella Yang, Jing Lin, Tony Wang
+
+An app to help connect friends or strangers looking to get food at the same time!
+
+
 
 ## Branches
 
