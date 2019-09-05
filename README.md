@@ -5,8 +5,6 @@ Yang Yan, Stella Yang, Jing Lin, Tony Wang
 
 An app to help connect friends or strangers looking to get food at the same time!
 
-
-
 ## Branches
 
 `production` is deployed live with 30s CI-CD. It is one commit ahead.
