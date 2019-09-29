@@ -2,7 +2,7 @@ library colors;
 
 import 'package:flutter/widgets.dart';
 
-final Color white = const Color(0xFFFFFFFF);
-final Color black = const Color(0xFF000000);
-final Color background = const Color(0xFFFFF5E1);
-final Color strongBackground = const Color(0xFFFFDA93);
+const Color white = const Color(0xFFFFFFFF);
+const Color black = const Color(0xFF000000);
+const Color background = const Color(0xFFFFF5E1);
+const Color strongBackground = const Color(0xFFFFDA93);
