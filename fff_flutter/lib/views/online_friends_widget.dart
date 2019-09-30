@@ -6,7 +6,16 @@ class OnlineFriendsWidget extends StatelessWidget {
 
   OnlineFriendsWidget(this.color);
 
-  final List<String> names = <String>['Edward Park', 'Jennifer Wang', 'Jing Lin', 'Ramya Nagarajan', 'Tony Wang', 'Yang Yan', 'Claire Yang', 'Lydia Yang'];
+  final List<String> names = <String>[
+    "Edward Park",
+    "Jennifer Wang",
+    "Jing Lin",
+    "Ramya Nagarajan",
+    "Tony Wang",
+    "Yang Yan",
+    "Claire Yang",
+    "Lydia Yang"
+  ];
   final List<String> imageURLs = <String>[
     "https://scontent.fbed1-2.fna.fbcdn.net/v/t1.0-1/p100x100/67764166_1754110728066134_419834560717520896_n.jpg?_nc_cat=104&_nc_oc=AQncgbAQPz1r_rJy_7dW3zpJ5R5_A2fTDjvj7oPj3e6NjJS7hChgZP_kXDfb_FLHCsA&_nc_ht=scontent.fbed1-2.fna&oh=77c89b8df11a1f19592c5c5359e1f770&oe=5E3B0351",
     "https://scontent.fbed1-2.fna.fbcdn.net/v/t1.0-1/p100x100/47687689_1488739577925807_9042020036373381120_n.jpg?_nc_cat=107&_nc_oc=AQmnMZm54OWVUQJtx8R_1jhezTCrNrLZx6A7KI8ZcSNdMYlUePw1t45iSMs3uVDAT_M&_nc_ht=scontent.fbed1-2.fna&oh=32a121a891b5eecf356fb23b9a65be28&oe=5DFC6F1D",
@@ -17,7 +26,17 @@ class OnlineFriendsWidget extends StatelessWidget {
     "https://scontent.fbed1-1.fna.fbcdn.net/v/t1.0-1/c99.208.603.603a/s100x100/69841000_2536178216610198_646550482520637440_n.jpg?_nc_cat=100&_nc_oc=AQnC9q0S2bVSflx8uQOkEzB1tpM5_MUwlmZ_vr-LtNgF9HFWO_UBm7VpXKrYz00uCIE&_nc_ht=scontent.fbed1-1.fna&oh=ba03d1e18599889e5a72edfa8ea347c2&oe=5DF7AD8C",
     "https://scontent.fbed1-2.fna.fbcdn.net/v/t1.0-1/c0.0.100.100a/p100x100/19224940_102538797033530_6979691956426215845_n.jpg?_nc_cat=107&_nc_oc=AQnwBhq5_f3OkmN-LvlXAxNew4Ud_ym4LuKzfVNGTALZlgmrp7YlIUH78u_fHjHuPbk&_nc_ht=scontent.fbed1-2.fna&oh=ee466347215bca0fe06df8c414de0217&oe=5E25CBF6",
   ];
-  final List<String> distances = <String>['0.1mi', '0.2mi', '0.35mi', '0.4mi', '5mi', '60mi', '70mi', '850mi', '900mi'];
+  final List<String> distances = <String>[
+    "0.1mi",
+    "0.2mi",
+    "0.35mi",
+    "0.4mi",
+    "5mi",
+    "60mi",
+    "70mi",
+    "850mi",
+    "900mi"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -93,22 +112,17 @@ class OnlineFriendsWidget extends StatelessWidget {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(
-                                  names[index],
-                                  style:
-                                    TextStyle(
+                                Text(names[index],
+                                    style: TextStyle(
                                       fontSize: 16,
-                                    )
-                                ),
+                                    )),
                                 SizedBox(
                                   height: 6,
                                 ),
-                                Text(
-                                  distances[index],
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )
-                                )
+                                Text(distances[index],
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ))
                               ],
                             ),
                           ],
