@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'home_widget.dart';
+import 'views/add_friends_signup.dart';
+import 'views/home.dart';
 
-void main() => runApp(App());
+void main() => runApp(FFFApp());
 
-class App extends StatelessWidget {
- @override
- Widget build(BuildContext context) {
-   return MaterialApp(
-     title: 'My Flutter App',
-     home: Home(),
-   );
- }
+class FFFApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      // Since we don't have animations between view widgets yet, to test, just switch this line out.
+      home: Home(),
+      // home: AddFriendsSignup(),
+    );
+  }
 }

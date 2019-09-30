@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/onlinefriends_widget.dart';
-import 'filler_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'online_friends_widget.dart';
+import '../components/filler.dart';
+import '../utils/colors.dart' as fff_colors;
 
 class Home extends StatefulWidget {
   @override
@@ -10,15 +11,11 @@ class Home extends StatefulWidget {
   }
 }
 
-Color background = new Color(0xffFFF5E1);
-Color navBar = new Color(0xffFFF1D4);
-Color lightgray = new Color(0xff8a8a8a);
-
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     FillerWidget(Colors.white),
-    OnlineFriendsWidget(background),
+    OnlineFriendsWidget(fff_colors.background),
     FillerWidget(Colors.blue),
   ];
   final List<String> _titles = [
@@ -30,7 +27,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: background,
+      backgroundColor: fff_colors.background,
       appBar: AppBar(
         title: Text(
           _titles[_currentIndex],
@@ -39,7 +36,7 @@ class _HomeState extends State<Home> {
             fontSize: 28,
           ),
         ),
-        backgroundColor: background,
+        backgroundColor: fff_colors.background,
         elevation: 0.0,
         iconTheme: new IconThemeData(color: Colors.black),
       ),
@@ -80,12 +77,12 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
               // sets the background color of the `BottomNavigationBar`
-              canvasColor: navBar,
+              canvasColor: fff_colors.navBarBackground,
               // sets the active color of the `BottomNavigationBar` if `Brightness` is light
               primaryColor: Colors.orange,
               textTheme: Theme.of(context)
                   .textTheme
-                  .copyWith(caption: new TextStyle(color: lightgray))),
+                  .copyWith(caption: new TextStyle(color: fff_colors.lightGray))),
           // sets the inactive color of the `BottomNavigationBar`
           child: SizedBox(
             height: 64,
