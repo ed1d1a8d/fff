@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../utils/colors.dart' as fff_colors;
+import 'timer_widget.dart';
 
 class IncomingRequestsWidget extends StatelessWidget {
   final Color color;
+  TimerBox timer;
 
-  IncomingRequestsWidget(this.color);
+  IncomingRequestsWidget(this.color, this.timer);
 
   final List<String> names = <String>[
     "Edward Park",
@@ -39,27 +41,6 @@ class IncomingRequestsWidget extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.center,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 30, width: 50),
-              SizedBox(
-                height: 30,
-//            width: MediaQuery.of(context).size.width * 0.70,
-                width: 70,
-                child: TimerBox("0:15:39"),
-              ),
-              SizedBox(height: 30, width: 10),
-              Text(
-                "minutes remaining",
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-              SizedBox(height: 30, width: 6),
-              Icon(FontAwesomeIcons.questionCircle, size: 16),
-            ],
           ),
           SizedBox(
             height: 30,
@@ -165,45 +146,6 @@ class PaddedWhiteBox extends StatelessWidget {
             ),
           )
       );
-  }
-}
-
-class TimerBox extends StatefulWidget {
-  String _timer = "";
-
-  TimerBox(this._timer);
-
-  @override
-  State<StatefulWidget> createState() {
-    return _TimerBoxState();
-  }
-}
-
-class _TimerBoxState extends State<TimerBox> {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.orange,
-            ),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        Positioned.fill(
-            child: Align(
-                alignment: Alignment.center,
-                child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
-                    child: Text(
-                      widget._timer,
-                      style: TextStyle(fontSize: 14),
-                    )))),
-      ],
-    );
   }
 }
 

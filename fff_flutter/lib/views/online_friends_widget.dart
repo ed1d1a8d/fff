@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../utils/colors.dart' as fff_colors;
+import 'timer_widget.dart';
 
 class OnlineFriendsWidget extends StatelessWidget {
   final Color color;
+  TimerBox timer;
 
-  OnlineFriendsWidget(this.color);
+  OnlineFriendsWidget(this.color, this.timer);
 
   final List<String> names = <String>[
     "Edward Park",
@@ -51,27 +53,6 @@ class OnlineFriendsWidget extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.center,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 30, width: 50),
-              SizedBox(
-                height: 30,
-//            width: MediaQuery.of(context).size.width * 0.70,
-                width: 70,
-                child: TimerBox(Duration()),
-              ),
-              SizedBox(height: 30, width: 10),
-              Text(
-                "minutes remaining",
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-              SizedBox(height: 30, width: 6),
-              Icon(FontAwesomeIcons.questionCircle, size: 16),
-            ],
           ),
           SizedBox(
             height: 30,
@@ -156,98 +137,6 @@ class PaddedWhiteBox extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
           ),
         ));
-  }
-}
-
-class TimerBox extends StatefulWidget {
-  Duration test = new Duration();
-
-  TimerBox(this.test);
-
-  @override
-  State<StatefulWidget> createState() {
-    return _TimerBoxState();
-  }
-}
-
-class _TimerBoxState extends State<TimerBox> {
-
-  void _showDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Countdown Timer"),
-          content: Container( // Container to specify Alert Size
-              width: 500,
-              height: 310,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: 500,
-                    height: 200,
-                    child: CupertinoTimerPicker(
-                      mode: CupertinoTimerPickerMode.hms,
-                      minuteInterval: 1,
-                      initialTimerDuration: widget.test,
-                      onTimerDurationChanged: (Duration changedTimer) {
-                        setState(() {
-                          widget.test = changedTimer;
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text("This allows friends to request food with you for the next ___ minutes."),
-                  SizedBox(height: 14),
-                  Text("The timer will continue to run even when you are not in the app."),
-                ],
-              )),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Set"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      child: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                color: Colors.orange,
-              ),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          ),
-          Positioned.fill(
-              child: Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
-                      child: Text(
-                        widget.test.toString().substring(0, 7),
-                        style: TextStyle(fontSize: 14),
-                      )))),
-        ],
-      ),
-      onTap: () {
-        _showDialog();
-      },
-    );
   }
 }
 
