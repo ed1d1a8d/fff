@@ -3,10 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myapp/views/incoming_requests_widget.dart';
 import 'package:myapp/views/outging_requests_widget.dart';
 import 'online_friends_widget.dart';
-import '../components/filler.dart';
 import '../utils/colors.dart' as fff_colors;
+import 'timer_widget.dart';
 
 class Home extends StatefulWidget {
+  static TimerBox timer = new TimerBox(Duration());
+
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
@@ -14,12 +16,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  static TimerBox timer = new TimerBox(Duration());
+
   int _currentIndex = 0;
+
   final List<Widget> _children = [
-    IncomingRequestsWidget(fff_colors.background),
-    OnlineFriendsWidget(fff_colors.background),
-    OutgoingRequestsWidget(fff_colors.background),
+    IncomingRequestsWidget(fff_colors.background, Home.timer),
+    OnlineFriendsWidget(fff_colors.background, Home.timer),
+    OutgoingRequestsWidget(fff_colors.background, Home.timer),
   ];
+
   final List<String> _titles = [
     "Incoming Requests",
     "Online Friends",
@@ -171,7 +177,32 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: _children[_currentIndex],
+      body: Column(
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: 30, width: 50),
+              SizedBox(
+                height: 30,
+//            width: MediaQuery.of(context).size.width * 0.70,
+                width: 70,
+                child: Home.timer,
+              ),
+              SizedBox(height: 30, width: 10),
+              Text(
+                "minutes remaining",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(height: 30, width: 6),
+              Icon(FontAwesomeIcons.questionCircle, size: 16),
+            ],
+          ),
+          _children[_currentIndex]
+        ],
+      ),
       bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
               // sets the background color of the `BottomNavigationBar`
@@ -224,4 +255,5 @@ class _HomeState extends State<Home> {
       _currentIndex = index;
     });
   }
+
 }
