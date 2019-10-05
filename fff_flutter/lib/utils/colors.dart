@@ -11,3 +11,5 @@ const Color lightGray = const Color(0xFF8A8A8A);
 
 const Color gradientTop = const Color(0xFFFFA800);
 const Color gradientBottom = const Color(0xFFE25A5A);
+
+const double distanceFontSize = 11;

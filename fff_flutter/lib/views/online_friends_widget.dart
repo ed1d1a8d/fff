@@ -122,7 +122,7 @@ class OnlineFriendsWidget extends StatelessWidget {
                                 ),
                                 Text(distances[index],
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: fff_colors.distanceFontSize,
                                     ))
                               ],
                             ),

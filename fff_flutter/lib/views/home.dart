@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:myapp/views/incoming_requests_widget.dart';
 import 'online_friends_widget.dart';
 import '../components/filler.dart';
 import '../utils/colors.dart' as fff_colors;
@@ -14,7 +15,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    FillerWidget(Colors.white),
+    IncomingRequestsWidget(fff_colors.background),
     OnlineFriendsWidget(fff_colors.background),
     FillerWidget(Colors.blue),
   ];
