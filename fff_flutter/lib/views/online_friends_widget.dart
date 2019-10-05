@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../utils/colors.dart' as fff_colors;
 
 class OnlineFriendsWidget extends StatelessWidget {
   final Color color;
@@ -79,7 +80,7 @@ class OnlineFriendsWidget extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.65,
                 width: MediaQuery.of(context).size.width - 100,
-                child: WhiteBox(),
+                child: GradientContainer(),
               ),
               Container(
                   height: MediaQuery.of(context).size.height * 0.65,
@@ -143,17 +144,19 @@ class OnlineFriendsWidget extends StatelessWidget {
   }
 }
 
-class WhiteBox extends StatelessWidget {
+class PaddedWhiteBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.orange,
-        ),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+    return
+    Padding(
+      padding: EdgeInsets.fromLTRB(1, 1, 1, 1),
+      child:
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        )
     );
   }
 }
@@ -193,6 +196,24 @@ class _TimerBoxState extends State<TimerBox> {
                       style: TextStyle(fontSize: 14),
                     )))),
       ],
+    );
+  }
+}
+
+class GradientContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black,
+        gradient: new LinearGradient(
+          colors: [fff_colors.gradientTop, fff_colors.gradientBottom],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: PaddedWhiteBox(),
     );
   }
 }
