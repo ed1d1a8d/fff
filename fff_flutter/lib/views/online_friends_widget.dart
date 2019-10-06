@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../components/gradient_container.dart';
 import '../utils/colors.dart' as fff_colors;
 import 'timer_widget.dart';

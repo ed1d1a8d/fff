@@ -18,7 +18,7 @@ class AddFriendsSignup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: fff_colors.background,
-      padding: const EdgeInsets.all(35.0),
+      padding: const EdgeInsets.all(35),
       child: Column(
         children: <Widget>[
           // Introduction text and image
@@ -35,7 +35,7 @@ class AddFriendsSignup extends StatelessWidget {
                     ),
                     Image.asset(
                       "assets/images/pizza-burger.png",
-                      height: 80.0,
+                      height: 80,
                     ),
                   ],
                 ),
@@ -43,7 +43,7 @@ class AddFriendsSignup extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: const EdgeInsets.symmetric(vertical: 15.0),
+                      margin: const EdgeInsets.symmetric(vertical: 15),
                       child: Text(
                         "Thanks for joining Free For Food!",
                         style: Theme.of(context).textTheme.subhead,
@@ -63,10 +63,10 @@ class AddFriendsSignup extends StatelessWidget {
           Expanded(
             child: GradientContainer(
               margin: const EdgeInsets.symmetric(
-                vertical: 20.0,
-                horizontal: 0.0,
+                vertical: 20,
+                horizontal: 0,
               ),
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15),
               child: Column(
                 children: <Widget>[
                   // Search bar for friends.
@@ -80,7 +80,7 @@ class AddFriendsSignup extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         margin: const EdgeInsets.symmetric(
-                          horizontal: 10.0,
+                          horizontal: 10,
                           vertical: 12.5,
                         ),
                         child: Text(
@@ -95,19 +95,19 @@ class AddFriendsSignup extends StatelessWidget {
                   // List of friends
                   Expanded(
                     child: ListView.separated(
-                      padding: const EdgeInsets.only(top: 5.0),
+                      padding: const EdgeInsets.only(top: 5),
                       itemCount: friendNames.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
                           children: <Widget>[
                             CircleAvatar(
-                              radius: 25.0,
+                              radius: 25,
                               backgroundImage: AssetImage(
                                 "assets/images/xiao-wang.jpg",
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.only(left: 10.0),
+                              margin: const EdgeInsets.only(left: 10),
                               child: Text(
                                 friendNames[index],
                                 style: Theme.of(context).textTheme.body2,
@@ -140,8 +140,8 @@ class AddFriendsSignup extends StatelessWidget {
               onPressed: () {},
               color: fff_colors.strongBackground,
               padding: const EdgeInsets.symmetric(
-                vertical: 15.0,
-                horizontal: 25.0,
+                vertical: 15,
+                horizontal: 25,
               ),
             ),
           ),
