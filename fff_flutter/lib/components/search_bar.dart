@@ -13,9 +13,9 @@ class SearchBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: this.color,
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10),
       ),
-      height: 35.0,
+      height: 35,
       child: Row(
         children: <Widget>[
           Container(
@@ -26,7 +26,7 @@ class SearchBar extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(left: 5.0),
+            padding: const EdgeInsets.only(left: 5),
             child: Text(
               "Name or username",
               style: Theme.of(context).textTheme.body1,
