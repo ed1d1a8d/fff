@@ -29,8 +29,8 @@ urlpatterns = [
     # Social oauth for fb
     path("auth/facebook/", FacebookLogin.as_view()),
 
-    # Auth'd endpoint for user stuff
-    path("users/", include("users.urls")),
+    # Auth'd endpoint for apis
+    path("api/", include("api.urls")),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=["json"])
 

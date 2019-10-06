@@ -20,7 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "satz2(3xpikdd_7qi0twe!2_k_f_3mk%@m87kdsq48f&4%%lv="
-from secrets import *  # load a custom secret if there is one
+try:
+    from fff_secrets import SECRET_KEY  # load a custom secret if there is one
+except ImportError:
+    pass
 
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = True
@@ -55,8 +58,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     # Friendship
     "friendship",
-    # My Users
-    "users",
+    # APIs
+    "api",
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -150,7 +153,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "api.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {

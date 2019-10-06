@@ -16,11 +16,12 @@ class User(AbstractUser):
     # Always in utc
     lobby_expiration = models.DateTimeField(default=timezone.now())
 
+
 class StatusEnum(Enum):
     PENDING = "pending"
     ACCEPTED = "accepted"
     REJECTED = "rejected"
-    EXPIRED = "expired" # Due to time
+    EXPIRED = "expired"  # Due to time
     CANCELLED = "cancelled"
 
 

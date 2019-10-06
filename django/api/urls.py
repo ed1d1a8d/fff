@@ -2,6 +2,12 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
+    #path("profile/")
+    #path("friends/")
+    #path("search/")
+    #path("lobby")
+    #path("requests/")
+
     path("self/", views.SelfDetail.as_view()),
     path("lobby-expiration/", views.LobbyExpiration.as_view()),
     # Requests
