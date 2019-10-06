@@ -29,8 +29,8 @@ class FFFApp extends StatelessWidget {
           ),
           subhead: const TextStyle(
             fontSize: 20.0,
-            color: fff_colors.black,
             fontWeight: FontWeight.bold,
+            color: fff_colors.black,
           ),
           body2: const TextStyle(
             fontSize: 18.0,
@@ -40,6 +40,11 @@ class FFFApp extends StatelessWidget {
             fontSize: 16.0,
             fontWeight: FontWeight.normal,
           ),
+          caption: const TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.normal,
+            color: fff_colors.darkGray,
+          ),
           button: const TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.normal,
@@ -47,9 +52,9 @@ class FFFApp extends StatelessWidget {
         ),
       ),
       // Since we don't have animations between view widgets yet, to test, just switch this line out.
-      // home: Home(),
+      home: Home(),
       // home: AddFriendsSignup(),
-      home: FriendRequests(),
+      // home: FriendRequests(),
     );
   }
 }
