@@ -2,55 +2,50 @@ from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
-from rest_framework import generics
-from rest_framework import permissions
-from rest_framework import status
+import rest_framework.generics
 from rest_framework.response import Response
 
 from friendship.models import Friend
 from friendship.models import FriendshipRequest
 
-from .models import StatusEnum, Request, User
+from .models import FFRequest, FFRequestStatusEnum, User
 from .serializers import (
     LobbyExpirationSerializer,
-    RequestSerializer,
+    FFRequestSerializer,
     UserSerializer,
     FriendshipRequestSerializer,
 )
 
 
-class SelfDetail(generics.RetrieveUpdateAPIView):
+class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
 
     def get_object(self):
         return self.request.user
 
 
-class LobbyExpiration(generics.GenericAPIView):
+class LobbyExpiration(rest_framework.generics.GenericAPIView):
     def get(self, request):
         serializer = LobbyExpirationSerializer(request.user)
         return JsonResponse(serializer.data, safe=False)
 
     def post(self, request):
-        """
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
-        new_lobby_expiration = body["lobby_expiration"]
-        """
-
         serializer = LobbyExpirationSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=rest_framework.status.HTTP_400_BAD_REQUEST)
 
         new_lobby_expiration = serializer.validated_data["lobby_expiration"]
 
         with transaction.atomic():
             if min(request.user.lobby_expiration,
                    new_lobby_expiration) < timezone.now():
-                Request.objects.filter(status=StatusEnum.PENDING.value,
-                                       sender=request.user).update(
-                                           status=StatusEnum.EXPIRED.value)
+                print(f"Deleting expired requests for {request.user}..."
+                      )  # TODO: Replace with better logging.
+                FFRequest.objects.filter(
+                    status=FFRequestStatusEnum.PENDING.value,
+                    sender=request.user).update(
+                        status=FFRequestStatusEnum.EXPIRED.value)
 
             request.user.lobby_expiration = new_lobby_expiration
             request.user.save()
@@ -58,20 +53,32 @@ class LobbyExpiration(generics.GenericAPIView):
         return HttpResponse(status=200)
 
 
-class CreateRequest(generics.CreateAPIView):
-    serializer_class = RequestSerializer
+class LobbyFriends(rest_framework.generics.ListAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return [
+            f.from_user
+            for f in Friend.objects.select_related("from_user").filter(
+                to_user=self.request.user,
+                from_user__lobby_expiration__gt=timezone.now()).all()
+        ]
+
+
+class CreateFFRequest(rest_framework.generics.CreateAPIView):
+    serializer_class = FFRequestSerializer
 
     def perform_create(self, serializer):
         serializer.save(
-            status=StatusEnum.PENDING.value,
+            status=FFRequestStatusEnum.PENDING.value,
             sender=self.request.user,
         )
 
     def create(self, request, *args, **kwargs):
-        serializer = RequestSerializer(data=request.data)
+        serializer = FFRequestSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=rest_framework.status.HTTP_400_BAD_REQUEST)
         receiver = serializer.validated_data["receiver"]
         if Friend.objects.are_friends(
                 request.user, User.objects.get(pk=receiver.id)) != True:
@@ -81,43 +88,31 @@ class CreateRequest(generics.CreateAPIView):
         return super().create(request, *args, **kwargs)
 
 
-"""
-# TODO: Restrict to only accept/reject
-class RespondToRequest(generics.UpdateAPIView):
-    serializer_class = RequestStatusSerializer
-
-    def get_queryset(self):
-        return Request.objects.filter(
-            status=StatusEnum.PENDING.value,
-            receiver=self.request.user,
-        )
-"""
-
-
-class RespondToRequest(generics.GenericAPIView):
+class RespondToFFRequest(rest_framework.generics.GenericAPIView):
     def post(self, request, pk, action):  # TODO: Redo status codes
         try:
             req = Request.objects.get(pk=pk)
         except:
             return HttpResponse(f"Request {pk} does not exist", status=400)
 
-        if req.status != StatusEnum.PENDING.value:
+        if req.status != FFRequestStatusEnum.PENDING.value:
             return HttpResponse("Can't act on non-PENDING request", status=400)
 
-        if action == StatusEnum.ACCEPTED.value:
+        if action == FFRequestStatusEnum.ACCEPTED.value:
             with transaction.atomic():
                 req.status = action
                 req.save()
 
-                Request.objects.filter(status=StatusEnum.PENDING.value,
-                                       sender=request.user).update(
-                                           status=StatusEnum.CANCELLED.value)
-                Request.objects.filter(status=StatusEnum.PENDING.value,
-                                       receiver=request.user).update(
-                                           status=StatusEnum.REJECTED.value)
+                FFRequest.objects.filter(
+                    status=FFRequestStatusEnum.PENDING.value,
+                    sender=request.user).update(
+                        status=FFRequestStatusEnum.CANCELLED.value)
+                FFRequest.objects.filter(
+                    status=FFRequestStatusEnum.PENDING.value,
+                    receiver=request.user).update(
+                        status=FFRequestStatusEnum.REJECTED.value)
             return HttpResponse(status=200)
-        elif action == StatusEnum.REJECTED.value:
-            #Request.objects.filter(pk=pk).update(status=action)
+        elif action == FFRequestStatusEnum.REJECTED.value:
             req.status = action
             req.save()
             return HttpResponse(status=200)
@@ -125,27 +120,29 @@ class RespondToRequest(generics.GenericAPIView):
             return HttpResponse(f"Invalid action: {action}", status=400)
 
 
-class IncomingRequests(generics.ListAPIView):
-    serializer_class = RequestSerializer
+class IncomingFFRequests(rest_framework.generics.ListAPIView):
+    # TODO: Filter to non-expired requests.
+    serializer_class = FFRequestSerializer
 
     def get_queryset(self):
-        return Request.objects.filter(
+        return FFRequest.objects.filter(
             status=self.kwargs["status"],
             receiver=self.request.user,
         )
 
 
-class OutgoingRequests(generics.ListAPIView):
-    serializer_class = RequestSerializer
+class OutgoingFFRequests(rest_framework.generics.ListAPIView):
+    # TODO: Filter to non-expired requests.
+    serializer_class = FFRequestSerializer
 
     def get_queryset(self):
-        return Request.objects.filter(
+        return FFRequest.objects.filter(
             status=self.kwargs["status"],
             sender=self.request.user,
         )
 
 
-class FriendList(generics.ListAPIView):
+class FriendList(rest_framework.generics.ListAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
@@ -153,7 +150,7 @@ class FriendList(generics.ListAPIView):
 
 
 # friend requests
-class FriendsRequests(generics.GenericAPIView):
+class FriendRequests(rest_framework.generics.GenericAPIView):
     # return a response depending on the action passed in
     def get(self, request, action):
         if action == "unrejected":
@@ -173,7 +170,7 @@ class FriendsRequests(generics.GenericAPIView):
         return HttpResponse("Invalid action.", status=400)
 
 
-class FriendsActions(generics.GenericAPIView):
+class FriendActions(rest_framework.generics.GenericAPIView):
     # return a response depending on the action passed in
     def get(self, request, action, pk):
         try:
@@ -189,8 +186,8 @@ class FriendsActions(generics.GenericAPIView):
         elif action == "request":
             try:
                 Friend.objects.add_friend(request.user, other_user)
-                return HttpResponse("Sent friendship request to pk " +
-                                    other_user.id + ".")
+                return HttpResponse(
+                    f"Sent friendship request to pk {other_user.id}.")
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
         elif action == "accept":
@@ -198,8 +195,7 @@ class FriendsActions(generics.GenericAPIView):
                 friend_request = FriendshipRequest.objects.get(
                     to_user=request.user.id, from_user=pk)
                 friend_request.accept()
-                return HttpResponse("Accepted friendship request from " +
-                                    str(pk) + ".")
+                return HttpResponse(f"Accepted friendship request from {pk}.")
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
         elif action == "decline":
@@ -207,14 +203,13 @@ class FriendsActions(generics.GenericAPIView):
                 friend_request = FriendshipRequest.objects.get(
                     to_user=request.user.id, from_user=pk)
                 friend_request.decline()
-                return HttpResponse("Declined friendship request from " +
-                                    str(pk) + ".")
+                return HttpResponse(f"Declined friendship request from {pk}.")
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
         elif action == "remove":
             try:
                 Friend.objects.remove_friend(request.user, other_user)
-                return HttpResponse("Removed friend " + str(pk) + ".")
+                return HttpResponse(f"Removed friend {pk}.")
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
 

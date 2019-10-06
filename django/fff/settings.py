@@ -142,9 +142,9 @@ WSGI_APPLICATION = "fff.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "fff",
-        "USER": "scout",
-        "PASSWORD": "scout",
+        "NAME": "fff-db",
+        "USER": "fff",
+        "PASSWORD": "foodfriendfinder",
         "HOST": "localhost",
         "PORT": "5432",
     }

@@ -17,7 +17,7 @@ class User(AbstractUser):
     lobby_expiration = models.DateTimeField(default=timezone.now())
 
 
-class StatusEnum(Enum):
+class FFRequestStatusEnum(Enum):
     PENDING = "pending"
     ACCEPTED = "accepted"
     REJECTED = "rejected"
@@ -25,14 +25,17 @@ class StatusEnum(Enum):
     CANCELLED = "cancelled"
 
 
-class Request(models.Model):
+class FFRequest(models.Model):
+    """
+    A free for _ request model.
+    """
     created_at = models.DateTimeField(auto_now_add=True)
     message = models.TextField(max_length=140)
 
     status = models.CharField(
         blank=False,
         max_length=255,
-        choices=[(tag, tag.value) for tag in StatusEnum],
+        choices=[(tag, tag.value) for tag in FFRequestStatusEnum],
     )
 
     sender = models.ForeignKey(User,
