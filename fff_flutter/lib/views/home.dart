@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:myapp/views/incoming_requests_widget.dart';
-import 'package:myapp/views/outging_requests_widget.dart';
+import 'incoming_requests_widget.dart';
+import 'outging_requests_widget.dart';
 import 'online_friends_widget.dart';
-import '../utils/colors.dart' as fff_colors;
 import 'timer_widget.dart';
+import '../utils/colors.dart' as fff_colors;
 
 class Home extends StatefulWidget {
   static TimerBox timer = new TimerBox(Duration());
