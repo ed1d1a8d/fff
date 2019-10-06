@@ -8,6 +8,9 @@ const Color background = const Color(0xFFFFF5E1);
 const Color strongBackground = const Color(0xFFFFDA93);
 const Color navBarBackground = const Color(0xFFFFF1D4);
 
+const Color buttonGreen = const Color(0xFFC9EAB4);
+const Color buttonGray = const Color(0xFFDEDEDE);
+
 const Color darkGray = const Color(0xFF8A8A8A);
 const Color lightGray = const Color(0xFFF1F1F1);
 
