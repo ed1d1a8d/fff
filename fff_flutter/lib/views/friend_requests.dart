@@ -29,7 +29,7 @@ class FriendRequests extends StatefulWidget {
 }
 
 class FriendRequestsState extends State<FriendRequests> {
-  var scaffoldKey = GlobalKey<ScaffoldState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {

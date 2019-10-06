@@ -61,8 +61,7 @@ class HamburgerDrawer extends StatelessWidget {
             ),
             onTap: () {
               // Update the state of the app.
-              // ...
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, "/");
             },
           ),
           ListTile(
@@ -91,8 +90,7 @@ class HamburgerDrawer extends StatelessWidget {
             ),
             onTap: () {
               // Update the state of the app.
-              // ...
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, "/friend-requests");
             },
           ),
           ListTile(
