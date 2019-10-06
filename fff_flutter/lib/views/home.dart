@@ -210,7 +210,7 @@ class _HomeState extends State<Home> {
               // sets the active color of the `BottomNavigationBar` if `Brightness` is light
               primaryColor: Colors.orange,
               textTheme: Theme.of(context).textTheme.copyWith(
-                  caption: new TextStyle(color: fff_colors.lightGray))),
+                  caption: new TextStyle(color: fff_colors.darkGray))),
           // sets the inactive color of the `BottomNavigationBar`
           child: SizedBox(
             child: BottomNavigationBar(
