@@ -5,10 +5,12 @@ import '../utils/colors.dart' as fff_colors;
 class GradientContainer extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
 
   const GradientContainer({
     this.child,
     this.margin,
+    this.padding,
   });
 
   @override
@@ -26,13 +28,16 @@ class GradientContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Padding(
-        padding: EdgeInsets.all(1.0),
+        padding: const EdgeInsets.all(1.0),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
           ),
-          child: this.child,
+          child: Container(
+            padding: this.padding,
+            child: this.child,
+          ),
         ),
       ),
     );
