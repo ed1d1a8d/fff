@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../utils/colors.dart' as fff_colors;
+import '../components/gradient_container.dart';
 import 'timer_widget.dart';
+import '../utils/colors.dart' as fff_colors;
 
 class IncomingRequestsWidget extends StatelessWidget {
   final Color color;
@@ -128,41 +129,6 @@ class IncomingRequestsWidget extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class PaddedWhiteBox extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return
-      Padding(
-          padding: EdgeInsets.fromLTRB(1, 1, 1, 1),
-          child:
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          )
-      );
-  }
-}
-
-class GradientContainer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black,
-        gradient: new LinearGradient(
-          colors: [fff_colors.gradientTop, fff_colors.gradientBottom],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: PaddedWhiteBox(),
     );
   }
 }
