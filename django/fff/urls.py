@@ -1,29 +1,20 @@
-"""fff URL Configuration
+"""
+fff URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path("", views.home, name="home")
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path("", Home.as_view(), name="home")
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path("blog/", include("blog.urls"))
 """
-from django.contrib import admin
-from django.urls import include, path, re_path
-from django.http import HttpResponse
-from rest_framework.urlpatterns import format_suffix_patterns
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.views.generic.base import RedirectView
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.http import HttpResponse
+from django.urls import include, path, re_path
+from django.views.generic.base import RedirectView
 from rest_auth.registration.views import SocialLoginView
+from rest_framework.urlpatterns import format_suffix_patterns
 
 
-# view for fb oath
+# View for fb oauth
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
 
@@ -31,28 +22,30 @@ class FacebookLogin(SocialLoginView):
 urlpatterns = [
     path("auth/", include("rest_auth.urls")),
 
-    # registration has no trailing slash because we'll be using suffix patterns on it anyway, and it's a single url and not a view
+    # Registration has no trailing slash because we'll be using suffix patterns
+    # on it anyway, and it's a single url and not a view.
     path("auth/registration", include("rest_auth.registration.urls")),
 
-    # social oath for fb
+    # Social oauth for fb
     path("auth/facebook/", FacebookLogin.as_view()),
 
-    # auth'd endpoint for user stuff
+    # Auth'd endpoint for user stuff
     path("users/", include("users.urls")),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=["json"])
 
-# all the following urlpatterns end in /, since django will by default redirect
-# patterns to / if it's a 404
+# All the following urlpatterns end in /, since django will by default redirect
+# patterns to / if it's a 404.
 urlpatterns += [
-    # test endpoint for sanity checking
+    # Test endpoint for sanity checking
     path("dumb/", lambda request: HttpResponse("dumb")),
 
-    # default endpoint for admin actions
+    # Default endpoint for admin actions
     path("admin/", admin.site.urls),
 
-    # joke endpoint for the favicon which probably won't be used
+    # Joke endpoint for the favicon which probably won't be used
     path("favicon.ico/",
          RedirectView.as_view(url="/static/favicon.ico", permanent=True)),
 ]
+
 urlpatterns += staticfiles_urlpatterns()

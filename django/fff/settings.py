@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "rest_auth.registration",
-    # fb oath
+    # fb oauth
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     # Friendship
