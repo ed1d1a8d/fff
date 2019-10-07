@@ -22,21 +22,19 @@ class _TimerBoxState extends State<TimerBox> {
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (this.mounted)
+    _timer = new Timer.periodic(oneSec, (Timer timer) {
+      if (this.mounted)
         setState(
-              () {
+          () {
             if (widget.timerDuration.inSeconds < 1) {
               timer.cancel();
             } else {
-              widget.timerDuration = widget.timerDuration - Duration(seconds: 1);
+              widget.timerDuration =
+                  widget.timerDuration - Duration(seconds: 1);
             }
           },
         );
-      }
-    );
+    });
   }
 
   void _showDialog() {
