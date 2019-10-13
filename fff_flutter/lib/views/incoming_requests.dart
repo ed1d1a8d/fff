@@ -100,9 +100,7 @@ class IncomingRequests extends StatelessWidget {
                                 padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
                                 child: Text(
                                   messages[index],
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                  ),
+                                  style: Theme.of(context).textTheme.caption,
                                 ),
                               )
                             ],

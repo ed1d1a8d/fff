@@ -55,9 +55,9 @@ final ThemeData theme = ThemeData(
       fontWeight: FontWeight.normal,
     ),
     caption: const TextStyle(
-      fontSize: 16,
+      fontSize: 14,
       fontWeight: FontWeight.normal,
-      color: fff_colors.darkGray,
+      color: fff_colors.black,
     ),
     button: const TextStyle(
       fontSize: 20,
