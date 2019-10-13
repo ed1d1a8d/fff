@@ -10,6 +10,8 @@ import '../utils/colors.dart' as fff_colors;
 class Home extends StatefulWidget {
   static TimerBox timer = new TimerBox(Duration());
 
+  static const String routeName = '/';
+
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
@@ -49,7 +51,7 @@ class _HomeState extends State<Home> {
         elevation: 0.0,
         iconTheme: new IconThemeData(color: Colors.black),
       ),
-      endDrawer: HamburgerDrawer(),
+      drawer: HamburgerDrawer(),
       body: Column(
         children: <Widget>[
           Row(

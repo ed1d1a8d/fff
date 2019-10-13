@@ -24,6 +24,8 @@ final List<String> requestUsernames = <String>[
 ];
 
 class FriendRequests extends StatefulWidget {
+  static const String routeName = '/friend-requests';
+
   @override
   State<StatefulWidget> createState() => FriendRequestsState();
 }
