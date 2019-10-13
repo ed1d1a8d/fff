@@ -14,6 +14,8 @@ final List<String> friendNames = <String>[
 ];
 
 class AddFriendsSignup extends StatelessWidget {
+  static const String routeName = 'add-friends-signup';
+
   @override
   Widget build(BuildContext context) {
     return Container(

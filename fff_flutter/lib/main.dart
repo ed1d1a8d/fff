@@ -4,6 +4,8 @@ import 'views/add_friends_signup.dart';
 import 'views/friend_requests.dart';
 import 'utils/colors.dart' as fff_colors;
 
+import 'routes/Routes.dart';
+
 void main() => runApp(FFFApp());
 
 class FFFApp extends StatelessWidget {
@@ -54,13 +56,13 @@ class FFFApp extends StatelessWidget {
       
       // Since we don't have animations between view widgets yet, to test, just switch this line out.
       home: Home(),
-      // home: AddFriendsSignup(),
-      // home: FriendRequests(),
+//       home: AddFriendsSignup(),
+//       home: FriendRequests(),
 
       // Used by the navigator.
       routes: <String, WidgetBuilder>{
-        "/friend-requests": (BuildContext context) => FriendRequests(),
-        "/add-friends-signup": (BuildContext context) => AddFriendsSignup(),
+        Routes.friendRequest: (BuildContext context) => FriendRequests(),
+        Routes.addFriendSignup: (BuildContext context) => AddFriendsSignup(),
       },
     );
   }
