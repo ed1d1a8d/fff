@@ -4,7 +4,7 @@ import 'views/add_friends_signup.dart';
 import 'views/friend_requests.dart';
 import 'utils/colors.dart' as fff_colors;
 
-import 'routes/routes.tmp.dart';
+import 'routes/routes.dart';
 
 void main() => runApp(FFFApp());
 
