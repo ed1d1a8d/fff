@@ -1,7 +1,6 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:fff/models/mock_data.dart";
-import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/components/gradient_container.dart";
 import "package:fff/components/url_avatar.dart";
 
