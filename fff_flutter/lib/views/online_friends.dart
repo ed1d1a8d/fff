@@ -1,15 +1,14 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import '../components/gradient_container.dart';
-import '../utils/colors.dart' as fff_colors;
-import '../models/mock_data.dart';
-import 'timer_widget.dart';
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:fff/models/mock_data.dart";
+import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/components/gradient_container.dart";
+import "package:fff/components/url_avatar.dart";
 
-class OnlineFriendsWidget extends StatelessWidget {
+class OnlineFriends extends StatelessWidget {
   final Color color;
-  TimerBox timer;
 
-  OnlineFriendsWidget(this.color, this.timer);
+  OnlineFriends(this.color);
 
   @override
   Widget build(BuildContext context) {
@@ -47,16 +46,9 @@ class OnlineFriendsWidget extends StatelessWidget {
                             SizedBox(
                               width: 20,
                             ),
-                            Container(
-                                width: 44.0,
-                                height: 44.0,
-                                decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: new NetworkImage(MockData
-                                          .onlineFriends[index].imageURL),
-                                    ))),
+                            URLAvatar(
+                              imageURL: MockData.onlineFriends[index].imageURL,
+                            ),
                             SizedBox(
                               width: 20,
                             ),
@@ -66,16 +58,13 @@ class OnlineFriendsWidget extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(MockData.onlineFriends[index].name,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    )),
+                                    style:
+                                        Theme.of(context).textTheme.display2),
                                 SizedBox(
                                   height: 6,
                                 ),
                                 Text("10 miles",
-                                    style: TextStyle(
-                                      fontSize: fff_colors.distanceFontSize,
-                                    ))
+                                    style: Theme.of(context).textTheme.display1)
                               ],
                             ),
                           ],

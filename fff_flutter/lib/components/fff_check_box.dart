@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import '../utils/colors.dart' as fff_colors;
+import "package:flutter/material.dart";
+import "package:fff/utils/colors.dart" as fff_colors;
 
 // Widget: stateless checkbox with customizable checked, unchecked, and null states
 class FFFCheckBox extends StatelessWidget {

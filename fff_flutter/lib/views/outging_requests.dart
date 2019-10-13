@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
-import '../components/gradient_container.dart';
-import '../utils/colors.dart' as fff_colors;
-import 'timer_widget.dart';
+import "package:flutter/material.dart";
+import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/components/gradient_container.dart";
+import "package:fff/components/url_avatar.dart";
 
-class OutgoingRequestsWidget extends StatelessWidget {
+class OutgoingRequests extends StatelessWidget {
   final Color color;
-  TimerBox timer;
 
-  OutgoingRequestsWidget(this.color, this.timer);
+  OutgoingRequests(this.color);
 
   final List<String> names = <String>[
     "Jennifer Wang",
@@ -66,56 +65,47 @@ class OutgoingRequestsWidget extends StatelessWidget {
                                   SizedBox(
                                     width: 20,
                                   ),
-                                  Container(
-                                      width: 44.0,
-                                      height: 44.0,
-                                      decoration: new BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: new DecorationImage(
-                                            fit: BoxFit.fill,
-                                            image: new NetworkImage(imageURLs[index]),
-                                          ))),
+                                  URLAvatar(
+                                    imageURL: imageURLs[index],
+                                  ),
                                   SizedBox(
                                     width: 20,
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       Text(names[index],
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                          )),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .display2),
                                       SizedBox(
                                         height: 6,
                                       ),
                                       Text(distances[index],
-                                          style: TextStyle(
-                                            fontSize: fff_colors.distanceFontSize,
-                                          ))
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .display1)
                                     ],
                                   ),
                                 ],
                               ),
-
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                                child: Text(messages[index],
+                                child: Text(
+                                  messages[index],
                                   style: TextStyle(
                                     fontSize: 11,
                                   ),
                                 ),
                               )
-
-
                             ],
-                          )
-
-                      );
+                          ));
                     },
                     separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(),
+                        const Divider(),
                   )),
             ],
           ),

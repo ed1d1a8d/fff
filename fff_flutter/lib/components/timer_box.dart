@@ -1,20 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'dart:async';
+import "dart:async";
+import "package:flutter/material.dart";
+import "package:flutter/cupertino.dart";
 
 class TimerBox extends StatefulWidget {
-  Duration timerDuration = new Duration();
+  final Duration originalTimerDuration;
 
-  TimerBox(this.timerDuration);
+  TimerBox(originalTimerDuration)
+      : this.originalTimerDuration = originalTimerDuration == null
+            ? new Duration()
+            : originalTimerDuration;
 
   @override
-  State<StatefulWidget> createState() {
-    return _TimerBoxState();
-  }
+  State<StatefulWidget> createState() =>
+      _TimerBoxState(this.originalTimerDuration);
 }
 
 class _TimerBoxState extends State<TimerBox> {
   Timer _timer;
+  Duration timerDuration;
+
+  _TimerBoxState(this.timerDuration) {
+    this.startTimer();
+  }
 
   void pauseTimer() {
     _timer.cancel();
@@ -26,11 +33,10 @@ class _TimerBoxState extends State<TimerBox> {
       if (this.mounted)
         setState(
           () {
-            if (widget.timerDuration.inSeconds < 1) {
+            if (timerDuration.inSeconds < 1) {
               timer.cancel();
             } else {
-              widget.timerDuration =
-                  widget.timerDuration - Duration(seconds: 1);
+              timerDuration = timerDuration - Duration(seconds: 1);
             }
           },
         );
@@ -56,20 +62,22 @@ class _TimerBoxState extends State<TimerBox> {
                     child: CupertinoTimerPicker(
                       mode: CupertinoTimerPickerMode.hms,
                       minuteInterval: 1,
-                      initialTimerDuration: widget.timerDuration,
+                      initialTimerDuration: this.timerDuration,
                       onTimerDurationChanged: (Duration changedTimer) {
                         setState(() {
-                          widget.timerDuration = changedTimer;
+                          timerDuration = changedTimer;
                         });
                       },
                     ),
                   ),
                   SizedBox(height: 20),
                   Text(
-                      "This allows friends to request food with you for the next ___ minutes."),
+                      "This allows friends to request food with you for the next ___ minutes.",
+                      style: Theme.of(context).textTheme.body1),
                   SizedBox(height: 14),
                   Text(
-                      "The timer will continue to run even when you are not in the app."),
+                      "The timer will continue to run even when you are not in the app.",
+                      style: Theme.of(context).textTheme.body1),
                 ],
               )),
           actions: <Widget>[
@@ -107,7 +115,7 @@ class _TimerBoxState extends State<TimerBox> {
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
                       child: Text(
-                        widget.timerDuration.toString().substring(0, 7),
+                        this.timerDuration.toString().substring(0, 7),
                         style: TextStyle(fontSize: 14),
                       )))),
         ],

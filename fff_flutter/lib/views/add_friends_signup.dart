@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import '../components/gradient_container.dart';
-import '../components/search_bar.dart';
-import '../components/fff_check_box.dart';
-import '../models/mock_data.dart';
-import '../utils/colors.dart' as fff_colors;
+import "package:flutter/material.dart";
+import "package:flutter/cupertino.dart";
+import "package:fff/models/mock_data.dart";
+import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/components/gradient_container.dart";
+import "package:fff/components/search_bar.dart";
+import "package:fff/components/fff_check_box.dart";
+import "package:fff/components/url_avatar.dart";
 
 class AddFriendsSignup extends StatefulWidget {
-  static const String routeName = 'add-friends-signup';
+  static const String routeName = "add-friends-signup";
 
   @override
   _AddFriendsSignupState createState() => _AddFriendsSignupState();
@@ -16,7 +17,8 @@ class AddFriendsSignup extends StatefulWidget {
 class _AddFriendsSignupState extends State<AddFriendsSignup> {
   // is null if proper subset of friends is checked
   int numFriendsChecked = 0;
-  List<bool> isFriendChecked = new List.filled(MockData.names.length, false);
+  List<bool> isFriendChecked =
+      new List.filled(MockData.onlineFriends.length, false);
   String filterText = "";
 
   @override
@@ -103,21 +105,23 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                         FFFCheckBox(
                           onTap: () {
                             setState(() {
-                              if (numFriendsChecked != MockData.names.length) {
-                                numFriendsChecked = MockData.names.length;
+                              if (numFriendsChecked !=
+                                  MockData.onlineFriends.length) {
+                                numFriendsChecked =
+                                    MockData.onlineFriends.length;
                                 isFriendChecked = new List.filled(
-                                    MockData.names.length, true);
+                                    MockData.onlineFriends.length, true);
                               } else {
                                 numFriendsChecked = 0;
                                 isFriendChecked = new List.filled(
-                                    MockData.names.length, false);
+                                    MockData.onlineFriends.length, false);
                               }
                             });
                           },
-                          checked:
-                              this.numFriendsChecked == MockData.names.length
-                                  ? true
-                                  : this.numFriendsChecked == 0 ? false : null,
+                          checked: this.numFriendsChecked ==
+                                  MockData.onlineFriends.length
+                              ? true
+                              : this.numFriendsChecked == 0 ? false : null,
                         ),
                       ],
                     ),
@@ -126,27 +130,19 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                     Expanded(
                       child: ListView.separated(
                         padding: const EdgeInsets.only(top: 5),
-                        itemCount: MockData.names.length,
+                        itemCount: MockData.onlineFriends.length,
                         itemBuilder: (BuildContext context, int index) {
                           return this.friendAtIndexVisible(index)
                               ? Row(
                                   children: <Widget>[
-                                    Container(
-                                      width: 44,
-                                      height: 44,
-                                      decoration: new BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: new DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: new NetworkImage(
-                                              MockData.imageURLs[index]),
-                                        ),
-                                      ),
+                                    URLAvatar(
+                                      imageURL: MockData
+                                          .onlineFriends[index].imageURL,
                                     ),
                                     Container(
                                       margin: const EdgeInsets.only(left: 10),
                                       child: Text(
-                                        MockData.names[index],
+                                        MockData.onlineFriends[index].name,
                                         style:
                                             Theme.of(context).textTheme.body1,
                                       ),
@@ -191,7 +187,7 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                   style: Theme.of(context).textTheme.button,
                 ),
                 onPressed: () {
-                  print("TODO: INTEGRATE WITH BACKEND");
+                  print("TODO BACKEND");
                 },
                 color: fff_colors.strongBackground,
                 padding: const EdgeInsets.symmetric(
@@ -207,7 +203,7 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
   }
 
   bool friendAtIndexVisible(int index) {
-    return MockData.names[index]
+    return MockData.onlineFriends[index].name
         .toLowerCase()
         .contains(this.filterText.toLowerCase());
   }

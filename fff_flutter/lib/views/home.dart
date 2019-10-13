@@ -1,16 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'incoming_requests_widget.dart';
-import 'outging_requests_widget.dart';
-import 'online_friends_widget.dart';
-import 'timer_widget.dart';
-import '../components/hamburger_drawer.dart';
-import '../utils/colors.dart' as fff_colors;
+import "package:flutter/material.dart";
+import "package:font_awesome_flutter/font_awesome_flutter.dart";
+import "package:fff/models/mock_data.dart";
+import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/components/timer_box.dart";
+import "package:fff/components/hamburger_drawer.dart";
+import "package:fff/views/incoming_requests.dart";
+import "package:fff/views/outging_requests.dart";
+import "package:fff/views/online_friends.dart";
 
 class Home extends StatefulWidget {
-  static TimerBox timer = new TimerBox(Duration());
+  static const String routeName = "/";
 
-  static const String routeName = '/';
+  static final TimerBox timer = new TimerBox(MockData.timerDuration);
 
   @override
   State<StatefulWidget> createState() {
@@ -19,14 +20,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static TimerBox timer = new TimerBox(Duration());
-
   int _currentIndex = 0;
 
   final List<Widget> _children = [
-    IncomingRequestsWidget(fff_colors.background, Home.timer),
-    OnlineFriendsWidget(fff_colors.background, Home.timer),
-    OutgoingRequestsWidget(fff_colors.background, Home.timer),
+    IncomingRequests(fff_colors.background),
+    OnlineFriends(fff_colors.background),
+    OutgoingRequests(fff_colors.background),
   ];
 
   final List<String> _titles = [
@@ -130,5 +129,4 @@ class _HomeState extends State<Home> {
       _currentIndex = index;
     });
   }
-
 }

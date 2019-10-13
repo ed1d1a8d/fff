@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import '../utils/colors.dart' as fff_colors;
+import "package:flutter/material.dart";
+import "package:fff/utils/colors.dart" as fff_colors;
 
 // Stateful widget for a search bar with variable background color.
 
