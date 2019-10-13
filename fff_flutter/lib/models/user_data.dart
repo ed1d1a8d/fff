@@ -20,13 +20,13 @@ class UserData {
 
   factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
-      id: json['id'],
-      facebookId: json['facebook_id'],
-      username: json['username'],
-      name: json['name'],
-      imageURL: json['imageURL'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
+      id: json["id"],
+      facebookId: json["facebook_id"],
+      username: json["username"],
+      name: json["name"],
+      imageURL: json["imageURL"],
+      latitude: json["latitude"],
+      longitude: json["longitude"],
     );
   }
 }

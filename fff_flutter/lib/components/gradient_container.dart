@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import '../utils/colors.dart' as fff_colors;
+import "package:flutter/material.dart";
+import "package:fff/utils/colors.dart" as fff_colors;
 
 // Widget for a box outline with white background in the middle. The outline is a gradient.
 class GradientContainer extends StatelessWidget {

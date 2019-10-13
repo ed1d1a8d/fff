@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../routes/Routes.dart';
+import "package:flutter/material.dart";
+import "package:font_awesome_flutter/font_awesome_flutter.dart";
+import "package:fff/routes/routes.dart";
 
 // Widget: the contents of the hamburger menu in the app.
 class HamburgerDrawer extends StatelessWidget {
@@ -13,14 +12,19 @@ class HamburgerDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           _createHeader(),
-          _createDrawerItem(context, FontAwesomeIcons.home, "Home", Routes.home),
-          _createDrawerItem(context, FontAwesomeIcons.search, "Search People", "TODO_SEARCH"),
-          _createDrawerItem(context, FontAwesomeIcons.smile, "Friend Requests", Routes.friendRequest),
-          _createDrawerItem(context, FontAwesomeIcons.questionCircle, "Help", "TODO_QUESTION"),
+          _createDrawerItem(
+              context, FontAwesomeIcons.home, "Home", Routes.home),
+          _createDrawerItem(
+              context, FontAwesomeIcons.search, "Search People", "TODO_SEARCH"),
+          _createDrawerItem(context, FontAwesomeIcons.smile, "Friend Requests",
+              Routes.friendRequest),
+          _createDrawerItem(context, FontAwesomeIcons.questionCircle, "Help",
+              "TODO_QUESTION"),
           new Expanded(
             child: new Align(
               alignment: Alignment.bottomCenter,
-                child: _createDrawerItem(context, FontAwesomeIcons.powerOff, "Log Out", "TODO_LOGOUT"),
+              child: _createDrawerItem(
+                  context, FontAwesomeIcons.powerOff, "Log Out", "TODO_LOGOUT"),
             ),
           ),
         ],
@@ -30,14 +34,11 @@ class HamburgerDrawer extends StatelessWidget {
 
   BoxDecoration _createHeaderProfile() {
     return BoxDecoration(
-      shape: BoxShape.circle,
-      image: DecorationImage(
-        fit: BoxFit.fill,
-        image: NetworkImage(
-            "https://scontent.fbed1-2.fna.fbcdn.net/v/t1.0-1/c73.206.614.614a/s100x100/50735968_2302236259809637_5312553092619698176_n.jpg?_nc_cat=104&_nc_oc=AQnj-x9fkxHyDUJPaGK_RlQ_kTJhJBbDXNx29xDpk5A_7NMlgR6Nv4Qg2VCquwC9vf8&_nc_ht=scontent.fbed1-2.fna&oh=165917455e36027c7672ef070ed06e8d&oe=5E3A0206"
-        )
-      )
-    );
+        shape: BoxShape.circle,
+        image: DecorationImage(
+            fit: BoxFit.fill,
+            image: NetworkImage(
+                "https://scontent.fbed1-2.fna.fbcdn.net/v/t1.0-1/c73.206.614.614a/s100x100/50735968_2302236259809637_5312553092619698176_n.jpg?_nc_cat=104&_nc_oc=AQnj-x9fkxHyDUJPaGK_RlQ_kTJhJBbDXNx29xDpk5A_7NMlgR6Nv4Qg2VCquwC9vf8&_nc_ht=scontent.fbed1-2.fna&oh=165917455e36027c7672ef070ed06e8d&oe=5E3A0206")));
   }
 
   Widget _createHeader() {
@@ -74,16 +75,15 @@ class HamburgerDrawer extends StatelessWidget {
     );
   }
 
-  Widget _createDrawerItem(BuildContext context, IconData icon, String title, String route) {
+  Widget _createDrawerItem(
+      BuildContext context, IconData icon, String title, String route) {
     return ListTile(
-      title: Row(
-        children: <Widget>[
-          SizedBox(width: 20),
-          Icon(icon, size: 16),
-          SizedBox(width: 20),
-          Text(title)
-        ]
-      ),
+      title: Row(children: <Widget>[
+        SizedBox(width: 20),
+        Icon(icon, size: 16),
+        SizedBox(width: 20),
+        Text(title)
+      ]),
       onTap: () {
         Navigator.pushReplacementNamed(context, route);
       },

@@ -1,6 +1,4 @@
-library fff_colors;
-
-import 'package:flutter/widgets.dart';
+import "package:flutter/widgets.dart";
 
 const Color white = const Color(0xFFFFFFFF);
 const Color black = const Color(0xFF000000);
@@ -16,5 +14,3 @@ const Color lightGray = const Color(0xFFDEDEDE);
 
 const Color gradientTop = const Color(0xFFFFA800);
 const Color gradientBottom = const Color(0xFFE25A5A);
-
-const double distanceFontSize = 11;

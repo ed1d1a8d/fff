@@ -1,8 +1,9 @@
-import 'package:quiver/iterables.dart';
-
-import "user_data.dart";
+import "package:quiver/iterables.dart";
+import "package:fff/models/user_data.dart";
 
 class MockData {
+  static final Duration timerDuration = new Duration(minutes: 5);
+
   static final List<String> names = <String>[
     "Edward Park",
     "Jennifer Wang",
@@ -12,6 +13,17 @@ class MockData {
     "Yang Yan",
     "Claire Yang",
     "Lydia Yang",
+  ];
+
+  static final List<String> usernames = <String>[
+    "edward.park.963",
+    "jennwang",
+    "jinglin",
+    "ramyan",
+    "ed1d1a8d",
+    "gilgamesh",
+    "claire.yangers",
+    "100018322293669",
   ];
 
   static final List<String> imageURLs = <String>[
@@ -26,7 +38,7 @@ class MockData {
   ];
 
   static final List<UserData> onlineFriends = [
-    for (var pair in zip([names, imageURLs]))
-      UserData(name: pair[0], imageURL: pair[1])
+    for (var pair in zip([names, imageURLs, usernames]))
+      UserData(name: pair[0], imageURL: pair[1], username: pair[2])
   ];
 }

@@ -1,6 +1,6 @@
-import '../views/home.dart';
-import '../views/friend_requests.dart';
-import '../views/add_friends_signup.dart';
+import "package:fff/views/home.dart";
+import "package:fff/views/friend_requests.dart";
+import "package:fff/views/add_friends_signup.dart";
 
 class Routes {
   static const String home = Home.routeName;
