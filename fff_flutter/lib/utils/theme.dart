@@ -17,8 +17,8 @@ final ThemeData theme = ThemeData(
   // text styling for headlines, titles, bodies of text, and more.
   textTheme: const TextTheme(
     display4: const TextStyle(
-      fontSize: 30,
-      fontWeight: FontWeight.bold,
+      fontSize: 64,
+      fontWeight: FontWeight.normal,
       color: fff_colors.black,
     ),
     display2: const TextStyle(

@@ -9,7 +9,7 @@ import "package:fff/views/outging_requests.dart";
 import "package:fff/views/online_friends.dart";
 
 class Home extends StatefulWidget {
-  static const String routeName = "/";
+  static const String routeName = "/home";
 
   static final TimerBox timer = new TimerBox(MockData.timerDuration);
 

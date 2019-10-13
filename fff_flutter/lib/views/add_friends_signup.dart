@@ -25,8 +25,6 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
         color: fff_colors.background,
         padding: const EdgeInsets.all(30),
         child: Column(
