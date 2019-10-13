@@ -17,11 +17,14 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
   // is null if proper subset of friends is checked
   int numFriendsChecked = 0;
   List<bool> isFriendChecked = new List.filled(MockData.names.length, false);
+  String filterText = "";
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         color: fff_colors.background,
         padding: const EdgeInsets.all(30),
         child: Column(
@@ -76,7 +79,11 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                   children: <Widget>[
                     // Search bar for friends.
                     SearchBar(
-                      color: fff_colors.lightGray,
+                      onChanged: (String text) {
+                        setState(() {
+                          filterText = text;
+                        });
+                      },
                     ),
 
                     // Select all checkbox
@@ -121,46 +128,51 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                         padding: const EdgeInsets.only(top: 5),
                         itemCount: MockData.names.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Row(
-                            children: <Widget>[
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: new DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: new NetworkImage(
-                                        MockData.imageURLs[index]),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                  MockData.names[index],
-                                  style: Theme.of(context).textTheme.body2,
-                                ),
-                              ),
-                              Spacer(),
-                              FFFCheckBox(
-                                onTap: () {
-                                  setState(() {
-                                    numFriendsChecked +=
-                                        isFriendChecked[index] ? -1 : 1;
-                                    isFriendChecked[index] =
-                                        !isFriendChecked[index];
-                                  });
-                                },
-                                checked: this.isFriendChecked[index],
-                              ),
-                            ],
-                          );
+                          return this.friendAtIndexVisible(index)
+                              ? Row(
+                                  children: <Widget>[
+                                    Container(
+                                      width: 44,
+                                      height: 44,
+                                      decoration: new BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: new DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: new NetworkImage(
+                                              MockData.imageURLs[index]),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        MockData.names[index],
+                                        style:
+                                            Theme.of(context).textTheme.body1,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    FFFCheckBox(
+                                      onTap: () {
+                                        setState(() {
+                                          numFriendsChecked +=
+                                              isFriendChecked[index] ? -1 : 1;
+                                          isFriendChecked[index] =
+                                              !isFriendChecked[index];
+                                        });
+                                      },
+                                      checked: this.isFriendChecked[index],
+                                    ),
+                                  ],
+                                )
+                              : Container();
                         },
                         separatorBuilder: (BuildContext context, int index) {
-                          return Divider(
-                            color: fff_colors.black,
-                          );
+                          return this.friendAtIndexVisible(index)
+                              ? Divider(
+                                  color: fff_colors.black,
+                                )
+                              : Container();
                         },
                       ),
                     ),
@@ -192,5 +204,11 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
         ),
       ),
     );
+  }
+
+  bool friendAtIndexVisible(int index) {
+    return MockData.names[index]
+        .toLowerCase()
+        .contains(this.filterText.toLowerCase());
   }
 }
