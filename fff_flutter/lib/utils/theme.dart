@@ -21,6 +21,11 @@ final ThemeData theme = ThemeData(
       fontWeight: FontWeight.normal,
       color: fff_colors.black,
     ),
+    display3: const TextStyle(
+      fontSize: 26,
+      fontWeight: FontWeight.normal,
+      color: fff_colors.black,
+    ),
     display2: const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.normal,
@@ -32,13 +37,13 @@ final ThemeData theme = ThemeData(
       color: fff_colors.black,
     ),
     title: const TextStyle(
-      fontSize: 30,
+      fontSize: 28,
       fontWeight: FontWeight.normal,
       color: fff_colors.black,
     ),
     headline: const TextStyle(
       fontSize: 18,
-      fontWeight: FontWeight.normal,
+      fontWeight: FontWeight.bold,
       color: fff_colors.black,
     ),
     subhead: const TextStyle(
@@ -48,7 +53,7 @@ final ThemeData theme = ThemeData(
     ),
     body2: const TextStyle(
       fontSize: 18,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.normal,
     ),
     body1: const TextStyle(
       fontSize: 16,

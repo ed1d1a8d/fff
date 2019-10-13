@@ -14,3 +14,5 @@ const Color lightGray = const Color(0xFFDEDEDE);
 
 const Color gradientTop = const Color(0xFFFFA800);
 const Color gradientBottom = const Color(0xFFE25A5A);
+
+const Color fb = const Color(0xFF1877F2);

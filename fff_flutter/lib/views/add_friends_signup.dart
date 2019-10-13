@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import "package:flutter/cupertino.dart";
 import "package:fff/models/mock_data.dart";
+import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/components/gradient_container.dart";
 import "package:fff/components/search_bar.dart";
@@ -26,7 +26,7 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
     return SafeArea(
       child: Container(
         color: fff_colors.background,
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.all(fff_spacing.viewEdgeInsets),
         child: Column(
           children: <Widget>[
             // Introduction text and image
@@ -39,7 +39,7 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                     children: <Widget>[
                       Text(
                         "Free\nFor\nFood?",
-                        style: Theme.of(context).textTheme.title,
+                        style: Theme.of(context).textTheme.display3,
                       ),
                       Image.asset(
                         "assets/images/pizza-burger.png",
@@ -177,7 +177,7 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
 
             // Add friends button
             Container(
-              child: CupertinoButton(
+              child: MaterialButton(
                 child: Text(
                   "Add " +
                       this.numFriendsChecked.toString() +

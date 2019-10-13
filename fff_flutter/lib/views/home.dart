@@ -41,10 +41,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text(
           _titles[_currentIndex],
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 28,
-          ),
+          style: Theme.of(context).textTheme.title,
         ),
         backgroundColor: fff_colors.background,
         elevation: 0.0,

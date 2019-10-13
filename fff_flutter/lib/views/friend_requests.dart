@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import "package:flutter/cupertino.dart";
 import "package:fff/models/mock_data.dart";
+import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/components/hamburger_drawer.dart";
 import "package:fff/components/url_avatar.dart";
@@ -21,10 +21,7 @@ class FriendRequestsState extends State<FriendRequests> {
       appBar: AppBar(
         title: Text(
           "Friend Requests",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 28,
-          ),
+          style: Theme.of(context).textTheme.title,
         ),
         backgroundColor: fff_colors.background,
         elevation: 0.0,
@@ -69,8 +66,8 @@ class FriendRequestsState extends State<FriendRequests> {
                   child: Container(
                     padding: const EdgeInsets.only(
                       top: 10,
-                      left: 30,
-                      right: 30,
+                      left: fff_spacing.viewEdgeInsets,
+                      right: fff_spacing.viewEdgeInsets,
                     ),
                     child: Column(
                       children: <Widget>[
@@ -125,7 +122,7 @@ class FriendRequestsState extends State<FriendRequests> {
                                             const EdgeInsets.only(bottom: 5),
                                         width: 85,
                                         height: 35,
-                                        child: CupertinoButton(
+                                        child: MaterialButton(
                                           child: Text(
                                             "Accept",
                                             style: Theme.of(context)
@@ -142,7 +139,7 @@ class FriendRequestsState extends State<FriendRequests> {
                                       Container(
                                         width: 85,
                                         height: 35,
-                                        child: CupertinoButton(
+                                        child: MaterialButton(
                                           child: Text(
                                             "Delete",
                                             style: Theme.of(context)
