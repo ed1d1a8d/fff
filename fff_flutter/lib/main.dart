@@ -56,8 +56,8 @@ class FFFApp extends StatelessWidget {
       
       // Since we don't have animations between view widgets yet, to test, just switch this line out.
       home: Home(),
-//       home: AddFriendsSignup(),
-//       home: FriendRequests(),
+      // home: AddFriendsSignup(),
+      // home: FriendRequests(),
 
       // Used by the navigator.
       routes: <String, WidgetBuilder>{

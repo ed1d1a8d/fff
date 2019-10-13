@@ -11,7 +11,7 @@ class MockData {
     "Tony Wang",
     "Yang Yan",
     "Claire Yang",
-    "Lydia Yang"
+    "Lydia Yang",
   ];
 
   static final List<String> imageURLs = <String>[

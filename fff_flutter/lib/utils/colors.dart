@@ -12,7 +12,7 @@ const Color buttonGreen = const Color(0xFFC9EAB4);
 const Color buttonGray = const Color(0xFFDEDEDE);
 
 const Color darkGray = const Color(0xFF8A8A8A);
-const Color lightGray = const Color(0xFFF1F1F1);
+const Color lightGray = const Color(0xFFDEDEDE);
 
 const Color gradientTop = const Color(0xFFFFA800);
 const Color gradientBottom = const Color(0xFFE25A5A);
