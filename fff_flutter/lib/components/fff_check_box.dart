@@ -7,7 +7,7 @@ class FFFCheckBox extends StatelessWidget {
   final String uncheckedAssetName;
   final String nullAssetName;
   final bool checked;
-  final onTap;
+  final void Function() onTap;
 
   FFFCheckBox({
     checkedAssetName,
@@ -28,7 +28,7 @@ class FFFCheckBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => this.onTap(),
+      onTap: this.onTap,
       child: Container(
         decoration: BoxDecoration(
           color: fff_colors.lightGray,
