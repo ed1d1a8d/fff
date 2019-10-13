@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/utils/colors.dart" as fff_colors;
 
 class Loading extends StatelessWidget {
@@ -12,12 +13,11 @@ class Loading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double columnWidth = MediaQuery.of(context).size.width * 0.7;
+    final double columnWidth = MediaQuery.of(context).size.width * fff_spacing.loadingWidthRatio;
 
     return Container(
       color: fff_colors.background,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Spacer(flex: 5),
           Container(
