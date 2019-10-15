@@ -30,7 +30,10 @@ class _FriendDetailState extends State<FriendDetail> {
   Widget build(BuildContext context) {
     String friendImg = MockData.imageURLs[widget.friendIndex];
     String friendName = MockData.names[widget.friendIndex];
-    LatLng friendCenter = LatLng(45.521563, -122.677433);
+    LatLng friendCenter = LatLng(45.521563, -122.677433); // TODO FETCH FROM SERVER
+
+    String date = "September 14, 2019"; // TODO FETCH FROM SERVER
+    String lastFFF = "The last time you got food with ${friendName} was on ${date}";
 
     return Scaffold(
       backgroundColor: fff_colors.background,
@@ -64,7 +67,9 @@ class _FriendDetailState extends State<FriendDetail> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               _mapWidget(context, friendCenter),
-              Text("Last Time You Got Food Integration"),
+              SizedBox(height: 20),
+              Text(lastFFF),
+              SizedBox(height: 20),
               Text("Ask To Get Food"),
             ],
           )
