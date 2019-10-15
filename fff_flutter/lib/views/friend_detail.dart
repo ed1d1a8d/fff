@@ -25,6 +25,14 @@ class _FriendDetailState extends State<FriendDetail> {
 
     return Scaffold(
       appBar: AppBar(
+        textTheme: Theme.of(context).textTheme.apply(
+          bodyColor: Colors.black,
+          displayColor: Colors.black
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.black
+        ),
+        backgroundColor: fff_colors.navBarBackground,
         titleSpacing: -5.0,
         title: Container(
           child: Row(
@@ -34,11 +42,24 @@ class _FriendDetailState extends State<FriendDetail> {
               Text(friend_name)
             ],
           ),
-        )
+        ),
+
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Text("Hi"),
+        child: Container(
+          color: fff_colors.background,
+          constraints: BoxConstraints.expand(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text("Google Maps Integration"),
+              Text("Last Time You Got Food Integration"),
+              Text("Ask To Get Food"),
+            ],
+          )
+        )
       ),
     );
   }
