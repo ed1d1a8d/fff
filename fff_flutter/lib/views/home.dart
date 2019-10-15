@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            this.buildProfileList(),
+            this.buildProfileList(context),
           ],
         ),
       ),
@@ -141,7 +141,7 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Widget buildProfileList() {
+  Widget buildProfileList(BuildContext context) {
     final List<List<UserData>> profileListData = [
       MockData.incomingRequests,
       MockData.onlineFriends,
