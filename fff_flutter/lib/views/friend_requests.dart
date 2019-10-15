@@ -1,9 +1,9 @@
-import "package:flutter/material.dart";
-import "package:fff/models/mock_data.dart";
-import "package:fff/utils/spacing.dart" as fff_spacing;
-import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/components/hamburger_drawer.dart";
 import "package:fff/components/url_avatar.dart";
+import "package:fff/models/mock_data.dart";
+import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/utils/spacing.dart" as fff_spacing;
+import "package:flutter/material.dart";
 
 class FriendRequests extends StatefulWidget {
   static const String routeName = "/friend-requests";
@@ -89,7 +89,7 @@ class FriendRequestsState extends State<FriendRequests> {
                                 children: <Widget>[
                                   URLAvatar(
                                     imageURL:
-                                        MockData.onlineFriends[index].imageURL,
+                                        MockData.onlineFriends[index].imageUrl,
                                   ),
                                   Container(
                                     margin: const EdgeInsets.only(left: 10),

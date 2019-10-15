@@ -19,8 +19,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
+
+  cached_network_image: ^1.1.1
   font_awesome_flutter: ^8.2.0
+  # flutter_facebook_login: ^3.0.0
   http: ^0.12.0+2
   quiver: '>=2.0.0 <3.0.0'
 

@@ -16,10 +16,10 @@ class FFFApp extends StatelessWidget {
       theme: theme,
       
       // Since we don't have animations between view widgets yet, to test, just switch this line out.
-      home: Loading(),
+      // home: Loading(),
       // home: Login(),
       // home: AddFriendsSignup(),
-      // home: Home(),
+       home: Home(),
       // home: FriendRequests(),
 
       // Used by the navigator.
