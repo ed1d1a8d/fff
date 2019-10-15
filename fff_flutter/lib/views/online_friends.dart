@@ -1,11 +1,13 @@
 import "dart:async";
 
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+
 import "package:fff/components/gradient_container.dart";
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/mock_data.dart";
 import "package:fff/models/user_data.dart";
-import "package:flutter/cupertino.dart";
-import "package:flutter/material.dart";
+import "package:fff/views/friend_detail.dart";
 
 class OnlineFriends extends StatefulWidget {
   final Color color;
@@ -80,40 +82,44 @@ class _OnlineFriendsState extends State<OnlineFriends> {
                           padding: const EdgeInsets.all(8),
                           itemCount: _onlineFriends.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              height: 55,
-                              child: Row(
-                                children: <Widget>[
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  URLAvatar(
-                                    imageURL: _onlineFriends[index].imageUrl,
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(_onlineFriends[index].name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .display2),
-                                      SizedBox(
-                                        height: 6,
-                                      ),
-                                      Text("10 miles",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .display1)
-                                    ],
-                                  ),
-                                ],
-                              ),
+                            return GestureDetector(
+                              onTap: () => _pushFriendDetail(context, index),
+                              child: Container(
+                                color: Colors.white,
+                                height: 55,
+                                child: Row(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    URLAvatar(
+                                      imageURL: _onlineFriends[index].imageUrl,
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(_onlineFriends[index].name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .display2),
+                                        SizedBox(
+                                          height: 6,
+                                        ),
+                                        Text("10 miles",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .display1)
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
                             );
                           },
                           separatorBuilder: (BuildContext context, int index) =>
@@ -128,4 +134,9 @@ class _OnlineFriendsState extends State<OnlineFriends> {
       ),
     );
   }
+
+  _pushFriendDetail(BuildContext context, int index) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => FriendDetail(index)));
+  }
+
 }
