@@ -1,11 +1,11 @@
-import "package:flutter/material.dart";
-import "package:fff/models/mock_data.dart";
-import "package:fff/utils/spacing.dart" as fff_spacing;
-import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/components/fff_check_box.dart";
 import "package:fff/components/gradient_container.dart";
 import "package:fff/components/search_bar.dart";
-import "package:fff/components/fff_check_box.dart";
 import "package:fff/components/url_avatar.dart";
+import "package:fff/models/mock_data.dart";
+import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/utils/spacing.dart" as fff_spacing;
+import "package:flutter/material.dart";
 
 class AddFriendsSignup extends StatefulWidget {
   static const String routeName = "add-friends-signup";
@@ -135,7 +135,7 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                                   children: <Widget>[
                                     URLAvatar(
                                       imageURL: MockData
-                                          .onlineFriends[index].imageURL,
+                                          .onlineFriends[index].imageUrl,
                                     ),
                                     Container(
                                       margin: const EdgeInsets.only(left: 10),

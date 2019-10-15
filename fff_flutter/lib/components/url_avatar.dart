@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import "package:flutter/material.dart";
 
 // Widget for a box outline with white background in the middle. The outline is a gradient.
@@ -14,7 +15,7 @@ class URLAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: this.radius,
-      backgroundImage: new NetworkImage(this.imageURL),
+      backgroundImage: new CachedNetworkImageProvider(this.imageURL),
     );
   }
 }

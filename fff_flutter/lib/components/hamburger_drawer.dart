@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
-import "package:fff/routes/routes.dart";
+import 'package:fff/routes.dart';
 
 // Widget: the contents of the hamburger menu in the app.
 class HamburgerDrawer extends StatelessWidget {
