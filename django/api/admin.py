@@ -12,7 +12,6 @@ class UserAdmin(auth.admin.UserAdmin):
     list_display = [
         "username",
         "name",
-        "facebook_id",
     ]
 
 

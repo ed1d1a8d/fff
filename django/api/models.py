@@ -1,21 +1,20 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils import timezone
 
 
 class User(AbstractUser):
     name = models.CharField(max_length=255, blank=True)
-    facebook_id = models.CharField(max_length=255, blank=True)
     image_url = models.URLField(max_length=2048, blank=True)
 
     longitude = models.FloatField(null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
 
     # Always in utc
-    lobby_expiration = models.DateTimeField(default=timezone.now())
+    lobby_expiration = models.DateTimeField(
+        default=datetime.fromtimestamp(0, tz=timezone.utc))
 
 
 class FFRequestStatusEnum(Enum):
