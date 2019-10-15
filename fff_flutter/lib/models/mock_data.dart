@@ -1,5 +1,5 @@
-import "package:quiver/iterables.dart";
 import "package:fff/models/user_data.dart";
+import "package:quiver/iterables.dart";
 
 class MockData {
   static final Duration timerDuration = new Duration(minutes: 5);
@@ -39,6 +39,6 @@ class MockData {
 
   static final List<UserData> onlineFriends = [
     for (var pair in zip([names, imageURLs, usernames]))
-      UserData(name: pair[0], imageURL: pair[1], username: pair[2])
+      UserData(name: pair[0], imageUrl: pair[1], username: pair[2])
   ];
 }

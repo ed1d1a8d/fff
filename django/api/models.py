@@ -7,11 +7,12 @@ from django.utils import timezone
 
 
 class User(AbstractUser):
-    name = models.CharField(blank=True, max_length=255)
-    facebook_id = models.CharField(blank=True, max_length=255)
+    name = models.CharField(max_length=255, blank=True)
+    facebook_id = models.CharField(max_length=255, blank=True)
+    image_url = models.URLField(max_length=2048, blank=True)
 
-    lon = models.FloatField(null=True, blank=True)
-    lat = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    latitude = models.FloatField(null=True, blank=True)
 
     # Always in utc
     lobby_expiration = models.DateTimeField(default=timezone.now())

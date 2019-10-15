@@ -7,7 +7,9 @@ from . import models
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
-        fields = ["id", "username", "name", "facebook_id", "lat", "lon"]
+        fields = [
+            "id", "username", "name", "facebook_id", "image_url", "latitude", "longitude"
+        ]
 
 
 class LobbyExpirationSerializer(serializers.ModelSerializer):
