@@ -11,10 +11,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="fff">
 
-        <!-- Add the following entry, with your API key -->
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCzMxBXTHbXPvVamLW3yak--gbyWWJnbRs"/>
-
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -35,7 +31,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Facebook Login configuration -->
+        <!-- Facebook Login Config -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -56,5 +52,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <!-- Google Maps Config -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCzMxBXTHbXPvVamLW3yak--gbyWWJnbRs" />
     </application>
 </manifest>
