@@ -19,9 +19,19 @@ class FriendRequestsState extends State<FriendRequests> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Friend Requests",
-          style: Theme.of(context).textTheme.title,
+        title: Row(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.only(right: 10),
+              child: Image.asset(
+                "assets/images/add-friends.png",
+              ),
+            ),
+            Text(
+              "Friend Requests",
+              style: Theme.of(context).textTheme.title,
+            ),
+          ],
         ),
         backgroundColor: fff_colors.background,
         elevation: 0.0,
@@ -36,31 +46,6 @@ class FriendRequestsState extends State<FriendRequests> {
             constraints: BoxConstraints.expand(),
             child: Column(
               children: <Widget>[
-                // // Heading section
-                // Container(
-                //   constraints: BoxConstraints.tightFor(width: double.infinity),
-                //   color: fff_colors.background,
-                //   padding: const EdgeInsets.all(35),
-                //   child: Column(
-                //     children: <Widget>[
-                //       Container(
-                //         child: Column(
-                //           children: <Widget>[
-                //             Image.asset(
-                //               "assets/images/add-friends.png",
-                //               height: 80,
-                //             ),
-                //             Text(
-                //               "Friend Requests",
-                //               style: Theme.of(context).textTheme.display4,
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
                 // Body section
                 Expanded(
                   child: Container(
@@ -71,15 +56,6 @@ class FriendRequestsState extends State<FriendRequests> {
                     ),
                     child: Column(
                       children: <Widget>[
-                        // Container(
-                        //   constraints:
-                        //       BoxConstraints.tightFor(width: double.infinity),
-                        //   margin: const EdgeInsets.symmetric(vertical: 25),
-                        //   child: Text(
-                        //     "Requests",
-                        //     style: Theme.of(context).textTheme.body2,
-                        //   ),
-                        // ),
                         Expanded(
                           child: ListView.separated(
                             padding: const EdgeInsets.only(),

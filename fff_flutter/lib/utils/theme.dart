@@ -26,18 +26,24 @@ final ThemeData theme = ThemeData(
       fontWeight: FontWeight.normal,
       color: fff_colors.black,
     ),
+
+    // profile name
     display2: const TextStyle(
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: FontWeight.normal,
       color: fff_colors.black,
     ),
+
+    // profile username or distance
     display1: const TextStyle(
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: FontWeight.normal,
       color: fff_colors.black,
     ),
+
+    // appBar text
     title: const TextStyle(
-      fontSize: 28,
+      fontSize: 26,
       fontWeight: FontWeight.normal,
       color: fff_colors.black,
     ),
@@ -64,6 +70,8 @@ final ThemeData theme = ThemeData(
       fontWeight: FontWeight.normal,
       color: fff_colors.black,
     ),
+
+    // large button
     button: const TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.normal,

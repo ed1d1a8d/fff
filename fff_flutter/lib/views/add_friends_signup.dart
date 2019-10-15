@@ -142,7 +142,7 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                                       child: Text(
                                         MockData.onlineFriends[index].name,
                                         style:
-                                            Theme.of(context).textTheme.body1,
+                                            Theme.of(context).textTheme.display2,
                                       ),
                                     ),
                                     Spacer(),

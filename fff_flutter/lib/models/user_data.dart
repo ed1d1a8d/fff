@@ -8,6 +8,8 @@ class UserData {
   final String imageUrl;
   final double latitude;
   final double longitude;
+  final String distance;
+  final String message;
 
   UserData({
     this.id,
@@ -17,6 +19,8 @@ class UserData {
     this.imageUrl,
     this.latitude,
     this.longitude,
+    this.distance,
+    this.message,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
