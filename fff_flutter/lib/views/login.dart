@@ -1,6 +1,8 @@
-import "package:flutter/material.dart";
-import "package:fff/utils/spacing.dart" as fff_spacing;
+import 'package:fff/backend/auth.dart' as fff_auth;
+import 'package:fff/routes.dart' as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/utils/spacing.dart" as fff_spacing;
+import "package:flutter/material.dart";
 
 class Login extends StatelessWidget {
   static const String routeName = "/login";
@@ -45,10 +47,13 @@ class Login extends StatelessWidget {
               MaterialButton(
                 height: buttonHeight,
                 color: fff_colors.fb,
-                onPressed: () {
-                  print("TODO BACKEND");
-
-                  // launch fb auth
+                onPressed: () async {
+                  if (await fff_auth.authenticateWithFacebook()) {
+                    Navigator.pushReplacementNamed(
+                        context, fff_routes.Routes.home);
+                  }
+                  print("Authentication failed!");
+                  // TODO: Notify user that authentication failed for whatever reason.
                 },
                 padding: buttonPadding,
                 child: Row(

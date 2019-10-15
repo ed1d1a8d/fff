@@ -5,7 +5,7 @@ import "package:fff/views/login.dart";
 import "package:fff/views/add_friends_signup.dart";
 import "package:fff/views/home.dart";
 import "package:fff/views/friend_requests.dart";
-import "package:fff/routes/routes.dart";
+import 'package:fff/routes.dart';
 
 void main() => runApp(FFFApp());
 
@@ -14,7 +14,7 @@ class FFFApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      
+
       // Since we don't have animations between view widgets yet, to test, just switch this line out.
       // home: Loading(),
        home: Login(),
