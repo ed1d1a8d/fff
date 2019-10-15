@@ -1,6 +1,7 @@
 import 'package:fff/routes.dart' as fff_routes;
 import "package:fff/utils/theme.dart";
 import "package:fff/views/add_friends_signup.dart";
+import 'package:fff/views/friend_detail.dart';
 import "package:fff/views/friend_requests.dart";
 import "package:fff/views/home.dart";
 import "package:fff/views/loading.dart";
@@ -16,7 +17,8 @@ class FFFApp extends StatelessWidget {
       theme: theme,
 
       // Since we don't have animations between view widgets yet, to test, just switch this line out.
-      home: Loading(),
+      home: Home(),
+//      home: Loading(),
       // home: Login(),
       // home: AddFriendsSignup(),
       // home: Home(),
