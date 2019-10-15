@@ -1,14 +1,14 @@
-import "package:flutter/material.dart";
-import "package:font_awesome_flutter/font_awesome_flutter.dart";
+import "package:fff/components/gradient_container.dart";
+import "package:fff/components/hamburger_drawer.dart";
+import "package:fff/components/timer_box.dart";
+import "package:fff/components/url_avatar.dart";
 import "package:fff/models/mock_data.dart";
 import "package:fff/models/user_data.dart";
-import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/utils/colors.dart" as fff_colors;
-import "package:fff/components/timer_box.dart";
-import "package:fff/components/hamburger_drawer.dart";
-import "package:fff/components/gradient_container.dart";
-import "package:fff/components/url_avatar.dart";
+import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/views/friend_detail.dart";
+import "package:flutter/material.dart";
+import "package:font_awesome_flutter/font_awesome_flutter.dart";
 
 class Home extends StatefulWidget {
   static const String routeName = "/home";
@@ -229,6 +229,7 @@ class _HomeState extends State<Home> {
   }
 
   _pushFriendDetail(BuildContext context, int index) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => FriendDetail(index)));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => FriendDetail(index)));
   }
 }
