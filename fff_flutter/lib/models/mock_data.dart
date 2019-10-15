@@ -26,6 +26,28 @@ class MockData {
     "100018322293669",
   ];
 
+  static final List<String> distances = <String>[
+    "0.1mi",
+    "0.2mi",
+    "0.3mi",
+    "0.4mi",
+    "0.5mi",
+    "0.6mi",
+    "0.7mi",
+    "0.8mi",
+  ];
+
+  static final List<String> messages = <String>[
+    "Hey let's get beantown!",
+    "Wanna get Anna's?",
+    "Kenka! ^_^",
+    "Let's get back together ;)",
+    "AHHHHHH",
+    "what message do i write here?",
+    "I see you're a man of culture as well",
+    "Huh?",
+  ];
+
   static final List<String> imageURLs = <String>[
     "https://scontent.fbed1-2.fna.fbcdn.net/v/t1.0-1/p100x100/67764166_1754110728066134_419834560717520896_n.jpg?_nc_cat=104&_nc_oc=AQncgbAQPz1r_rJy_7dW3zpJ5R5_A2fTDjvj7oPj3e6NjJS7hChgZP_kXDfb_FLHCsA&_nc_ht=scontent.fbed1-2.fna&oh=77c89b8df11a1f19592c5c5359e1f770&oe=5E3B0351",
     "https://scontent.fbed1-2.fna.fbcdn.net/v/t1.0-1/p100x100/47687689_1488739577925807_9042020036373381120_n.jpg?_nc_cat=107&_nc_oc=AQmnMZm54OWVUQJtx8R_1jhezTCrNrLZx6A7KI8ZcSNdMYlUePw1t45iSMs3uVDAT_M&_nc_ht=scontent.fbed1-2.fna&oh=32a121a891b5eecf356fb23b9a65be28&oe=5DFC6F1D",
@@ -38,7 +60,35 @@ class MockData {
   ];
 
   static final List<UserData> onlineFriends = [
-    for (var pair in zip([names, imageURLs, usernames]))
-      UserData(name: pair[0], imageUrl: pair[1], username: pair[2])
+    for (var pair in zip([names, distances, messages, imageURLs, usernames]).toList())
+      UserData(
+        name: pair[0],
+        distance: pair[1],
+        message: null,
+        imageUrl: pair[3],
+        username: pair[4],
+      )
+  ];
+
+  static final List<UserData> incomingRequests = [
+    for (var pair
+        in zip([names, distances, messages, imageURLs]).toList().sublist(0, 3))
+      UserData(
+        name: pair[0],
+        distance: pair[1],
+        message: pair[2],
+        imageUrl: pair[3],
+      )
+  ];
+
+  static final List<UserData> outgoingRequests = [
+    for (var pair
+        in zip([names, distances, messages, imageURLs]).toList().sublist(4, 6))
+      UserData(
+        name: pair[0],
+        distance: pair[1],
+        message: pair[2],
+        imageUrl: pair[3],
+      )
   ];
 }
