@@ -28,7 +28,7 @@ class UserData {
         username: json["username"],
         name: json["name"],
         facebookId: json["facebook_id"],
-        imageUrl: json["imageUrl"],
+        imageUrl: json["image_url"],
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
       );
@@ -41,7 +41,7 @@ class UserData {
         "username": username,
         "name": name,
         "facebook_id": facebookId,
-        "imageUrl": imageUrl,
+        "image_url": imageUrl,
         "latitude": latitude,
         "longitude": longitude,
       };
