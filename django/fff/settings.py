@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Django Extensions,
+    'django_extensions',
     # Rest Framework
     "rest_framework",
     # Rest Auth
