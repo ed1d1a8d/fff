@@ -1,19 +1,26 @@
-import "package:flutter/material.dart";
-import "package:fff/utils/spacing.dart" as fff_spacing;
+import "package:fff/backend/auth.dart" as fff_auth;
+import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/utils/spacing.dart" as fff_spacing;
+import "package:flutter/material.dart";
 
 class Loading extends StatelessWidget {
   static const String routeName = "/loading";
 
-  Loading() {
-    print("TODO BACKEND");
-
-    // auth and whatever
-  }
-
   @override
   Widget build(BuildContext context) {
-    final double columnWidth = MediaQuery.of(context).size.width * fff_spacing.loadingWidthRatio;
+    final double columnWidth =
+        MediaQuery.of(context).size.width * fff_spacing.loadingWidthRatio;
+
+    fff_auth.loginWithSavedCredentials().then((authSucceeded) {
+      if (authSucceeded) {
+        print("Succesfully loaded saved credentials");
+        Navigator.pushReplacementNamed(context, fff_routes.home);
+      } else {
+        print("Unable to load saved credentials");
+        Navigator.pushReplacementNamed(context, fff_routes.login);
+      }
+    });
 
     return Container(
       color: fff_colors.background,

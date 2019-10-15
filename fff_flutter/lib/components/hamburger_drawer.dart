@@ -1,6 +1,7 @@
+import 'package:fff/backend/auth.dart' as fff_auth;
+import 'package:fff/routes.dart' as fff_routes;
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
-import 'package:fff/routes.dart';
 
 // Widget: the contents of the hamburger menu in the app.
 class HamburgerDrawer extends StatelessWidget {
@@ -12,19 +13,26 @@ class HamburgerDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           _createHeader(),
+          _createDrawerItem(context, FontAwesomeIcons.home, "Home",
+              () => Navigator.pushReplacementNamed(context, fff_routes.home)),
+          _createDrawerItem(context, FontAwesomeIcons.search, "Search People",
+              () => throw new UnimplementedError("TODO: SEARCH")),
           _createDrawerItem(
-              context, FontAwesomeIcons.home, "Home", Routes.home),
-          _createDrawerItem(
-              context, FontAwesomeIcons.search, "Search People", "TODO_SEARCH"),
-          _createDrawerItem(context, FontAwesomeIcons.smile, "Friend Requests",
-              Routes.friendRequest),
+              context,
+              FontAwesomeIcons.smile,
+              "Friend Requests",
+              () => Navigator.pushReplacementNamed(
+                  context, fff_routes.friendRequest)),
           _createDrawerItem(context, FontAwesomeIcons.questionCircle, "Help",
-              "TODO_QUESTION"),
+              () => throw new UnimplementedError("TODO: QUESTION")),
           new Expanded(
             child: new Align(
               alignment: Alignment.bottomCenter,
               child: _createDrawerItem(
-                  context, FontAwesomeIcons.powerOff, "Log Out", "TODO_LOGOUT"),
+                  context, FontAwesomeIcons.powerOff, "Log Out", () async {
+                await fff_auth.logout();
+                Navigator.pushReplacementNamed(context, fff_routes.login);
+              }),
             ),
           ),
         ],
@@ -75,18 +83,14 @@ class HamburgerDrawer extends StatelessWidget {
     );
   }
 
-  Widget _createDrawerItem(
-      BuildContext context, IconData icon, String title, String route) {
-    return ListTile(
-      title: Row(children: <Widget>[
-        SizedBox(width: 20),
-        Icon(icon, size: 16),
-        SizedBox(width: 20),
-        Text(title)
-      ]),
-      onTap: () {
-        Navigator.pushReplacementNamed(context, route);
-      },
-    );
-  }
+  Widget _createDrawerItem(BuildContext context, IconData icon, String title,
+          Function() onTap) =>
+      ListTile(
+          title: Row(children: <Widget>[
+            SizedBox(width: 20),
+            Icon(icon, size: 16),
+            SizedBox(width: 20),
+            Text(title)
+          ]),
+          onTap: onTap);
 }
