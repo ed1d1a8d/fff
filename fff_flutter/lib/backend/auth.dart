@@ -6,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 const String savedAuthTokenKey = "fff_authToken";
 
 final facebookLogin = FacebookLogin();
-String _authToken; // null if not authenticated
+String _authToken;
+
+bool isAuthenticated() => _authToken != null;
 
 /// Tries to retrieve credentials from persistent storage
 /// Returns true if successful

@@ -4,7 +4,7 @@ import "package:quiver/iterables.dart";
 class MockData {
   static final Duration timerDuration = new Duration(minutes: 5);
 
-  static final List<String> names = <String>[
+  static final List<String> names = [
     "Edward Park",
     "Jennifer Wang",
     "Jing Lin",
@@ -15,7 +15,7 @@ class MockData {
     "Lydia Yang",
   ];
 
-  static final List<String> usernames = <String>[
+  static final List<String> usernames = [
     "edward.park.963",
     "jennwang",
     "jinglin",
@@ -26,18 +26,29 @@ class MockData {
     "100018322293669",
   ];
 
-  static final List<String> distances = <String>[
-    "0.1mi",
-    "0.2mi",
-    "0.3mi",
-    "0.4mi",
-    "0.5mi",
-    "0.6mi",
-    "0.7mi",
-    "0.8mi",
+  static final List<double> longitudes = [
+    -71.11,
+    -71.12,
+    -71.13,
+    -71.14,
+    -71.15,
+    -71.16,
+    -71.17,
+    -71.18
   ];
 
-  static final List<String> messages = <String>[
+  static final List<double> latitudes = [
+    42.31,
+    42.32,
+    42.33,
+    42.34,
+    42.35,
+    42.36,
+    42.37,
+    42.38,
+  ];
+
+  static final List<String> messages = [
     "Hey let's get beantown!",
     "Wanna get Anna's?",
     "Kenka! ^_^",
@@ -60,35 +71,41 @@ class MockData {
   ];
 
   static final List<UserData> onlineFriends = [
-    for (var pair in zip([names, distances, messages, imageURLs, usernames]).toList())
+    for (var pair
+        in zip([names, usernames, imageURLs, longitudes, latitudes]).toList())
       UserData(
-        name: pair[0],
-        distance: pair[1],
-        message: null,
-        imageUrl: pair[3],
-        username: pair[4],
-      )
+          name: pair[0],
+          username: pair[1],
+          imageUrl: pair[2],
+          longitude: pair[3],
+          latitude: pair[4])
   ];
 
   static final List<UserData> incomingRequests = [
     for (var pair
-        in zip([names, distances, messages, imageURLs]).toList().sublist(0, 3))
+        in zip([names, usernames, imageURLs, longitudes, latitudes, messages])
+            .toList()
+            .sublist(0, 3))
       UserData(
-        name: pair[0],
-        distance: pair[1],
-        message: pair[2],
-        imageUrl: pair[3],
-      )
+          name: pair[0],
+          username: pair[1],
+          imageUrl: pair[2],
+          longitude: pair[3],
+          latitude: pair[4],
+          message: pair[5])
   ];
 
   static final List<UserData> outgoingRequests = [
     for (var pair
-        in zip([names, distances, messages, imageURLs]).toList().sublist(4, 6))
+        in zip([names, usernames, imageURLs, longitudes, latitudes, messages])
+            .toList()
+            .sublist(4, 6))
       UserData(
-        name: pair[0],
-        distance: pair[1],
-        message: pair[2],
-        imageUrl: pair[3],
-      )
+          name: pair[0],
+          username: pair[1],
+          imageUrl: pair[2],
+          longitude: pair[3],
+          latitude: pair[4],
+          message: pair[5])
   ];
 }

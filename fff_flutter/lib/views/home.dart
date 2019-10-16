@@ -13,6 +13,7 @@ import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/views/friend_detail.dart";
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
+import 'package:geolocator/geolocator.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = "/home";
@@ -50,6 +51,8 @@ class _HomeState extends State<Home> {
   Timer _fetchTimer;
   static const _fetchPeriod = const Duration(seconds: 5);
 
+  StreamSubscription<Position> _positionSubscription;
+
   @override
   initState() {
     super.initState();
@@ -70,11 +73,50 @@ class _HomeState extends State<Home> {
       // TODO: Fetch outgoingRequests
       setState(() => _outgoingRequests = MockData.outgoingRequests);
     });
+
+    _positionSubscription = Geolocator()
+        .getPositionStream(LocationOptions(
+            accuracy: LocationAccuracy.high, distanceFilter: 10))
+        .listen((Position position) async {
+      final getDistance = (UserData userData) async => position == null
+          ? null
+          : await Geolocator().distanceBetween(position.latitude,
+              position.longitude, userData.latitude, userData.longitude);
+
+      final List<double> incomingRequestDists = _incomingRequests == null
+          ? null
+          : await Future.wait(_incomingRequests.map(getDistance));
+      final List<double> onlineFriendsDists = _onlineFriends == null
+          ? null
+          : await Future.wait(_onlineFriends?.map(getDistance));
+      final List<double> outgoingRequestDists = _outgoingRequests == null
+          ? null
+          : await Future.wait(_outgoingRequests?.map(getDistance));
+
+      print("Got new location and updated distances");
+      setState(() {
+        incomingRequestDists.asMap().forEach((idx, dist) {
+          _incomingRequests[idx].distance = dist;
+        });
+        _incomingRequests.sort((u1, u2) => u1.distance.compareTo(u2.distance));
+
+        onlineFriendsDists.asMap().forEach((idx, dist) {
+          _onlineFriends[idx].distance = dist;
+        });
+        _onlineFriends.sort((u1, u2) => u1.distance.compareTo(u2.distance));
+
+        outgoingRequestDists.asMap().forEach((idx, dist) {
+          _outgoingRequests[idx].distance = dist;
+        });
+        _outgoingRequests.sort((u1, u2) => u1.distance.compareTo(u2.distance));
+      });
+    });
   }
 
   @override
   dispose() {
     _fetchTimer.cancel();
+    _positionSubscription.cancel();
     super.dispose();
   }
 
@@ -132,7 +174,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            this.buildProfileList(context),
+            buildProfileList(context),
           ],
         ),
       ),
@@ -216,7 +258,7 @@ class _HomeState extends State<Home> {
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () => _pushFriendDetail(context, index),
-                      child: this.buildProfilePane(
+                      child: buildProfilePane(
                         data[index].imageUrl,
                         data[index].name,
                         data[index].distance,
@@ -236,7 +278,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildProfilePane(
-      String imageURL, String name, String distance, String message) {
+      String imageURL, String name, double distance, String message) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,7 +304,7 @@ class _HomeState extends State<Home> {
                     height: 5,
                   ),
                   Text(
-                    distance ?? "",
+                    distance == null ? "" : "${(distance / 1609.34).toStringAsFixed(2)} miles",
                     style: Theme.of(context).textTheme.display1,
                   ),
                 ],
