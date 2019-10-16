@@ -5,8 +5,7 @@ from django.utils import timezone
 import rest_framework.generics
 from rest_framework.response import Response
 
-from friendship.models import Friend
-from friendship.models import FriendshipRequest
+from friendship.models import Friend, FriendshipRequest
 
 from .models import FFRequest, FFRequestStatusEnum, User
 from .serializers import (

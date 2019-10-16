@@ -1,11 +1,17 @@
 import "package:fff/backend/auth.dart" as fff_auth;
-import "package:fff/backend/server_location.dart";
+import "package:fff/backend/constants.dart" as fff_backend_constants;
+import 'package:fff/models/mock_data.dart';
 import "package:fff/models/user_data.dart";
 import "package:http/http.dart" as http;
 
-final String lobbyEndpoint = server_location + "/api/lobby";
+final String lobbyEndpoint =
+    fff_backend_constants.server_location + "/api/lobby";
 
-Future<List<UserData>> fetchLobbyFriends() async {
+Future<List<UserData>> fetchOnlineFriends() async {
+  if (fff_backend_constants.mockData) {
+    return MockData.onlineFriends;
+  }
+
   final response = await http.get(lobbyEndpoint + "/friends.json",
       headers: fff_auth.getAuthHeaders());
 

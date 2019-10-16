@@ -1,3 +1,6 @@
+import "dart:async";
+
+import "package:fff/backend/lobby.dart" as fff_lobby_backend;
 import "package:fff/components/gradient_container.dart";
 import "package:fff/components/hamburger_drawer.dart";
 import "package:fff/components/timer_box.dart";
@@ -5,6 +8,7 @@ import "package:fff/components/url_avatar.dart";
 import "package:fff/models/mock_data.dart";
 import "package:fff/models/user_data.dart";
 import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/utils/no_delay_periodic_timer.dart";
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/views/friend_detail.dart";
 import "package:flutter/material.dart";
@@ -21,14 +25,64 @@ class Home extends StatefulWidget {
   }
 }
 
-class _HomeState extends State<Home> {
-  int _currentIndex = 0;
+enum _HomeTab { incomingRequests, onlineFriends, outgoingRequests }
 
-  final List<String> _titles = [
-    "Incoming Requests",
-    "Online Friends",
-    "Outgoing Requests",
-  ];
+String _homeTabToString(_HomeTab time) {
+  switch (time) {
+    case _HomeTab.incomingRequests:
+      return "Incoming Requests";
+    case _HomeTab.onlineFriends:
+      return "Online Friends";
+    case _HomeTab.outgoingRequests:
+      return "Outgoing Requests";
+  }
+  return null;
+}
+
+class _HomeState extends State<Home> {
+  _HomeTab _curTab = _HomeTab.incomingRequests;
+
+  // TODO: Use a different datatype for requests.
+  List<UserData> _incomingRequests; // TODO: Track unread requests.
+  List<UserData> _onlineFriends;
+  List<UserData> _outgoingRequests;
+
+  Timer _fetchTimer;
+  static const _fetchPeriod = const Duration(seconds: 5);
+
+  @override
+  initState() {
+    super.initState();
+
+    _fetchTimer = noDelayPeriodicTimer(_fetchPeriod, () async {
+      try {
+        final List<UserData> newOnlineFriends =
+            await fff_lobby_backend.fetchOnlineFriends();
+        print("Fetched new lobby friends");
+        setState(() => _onlineFriends = newOnlineFriends);
+      } catch (error) {
+        print("Failed to fetch friends. $error");
+      }
+
+      // TODO: Fetch incomingRequests
+      setState(() => _incomingRequests = MockData.incomingRequests);
+
+      // TODO: Fetch outgoingRequests
+      setState(() => _outgoingRequests = MockData.outgoingRequests);
+    });
+  }
+
+  @override
+  dispose() {
+    _fetchTimer.cancel();
+    super.dispose();
+  }
+
+  void onTabTapped(int index) {
+    setState(() {
+      _curTab = _HomeTab.values[index];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +90,7 @@ class _HomeState extends State<Home> {
       backgroundColor: fff_colors.background,
       appBar: AppBar(
         title: Text(
-          _titles[_currentIndex],
+          _homeTabToString(_curTab),
           style: Theme.of(context).textTheme.title,
         ),
         backgroundColor: fff_colors.background,
@@ -96,7 +150,7 @@ class _HomeState extends State<Home> {
         child: SizedBox(
           child: BottomNavigationBar(
             onTap: onTabTapped,
-            currentIndex: _currentIndex,
+            currentIndex: _curTab.index,
             items: [
               BottomNavigationBarItem(
                 icon: new Icon(Icons.mail),
@@ -135,45 +189,47 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
   Widget buildProfileList(BuildContext context) {
-    final List<List<UserData>> profileListData = [
-      MockData.incomingRequests,
-      MockData.onlineFriends,
-      MockData.outgoingRequests,
-    ];
-
-    List<UserData> data = profileListData[this._currentIndex];
+    final List<UserData> data = () {
+      switch (_curTab) {
+        case _HomeTab.incomingRequests:
+          return _incomingRequests;
+        case _HomeTab.onlineFriends:
+          return _onlineFriends;
+        case _HomeTab.outgoingRequests:
+          return _outgoingRequests;
+      }
+      return null;
+    }();
 
     return Expanded(
       child: Container(
         color: fff_colors.background,
         child: GradientContainer(
           padding: const EdgeInsets.all(fff_spacing.profileListInsets),
-          child: ListView.separated(
-            itemCount: data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return GestureDetector(
-                onTap: () => _pushFriendDetail(context, index),
-                child: this.buildProfilePane(
-                  data[index].imageUrl,
-                  data[index].name,
-                  data[index].distance,
-                  data[index].message,
+          child: data == null
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView.separated(
+                  itemCount: data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () => _pushFriendDetail(context, index),
+                      child: this.buildProfilePane(
+                        data[index].imageUrl,
+                        data[index].name,
+                        data[index].distance,
+                        data[index].message,
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(
+                    height: 20,
+                    color: fff_colors.black,
+                  ),
                 ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(
-              height: 20,
-              color: fff_colors.black,
-            ),
-          ),
         ),
       ),
     );
@@ -206,7 +262,7 @@ class _HomeState extends State<Home> {
                     height: 5,
                   ),
                   Text(
-                    distance,
+                    distance ?? "",
                     style: Theme.of(context).textTheme.display1,
                   ),
                 ],
