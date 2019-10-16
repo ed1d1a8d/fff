@@ -36,7 +36,7 @@ Future<bool> loginWithFacebook() async {
   }
 
   // TODO: get authToken from fff_backend using fbLoginResult.accessToken
-  _authToken = "dfde53379d7316eeb8cc35d9064462974e5ca50a";
+  _authToken = "4c91e5cd3a7490c87a2e9c52e500ba6283678fa6";
 
   // Save credentials to persistent storage
   SharedPreferences prefs = await SharedPreferences.getInstance();

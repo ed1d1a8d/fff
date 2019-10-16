@@ -49,10 +49,12 @@ class Login extends StatelessWidget {
                 color: fff_colors.fb,
                 onPressed: () async {
                   if (await fff_auth.loginWithFacebook()) {
+                    print("Authentication succeeded!");
                     Navigator.pushReplacementNamed(context, fff_routes.home);
+                  } else {
+                    print("Authentication failed!");
+                    // TODO: Notify user that authentication failed for whatever reason.
                   }
-                  print("Authentication failed!");
-                  // TODO: Notify user that authentication failed for whatever reason.
                 },
                 padding: buttonPadding,
                 child: Row(

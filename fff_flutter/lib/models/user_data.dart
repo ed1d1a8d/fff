@@ -8,6 +8,7 @@ class UserData {
   final String imageUrl;
   final double latitude;
   final double longitude;
+
   final String distance;
   final String message;
 

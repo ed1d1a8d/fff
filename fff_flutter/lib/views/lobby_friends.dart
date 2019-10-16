@@ -30,7 +30,7 @@ class _LobbyFriendsState extends State<LobbyFriends> {
     _fetchTimer = noDelayPeriodicTimer(_fetchPeriod, () async {
       try {
         final List<UserData> newOnlineFriends =
-            await fff_lobby_backend.fetchLobbyFriends();
+            await fff_lobby_backend.fetchOnlineFriends();
         print("Fetched new lobby friends");
         setState(() => _onlineFriends = newOnlineFriends);
       } catch (error) {

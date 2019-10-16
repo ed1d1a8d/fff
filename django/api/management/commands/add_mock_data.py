@@ -2,6 +2,7 @@ import random
 from datetime import datetime, timezone
 
 from django.core.management.base import BaseCommand
+from friendship.models import Friend, FriendshipRequest
 
 from api.models import User
 
@@ -53,24 +54,39 @@ class Command(BaseCommand):
         )
     ]
 
-    def add_mock_users(self):
+    users = []
+
+    def create_superuser(self):
         User.objects.create_superuser(username="admin",
                                       password="admin",
                                       email="")
         print("Created super user.")
 
+    def create_mock_users(self):
         random.seed(42)
         for name, username, image_url in self.mock_user_data:
-            User.objects.create_user(
-                username=username,
-                password=username,
-                name=name,
-                image_url=image_url,
-                longitude=-71.1097335 + 1 - 2 * random.random(),
-                latitude=42.3736158 + 1 - 2 * random.random(),
-                lobby_expiration=str(
-                    datetime(year=2050, month=1, day=1, tzinfo=timezone.utc)))
-        print(f"Added {len(self.mock_user_data)} mock users.")
+            self.users.append(
+                User.objects.create_user(
+                    username=username,
+                    password="#yanggang",
+                    name=name,
+                    image_url=image_url,
+                    longitude=-71.1097335 + 1 - 2 * random.random(),
+                    latitude=42.3736158 + 1 - 2 * random.random(),
+                    lobby_expiration=str(
+                        datetime(year=2050,
+                                 month=1,
+                                 day=1,
+                                 tzinfo=timezone.utc))))
+        print(f"Created {len(self.users)} mock users.")
+
+    def create_friendships(self):
+        for i, user1 in enumerate(self.users):
+            for user2 in self.users[2 * i + 1:]:
+                Friend.objects.add_friend(user1, user2).accept()
+        print(f"Created friendships")
 
     def handle(self, *args, **options):
-        self.add_mock_users()
+        self.create_superuser()
+        self.create_mock_users()
+        self.create_friendships()
