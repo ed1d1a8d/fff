@@ -33,7 +33,7 @@ class FriendRequestsState extends State<FriendRequests> {
             ),
           ],
         ),
-        backgroundColor: fff_colors.background,
+        backgroundColor: fff_colors.navBarBackground,
         elevation: 0.0,
         iconTheme: new IconThemeData(color: Colors.black),
       ),
