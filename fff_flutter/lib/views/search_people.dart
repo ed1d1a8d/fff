@@ -125,43 +125,43 @@ class SearchPeopleState extends State<SearchPeople> {
                       ),
 
                       // List of other people on FFF
-//                      Expanded(
-//                        child: ListView.separated(
-//                          padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
-//                          itemCount: SearchFriendsData.otherPeople.length,
-//                          itemBuilder: (BuildContext context, int index) {
-//                            return this.friendAtIndexVisible(index)
-//                                ? Row(
-//                              children: <Widget>[
-//                                URLAvatar(
-//                                  imageURL: SearchFriendsData
-//                                      .otherPeople[index].imageUrl,
-//                                ),
-//                                Container(
-//                                  margin: const EdgeInsets.only(left: 10),
-//                                  child: Text(
-//                                    SearchFriendsData.otherPeople[index].name,
-//                                    style:
-//                                    Theme
-//                                        .of(context)
-//                                        .textTheme
-//                                        .display2,
-//                                  ),
-//                                ),
-//                                Spacer(),
-//                              ],
-//                            )
-//                                : Container();
-//                          },
-//                          separatorBuilder: (BuildContext context, int index) {
-//                            return this.friendAtIndexVisible(index)
-//                                ? Divider(
-//                              color: fff_colors.black,
-//                            )
-//                                : Container();
-//                          },
-//                        ),
-//                      ),
+                      Expanded(
+                        child: ListView.separated(
+                          padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                          itemCount: SearchFriendsData.otherPeople.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return this.friendAtIndexVisible(index)
+                                ? Row(
+                              children: <Widget>[
+                                URLAvatar(
+                                  imageURL: SearchFriendsData
+                                      .otherPeople[index].imageUrl,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    SearchFriendsData.otherPeople[index].name,
+                                    style:
+                                    Theme
+                                        .of(context)
+                                        .textTheme
+                                        .display2,
+                                  ),
+                                ),
+                                Spacer(),
+                              ],
+                            )
+                                : Container();
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return this.friendAtIndexVisible(index)
+                                ? Divider(
+                              color: fff_colors.black,
+                            )
+                                : Container();
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
