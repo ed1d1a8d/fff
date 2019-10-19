@@ -13,7 +13,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 void main() => runApp(FFFApp());
 
 class FFFApp extends StatelessWidget {
-
   GoogleMapController mapController;
 
   final LatLng _center = const LatLng(45.521563, -122.677433);
@@ -28,11 +27,11 @@ class FFFApp extends StatelessWidget {
       theme: theme,
 
       // Switch this line out for easier debugging
-//      home: Loading(),
+      // home: Loading(),
       // home: Login(),
-//       home: AddFriendsSignup(),
-       home: Home(),
-//       home: SearchPeople(),
+      // home: AddFriendsSignup(),
+      home: Home(),
+      // home: SearchPeople(),
 
       // Used by the navigator.
       routes: <String, WidgetBuilder>{
