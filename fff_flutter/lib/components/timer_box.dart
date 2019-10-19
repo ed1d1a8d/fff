@@ -23,7 +23,7 @@ class _TimerBoxState extends State<TimerBox> {
     this.startTimer();
   }
 
-  void pauseTimer() {
+  void stopTimer() {
     _timer.cancel();
   }
 
@@ -85,6 +85,7 @@ class _TimerBoxState extends State<TimerBox> {
             new FlatButton(
               child: new Text("Set"),
               onPressed: () {
+                stopTimer();
                 startTimer();
                 Navigator.of(context).pop();
               },
