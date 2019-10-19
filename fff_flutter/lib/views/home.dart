@@ -7,6 +7,7 @@ import "package:fff/components/timer_box.dart";
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/mock_data.dart";
 import "package:fff/models/user_data.dart";
+import "package:fff/models/ffrequest.dart";
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/no_delay_periodic_timer.dart";
 import "package:fff/utils/spacing.dart" as fff_spacing;
@@ -44,9 +45,9 @@ class _HomeState extends State<Home> {
   _HomeTab _curTab = _HomeTab.incomingRequests;
 
   // TODO: Use a different datatype for requests.
-  List<UserData> _incomingRequests; // TODO: Track unread requests.
+  List<FFRequest> _incomingRequests; // TODO: Track unread requests.
   List<UserData> _onlineFriends;
-  List<UserData> _outgoingRequests;
+  List<FFRequest> _outgoingRequests;
 
   Timer _fetchTimer;
   static const _fetchPeriod = const Duration(seconds: 5);
@@ -62,16 +63,24 @@ class _HomeState extends State<Home> {
         final List<UserData> newOnlineFriends =
             await fff_lobby_backend.fetchOnlineFriends();
         print("Fetched new lobby friends");
-        setState(() => _onlineFriends = newOnlineFriends);
+
+
+        final List<FFRequest> newIncomingRequests =
+            await fff_lobby_backend.fetchIncomingRequests();
+
+        final List<FFRequest> newOutgoingRequests =
+        await fff_lobby_backend.fetchOutgoingRequests();
+
+        setState(() {
+          _onlineFriends = newOnlineFriends;
+          _incomingRequests = newIncomingRequests;
+          _outgoingRequests = newOutgoingRequests;
+        });
+
       } catch (error) {
         print("Failed to fetch friends. $error");
       }
 
-      // TODO: Fetch incomingRequests
-      setState(() => _incomingRequests = MockData.incomingRequests);
-
-      // TODO: Fetch outgoingRequests
-      setState(() => _outgoingRequests = MockData.outgoingRequests);
     });
 
     _positionSubscription = Geolocator()
@@ -81,24 +90,26 @@ class _HomeState extends State<Home> {
       final getDistance = (UserData userData) async => position == null
           ? null
           : await Geolocator().distanceBetween(position.latitude,
-              position.longitude, userData.latitude, userData.longitude);
+          position.longitude, userData.latitude, userData.longitude);
 
       final List<double> incomingRequestDists = _incomingRequests == null
           ? null
-          : await Future.wait(_incomingRequests.map(getDistance));
+          : await Future.wait(_incomingRequests.map((request) => getDistance(request.user)));
+
       final List<double> onlineFriendsDists = _onlineFriends == null
           ? null
           : await Future.wait(_onlineFriends?.map(getDistance));
+
       final List<double> outgoingRequestDists = _outgoingRequests == null
           ? null
-          : await Future.wait(_outgoingRequests?.map(getDistance));
+          : await Future.wait(_incomingRequests.map((request) => getDistance(request.user)));
 
       print("Got new location and updated distances");
       setState(() {
         incomingRequestDists.asMap().forEach((idx, dist) {
-          _incomingRequests[idx].distance = dist;
+          _incomingRequests[idx].user.distance = dist;
         });
-        _incomingRequests.sort((u1, u2) => u1.distance.compareTo(u2.distance));
+        _incomingRequests.sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
 
         onlineFriendsDists.asMap().forEach((idx, dist) {
           _onlineFriends[idx].distance = dist;
@@ -106,9 +117,9 @@ class _HomeState extends State<Home> {
         _onlineFriends.sort((u1, u2) => u1.distance.compareTo(u2.distance));
 
         outgoingRequestDists.asMap().forEach((idx, dist) {
-          _outgoingRequests[idx].distance = dist;
+          _outgoingRequests[idx].user.distance = dist;
         });
-        _outgoingRequests.sort((u1, u2) => u1.distance.compareTo(u2.distance));
+        _outgoingRequests.sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
       });
     });
   }
@@ -232,7 +243,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildProfileList(BuildContext context) {
-    final List<UserData> data = () {
+    final List<dynamic> data = () {
       switch (_curTab) {
         case _HomeTab.incomingRequests:
           return _incomingRequests;
@@ -256,12 +267,24 @@ class _HomeState extends State<Home> {
               : ListView.separated(
                   itemCount: data.length,
                   itemBuilder: (BuildContext context, int index) {
+                    if (data[index] is UserData) {
+                      return GestureDetector(
+                        onTap: () => _pushFriendDetail(context, index),
+                        child: buildProfilePane(
+                          data[index].imageUrl,
+                          data[index].name,
+                          data[index].distance,
+                          null,
+                        ),
+                      );
+                    }
+                    // if data[index] is FFRequest
                     return GestureDetector(
                       onTap: () => _pushFriendDetail(context, index),
                       child: buildProfilePane(
-                        data[index].imageUrl,
-                        data[index].name,
-                        data[index].distance,
+                        data[index].user.imageUrl,
+                        data[index].user.name,
+                        data[index].user.distance,
                         data[index].message,
                       ),
                     );

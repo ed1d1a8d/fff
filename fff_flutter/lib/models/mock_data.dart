@@ -1,4 +1,6 @@
 import "package:fff/models/user_data.dart";
+import "package:fff/models/ffrequest.dart";
+
 import "package:quiver/iterables.dart";
 
 class MockData {
@@ -81,31 +83,38 @@ class MockData {
           latitude: pair[4])
   ];
 
-  static final List<UserData> incomingRequests = [
+  static final List<FFRequest> incomingRequests = [
     for (var pair
-        in zip([names, usernames, imageURLs, longitudes, latitudes, messages])
-            .toList()
-            .sublist(0, 3))
-      UserData(
-          name: pair[0],
-          username: pair[1],
-          imageUrl: pair[2],
-          longitude: pair[3],
-          latitude: pair[4],
-          message: pair[5])
+    in zip([names, usernames, imageURLs, longitudes, latitudes, messages])
+        .toList()
+        .sublist(0, 3))
+      FFRequest(
+        user: UserData(
+            name: pair[0],
+            username: pair[1],
+            imageUrl: pair[2],
+            longitude: pair[3],
+            latitude: pair[4]),
+        message: pair[5],
+        isIncoming: true,
+      )
   ];
 
-  static final List<UserData> outgoingRequests = [
+  static final List<FFRequest> outgoingRequests = [
     for (var pair
-        in zip([names, usernames, imageURLs, longitudes, latitudes, messages])
-            .toList()
-            .sublist(4, 6))
-      UserData(
-          name: pair[0],
-          username: pair[1],
-          imageUrl: pair[2],
-          longitude: pair[3],
-          latitude: pair[4],
-          message: pair[5])
+    in zip([names, usernames, imageURLs, longitudes, latitudes, messages])
+        .toList()
+        .sublist(0, 3))
+      FFRequest(
+        user: UserData(
+            name: pair[0],
+            username: pair[1],
+            imageUrl: pair[2],
+            longitude: pair[3],
+            latitude: pair[4]),
+        message: pair[5],
+        isIncoming: false,
+      )
   ];
 }
+
