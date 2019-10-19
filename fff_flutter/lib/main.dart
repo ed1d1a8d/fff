@@ -2,6 +2,7 @@ import 'package:fff/routes.dart' as fff_routes;
 import "package:fff/utils/theme.dart";
 import "package:fff/views/add_friends_signup.dart";
 import 'package:fff/views/friend_detail.dart';
+import 'package:fff/views/search_people.dart';
 import "package:fff/views/friend_requests.dart";
 import "package:fff/views/home.dart";
 import "package:fff/views/loading.dart";
@@ -26,12 +27,12 @@ class FFFApp extends StatelessWidget {
     return MaterialApp(
       theme: theme,
 
-      // Since we don't have animations between view widgets yet, to test, just switch this line out.
+      // Switch this line out for easier debugging
 //      home: Loading(),
       // home: Login(),
-      // home: AddFriendsSignup(),
+//       home: AddFriendsSignup(),
        home: Home(),
-      // home: FriendRequests(),
+//       home: SearchPeople(),
 
       // Used by the navigator.
       routes: <String, WidgetBuilder>{
@@ -41,6 +42,7 @@ class FFFApp extends StatelessWidget {
         fff_routes.friendRequest: (BuildContext context) => FriendRequests(),
         fff_routes.addFriendSignup: (BuildContext context) =>
             AddFriendsSignup(),
+        fff_routes.searchPeople: (BuildContext context) => SearchPeople(),
       },
     );
   }

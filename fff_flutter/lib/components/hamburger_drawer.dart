@@ -15,8 +15,12 @@ class HamburgerDrawer extends StatelessWidget {
           _createHeader(),
           _createDrawerItem(context, FontAwesomeIcons.home, "Home",
               () => Navigator.pushReplacementNamed(context, fff_routes.home)),
-          _createDrawerItem(context, FontAwesomeIcons.search, "Search People",
-              () => throw new UnimplementedError("TODO: SEARCH")),
+          _createDrawerItem(
+              context,
+              FontAwesomeIcons.search,
+              "Search People",
+              () => Navigator.pushReplacementNamed(
+                  context, fff_routes.searchPeople)),
           _createDrawerItem(
               context,
               FontAwesomeIcons.smile,
