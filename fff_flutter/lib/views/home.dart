@@ -64,23 +64,20 @@ class _HomeState extends State<Home> {
             await fff_lobby_backend.fetchOnlineFriends();
         print("Fetched new lobby friends");
 
-
         final List<FFRequest> newIncomingRequests =
             await fff_lobby_backend.fetchIncomingRequests();
 
         final List<FFRequest> newOutgoingRequests =
-        await fff_lobby_backend.fetchOutgoingRequests();
+            await fff_lobby_backend.fetchOutgoingRequests();
 
         setState(() {
           _onlineFriends = newOnlineFriends;
           _incomingRequests = newIncomingRequests;
           _outgoingRequests = newOutgoingRequests;
         });
-
       } catch (error) {
         print("Failed to fetch friends. $error");
       }
-
     });
 
     _positionSubscription = Geolocator()
@@ -90,11 +87,12 @@ class _HomeState extends State<Home> {
       final getDistance = (UserData userData) async => position == null
           ? null
           : await Geolocator().distanceBetween(position.latitude,
-          position.longitude, userData.latitude, userData.longitude);
+              position.longitude, userData.latitude, userData.longitude);
 
       final List<double> incomingRequestDists = _incomingRequests == null
           ? null
-          : await Future.wait(_incomingRequests.map((request) => getDistance(request.user)));
+          : await Future.wait(
+              _incomingRequests.map((request) => getDistance(request.user)));
 
       final List<double> onlineFriendsDists = _onlineFriends == null
           ? null
@@ -102,14 +100,16 @@ class _HomeState extends State<Home> {
 
       final List<double> outgoingRequestDists = _outgoingRequests == null
           ? null
-          : await Future.wait(_incomingRequests.map((request) => getDistance(request.user)));
+          : await Future.wait(
+              _incomingRequests.map((request) => getDistance(request.user)));
 
       print("Got new location and updated distances");
       setState(() {
         incomingRequestDists.asMap().forEach((idx, dist) {
           _incomingRequests[idx].user.distance = dist;
         });
-        _incomingRequests.sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
+        _incomingRequests
+            .sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
 
         onlineFriendsDists.asMap().forEach((idx, dist) {
           _onlineFriends[idx].distance = dist;
@@ -119,7 +119,8 @@ class _HomeState extends State<Home> {
         outgoingRequestDists.asMap().forEach((idx, dist) {
           _outgoingRequests[idx].user.distance = dist;
         });
-        _outgoingRequests.sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
+        _outgoingRequests
+            .sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
       });
     });
   }
@@ -269,7 +270,8 @@ class _HomeState extends State<Home> {
                   itemBuilder: (BuildContext context, int index) {
                     if (data[index] is UserData) {
                       return GestureDetector(
-                        onTap: () => _pushFriendDetail(context, index),
+                        onTap: () =>
+                            this._pushFriendDetail(context, data[index], null),
                         child: buildProfilePane(
                           data[index].imageUrl,
                           data[index].name,
@@ -278,9 +280,11 @@ class _HomeState extends State<Home> {
                         ),
                       );
                     }
+
                     // if data[index] is FFRequest
                     return GestureDetector(
-                      onTap: () => _pushFriendDetail(context, index),
+                      onTap: () =>
+                          this._pushFriendDetail(context, data[index].user, data[index]),
                       child: buildProfilePane(
                         data[index].user.imageUrl,
                         data[index].user.name,
@@ -327,7 +331,9 @@ class _HomeState extends State<Home> {
                     height: 5,
                   ),
                   Text(
-                    distance == null ? "" : "${(distance / 1609.34).toStringAsFixed(2)} miles",
+                    distance == null
+                        ? ""
+                        : "${(distance / 1609.34).toStringAsFixed(2)} miles",
                     style: Theme.of(context).textTheme.display1,
                   ),
                 ],
@@ -349,8 +355,12 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _pushFriendDetail(BuildContext context, int index) {
+  _pushFriendDetail(BuildContext context, UserData user, FFRequest ffRequest) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => FriendDetail(index)));
+      context,
+      MaterialPageRoute(
+        builder: (context) => FriendDetail(user, ffRequest),
+      ),
+    );
   }
 }

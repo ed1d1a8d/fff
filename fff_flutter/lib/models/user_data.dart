@@ -10,6 +10,7 @@ class UserData {
   final double longitude;
 
   final String message;
+  final String lastFoodDate;
 
   double distance;
 
@@ -22,6 +23,7 @@ class UserData {
     this.latitude,
     this.longitude,
     this.message,
+    this.lastFoodDate,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
