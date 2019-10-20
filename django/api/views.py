@@ -63,7 +63,6 @@ class LobbyFriends(rest_framework.generics.ListAPIView):
                 from_user__lobby_expiration__gt=timezone.now()).all()
         ]
 
-
 class CreateFFRequest(rest_framework.generics.CreateAPIView):
     serializer_class = FFRequestSerializer
 
@@ -118,6 +117,17 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
         else:
             return HttpResponse(f"Invalid action: {action}", status=400)
 
+class FetchFFSearchForFriend(rest_framework.generics.ListAPIView):
+
+    serializer_class = FFRequestSerializer
+
+    def get_queryset(self):
+        friend = User.objects.get(pk=self.kwargs['other_pk'])
+
+        return FFRequest.objects.filter(
+            (Q(sender=self.request.user) & Q(receiver=friend)) | 
+            (Q(sender=friend) & Q(receiver=self.request.user))
+        )
 
 class IncomingFFRequests(rest_framework.generics.ListAPIView):
     # TODO: Filter to non-expired requests.
