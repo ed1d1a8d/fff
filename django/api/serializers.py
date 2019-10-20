@@ -25,10 +25,9 @@ class FFRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.FFRequest
         fields = [
-            "id", "created_at", "message", "sender", "receiver"
+            "id", "status", "created_at", "message", "sender", "receiver", 
         ]
         read_only_fields = ["status", "sender"]
-
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
     class Meta:
