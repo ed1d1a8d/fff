@@ -91,6 +91,8 @@ class SearchPeopleState extends State<SearchPeople> {
           otherPeople[a], combinedList, a < friends.length - 1);
     }
 
+    combinedList.add(SizedBox(height: 20));
+
     return combinedList;
   }
 
