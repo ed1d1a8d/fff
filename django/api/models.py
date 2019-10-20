@@ -35,7 +35,6 @@ class FFRequest(models.Model):
     status = models.CharField(
         blank=False,
         max_length=255,
-        choices=[(tag, tag.value) for tag in FFRequestStatusEnum],
     )
 
     sender = models.ForeignKey(User,
@@ -44,3 +43,7 @@ class FFRequest(models.Model):
     receiver = models.ForeignKey(User,
                                  related_name="request_receiver_set",
                                  on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.message} {self.sender} {self.receiver} {self.status}"
+        

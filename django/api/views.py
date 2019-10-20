@@ -121,13 +121,15 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
 
 class IncomingFFRequests(rest_framework.generics.ListAPIView):
     # TODO: Filter to non-expired requests.
+    # TODO: Double check you can only request a valid status
+
     serializer_class = FFRequestSerializer
 
     def get_queryset(self):
         return FFRequest.objects.filter(
             status=self.kwargs["status"],
             receiver=self.request.user,
-        )
+        ).select_related("sender", "receiver")
 
 
 class OutgoingFFRequests(rest_framework.generics.ListAPIView):
@@ -138,7 +140,7 @@ class OutgoingFFRequests(rest_framework.generics.ListAPIView):
         return FFRequest.objects.filter(
             status=self.kwargs["status"],
             sender=self.request.user,
-        )
+        ).select_related("sender", "receiver")
 
 
 class FriendList(rest_framework.generics.ListAPIView):

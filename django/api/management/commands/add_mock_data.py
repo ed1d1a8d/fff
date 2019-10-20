@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from django.core.management.base import BaseCommand
 from friendship.models import Friend, FriendshipRequest
 
-from api.models import User
+from api.models import User, FFRequest, FFRequestStatusEnum
 
 
 class Command(BaseCommand):
@@ -16,6 +16,11 @@ class Command(BaseCommand):
             "Edward Park",
             "edward.park.963",
             "https://scontent.fbed1-2.fna.fbcdn.net/v/t1.0-1/p100x100/67764166_1754110728066134_419834560717520896_n.jpg?_nc_cat=104&_nc_oc=AQncgbAQPz1r_rJy_7dW3zpJ5R5_A2fTDjvj7oPj3e6NjJS7hChgZP_kXDfb_FLHCsA&_nc_ht=scontent.fbed1-2.fna&oh=77c89b8df11a1f19592c5c5359e1f770&oe=5E3B0351",
+        ),
+        (
+            "Stella Yang",
+            "stellay",
+            "https://scontent.fbed1-2.fna.fbcdn.net/v/t1.0-1/c73.206.614.614a/s200x200/50735968_2302236259809637_5312553092619698176_n.jpg?_nc_cat=104&_nc_oc=AQlHKJKlKDFPWN60047yu8FPgY8dh3cFCmxvwfapjP7fqwH7hr0iMfntNcqOLu8d_mM&_nc_ht=scontent.fbed1-2.fna&oh=413c43cfc473d21835aafd3887785360&oe=5E2E9C25",
         ),
         (
             "Jennifer Wang",
@@ -54,6 +59,19 @@ class Command(BaseCommand):
         )
     ]
 
+    mock_message_data = [
+      "hello",
+      "world",
+      "aiyee",
+      "please",
+      "work",
+      "hello",
+      "world",
+      "aiyee",
+      "please",
+      "work",
+    ]
+
     users = []
 
     def create_superuser(self):
@@ -86,7 +104,19 @@ class Command(BaseCommand):
                 Friend.objects.add_friend(user1, user2).accept()
         print(f"Created friendships")
 
+    def create_mock_requests(self):
+        for i, user1 in enumerate(self.users):
+            for user2 in self.users[2 * i + 1:]:
+                tempRequest = FFRequest(
+                  message = self.mock_message_data[i],
+                  status = FFRequestStatusEnum.PENDING.value,
+                  sender = user1,
+                  receiver = user2,)
+                tempRequest.save()
+        print(f"Created mock requests")
+
     def handle(self, *args, **options):
         self.create_superuser()
         self.create_mock_users()
         self.create_friendships()
+        self.create_mock_requests()

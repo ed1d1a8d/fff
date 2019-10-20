@@ -19,10 +19,13 @@ class LobbyExpirationSerializer(serializers.ModelSerializer):
 
 
 class FFRequestSerializer(serializers.ModelSerializer):
+    sender = UserSerializer()
+    receiver = UserSerializer()
+
     class Meta:
         model = models.FFRequest
         fields = [
-            "id", "created_at", "message", "status", "sender", "receiver"
+            "id", "created_at", "message", "sender", "receiver"
         ]
         read_only_fields = ["status", "sender"]
 
