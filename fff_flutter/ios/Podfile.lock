@@ -14,9 +14,6 @@ PODS:
     - FBSDKCoreKit (~> 5.5)
     - FBSDKLoginKit (~> 5.5)
     - Flutter
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
   - geolocator (5.1.4):
     - Flutter
   - google_api_availability (2.0.1):
@@ -31,35 +28,27 @@ PODS:
     - GoogleMaps/Base
   - location_permissions (2.0.3):
     - Flutter
-  - path_provider (0.0.1):
-    - Flutter
   - shared_preferences (0.0.1):
     - Flutter
-  - sqflite (0.0.1):
-    - Flutter
-    - FMDB (~> 2.7.2)
 
 DEPENDENCIES:
-  - Flutter (from `.symlinks/flutter/ios`)
+  - Flutter (from `Flutter`)
   - flutter_facebook_login (from `.symlinks/plugins/flutter_facebook_login/ios`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
   - google_api_availability (from `.symlinks/plugins/google_api_availability/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
-  - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - FBSDKCoreKit
     - FBSDKLoginKit
-    - FMDB
     - GoogleMaps
 
 EXTERNAL SOURCES:
   Flutter:
-    :path: ".symlinks/flutter/ios"
+    :path: Flutter
   flutter_facebook_login:
     :path: ".symlinks/plugins/flutter_facebook_login/ios"
   geolocator:
@@ -70,28 +59,21 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   location_permissions:
     :path: ".symlinks/plugins/location_permissions/ios"
-  path_provider:
-    :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  sqflite:
-    :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
   FBSDKCoreKit: d6655a343868d4bb5c29a60859bab07c3be14a0b
   FBSDKLoginKit: c5a623de88a6b0cda35b35582921f6cec2efcc36
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_facebook_login: cfb5659f686b1c575ef205c6b6fd20db9679d3c4
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator: c98cc4a1f2558c11fa5db0fccad80883cde6eb4f
   google_api_availability: 163b30f802e6148c67f092aa4501c90ddd8eec8d
   google_maps_flutter: 78a52114c898b42ea647919679a4c58b70abe876
   GoogleMaps: 67f4a604f80dd6a22d09c2a507a3a395b9f23060
   location_permissions: 195ff2a1182fa9029ef3f2653156961ee5a1e40b
-  path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
-  sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
 
-PODFILE CHECKSUM: c9a3f2b0361195d87b3dbee04d0d77979f215c87
+PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.3
