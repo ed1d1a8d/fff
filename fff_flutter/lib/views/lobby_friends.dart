@@ -34,7 +34,7 @@ class _LobbyFriendsState extends State<LobbyFriends> {
         print("Fetched new lobby friends");
         setState(() => _onlineFriends = newOnlineFriends);
       } catch (error) {
-        print("Failed to fetch friends. $error");
+        print("Failed to fetch friends LOBBYFRIENDS. $error");
       }
     });
   }

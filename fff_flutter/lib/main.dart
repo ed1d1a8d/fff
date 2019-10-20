@@ -18,9 +18,9 @@ class FFFApp extends StatelessWidget {
 
       // Switch this line out for easier debugging
       // home: Loading(),
-      // home: Login(),
+       home: Login(),
       // home: AddFriendsSignup(),
-      home: Home(),
+//      home: Home(),
       // home: SearchPeople(),
 
       // Used by the navigator.

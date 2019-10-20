@@ -8,6 +8,10 @@ import "package:http/http.dart" as http;
 final String lobbyEndpoint =
     fff_backend_constants.server_location + "/api/lobby";
 
+final String ffrequestsEndpoint =
+    fff_backend_constants.server_location + "/api/ffrequests";
+
+
 Future<List<UserData>> fetchOnlineFriends() async {
   if (fff_backend_constants.mockData) {
     return MockData.onlineFriends;
@@ -23,13 +27,32 @@ Future<List<UserData>> fetchOnlineFriends() async {
 }
 
 Future<List<FFRequest>> fetchIncomingRequests() async {
+
   if (fff_backend_constants.mockData) {
     return MockData.incomingRequests;
   }
+
+  final response = await http.get(ffrequestsEndpoint + "/incoming/pending.json",
+      headers: fff_auth.getAuthHeaders());
+
+  if (response.statusCode != 200)
+    throw new Exception("Failed to get incoming requests...");
+
+  // second argument set to true because it IS an INCOMING request
+  return FFRequest.listFromJsonString(response.body, true);
 }
 
 Future<List<FFRequest>> fetchOutgoingRequests() async {
   if (fff_backend_constants.mockData) {
     return MockData.outgoingRequests;
   }
+
+  final response = await http.get(ffrequestsEndpoint + "/outgoing/pending.json",
+      headers: fff_auth.getAuthHeaders());
+
+  if (response.statusCode != 200)
+    throw new Exception("Failed to get outgoing requests...");
+
+  // second argument set to false because it is NOT an INCOMING request
+  return FFRequest.listFromJsonString(response.body, false);
 }
