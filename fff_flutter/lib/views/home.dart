@@ -49,80 +49,80 @@ class _HomeState extends State<Home> {
   List<UserData> _onlineFriends;
   List<FFRequest> _outgoingRequests;
 
-  Timer _fetchTimer;
   static const _fetchPeriod = const Duration(seconds: 5);
+  Timer _fetchTimer;
 
+  static const _locationOptions =
+      LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
   StreamSubscription<Position> _positionSubscription;
 
   @override
   initState() {
     super.initState();
 
-    _fetchTimer = noDelayPeriodicTimer(_fetchPeriod, () async {
-      try {
-        final List<UserData> newOnlineFriends =
-            await fff_lobby_backend.fetchOnlineFriends();
-        print("Fetched new lobby friends");
+    _fetchTimer =
+        noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
 
-        final List<FFRequest> newIncomingRequests =
-            await fff_lobby_backend.fetchIncomingRequests();
+  }
 
-        final List<FFRequest> newOutgoingRequests =
-            await fff_lobby_backend.fetchOutgoingRequests();
+  void _handleFetchTimerCalled() async {
+    try {
+      final List<UserData> newOnlineFriends =
+          await fff_lobby_backend.fetchOnlineFriends();
+      print("Fetched new lobby friends");
 
-        setState(() {
-          _onlineFriends = newOnlineFriends;
-          _incomingRequests = newIncomingRequests;
-          _outgoingRequests = newOutgoingRequests;
-        });
-      } catch (error) {
-        print("Failed to fetch friends. $error");
+      final List<FFRequest> newIncomingRequests =
+          await fff_lobby_backend.fetchIncomingRequests();
+      print("Fetched new incoming requests");
+      print(newIncomingRequests);
+
+      final List<FFRequest> newOutgoingRequests =
+          await fff_lobby_backend.fetchOutgoingRequests();
+      print("Fetched new outgoing requests");
+
+      final Position position = (await Geolocator().getCurrentPosition(
+              desiredAccuracy: _locationOptions.accuracy)) ??
+          (await Geolocator().getLastKnownPosition(
+              desiredAccuracy: _locationOptions.accuracy));
+      print("Got new position");
+
+      if (position != null) {
+        // TODO: Fix location subscription
+        await _updateUserDataDistances(position, newOnlineFriends);
+        await _updateFFRequestDistances(position, newIncomingRequests);
+        await _updateFFRequestDistances(position, newOutgoingRequests);
       }
-    });
 
-    _positionSubscription = Geolocator()
-        .getPositionStream(LocationOptions(
-            accuracy: LocationAccuracy.high, distanceFilter: 10))
-        .listen((Position position) async {
-      final getDistance = (UserData userData) async => position == null
-          ? null
-          : await Geolocator().distanceBetween(position.latitude,
-              position.longitude, userData.latitude, userData.longitude);
-
-      final List<double> incomingRequestDists = _incomingRequests == null
-          ? null
-          : await Future.wait(
-              _incomingRequests.map((request) => getDistance(request.user)));
-
-      final List<double> onlineFriendsDists = _onlineFriends == null
-          ? null
-          : await Future.wait(_onlineFriends?.map(getDistance));
-
-      final List<double> outgoingRequestDists = _outgoingRequests == null
-          ? null
-          : await Future.wait(
-              _incomingRequests.map((request) => getDistance(request.user)));
-
-      print("Got new location and updated distances");
       setState(() {
-        incomingRequestDists.asMap().forEach((idx, dist) {
-          _incomingRequests[idx].user.distance = dist;
-        });
-        _incomingRequests
-            .sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
-
-        onlineFriendsDists.asMap().forEach((idx, dist) {
-          _onlineFriends[idx].distance = dist;
-        });
-        _onlineFriends.sort((u1, u2) => u1.distance.compareTo(u2.distance));
-
-        outgoingRequestDists.asMap().forEach((idx, dist) {
-          _outgoingRequests[idx].user.distance = dist;
-        });
-        _outgoingRequests
-            .sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
+        _onlineFriends = newOnlineFriends;
+        _incomingRequests = newIncomingRequests;
+        _outgoingRequests = newOutgoingRequests;
       });
-    });
+    } catch (error) {
+      print("Failed to fetch friends HOMEFILE. $error");
+    }
+  }
+
+  _updateUserDataDistances(Position position, List<UserData> users) async {
+    if (users == null) return;
+    for (final user in users) {
+      user.distance = await Geolocator().distanceBetween(
+          position.latitude, position.longitude, user.latitude, user.longitude);
+    }
+    users.sort((u1, u2) => u1.distance.compareTo(u2.distance));
+  }
+
+  _updateFFRequestDistances(Position position, List<FFRequest> requests) async {
+    if (requests == null) return;
+    for (final request in requests) {
+      request.user.distance = await Geolocator().distanceBetween(
+          position.latitude,
+          position.longitude,
+          request.user.latitude,
+          request.user.longitude);
+    }
+
+    requests.sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
   }
 
   @override
@@ -283,8 +283,8 @@ class _HomeState extends State<Home> {
 
                     // if data[index] is FFRequest
                     return GestureDetector(
-                      onTap: () =>
-                          this._pushFriendDetail(context, data[index].user, data[index]),
+                      onTap: () => this._pushFriendDetail(
+                          context, data[index].user, data[index]),
                       child: buildProfilePane(
                         data[index].user.imageUrl,
                         data[index].user.name,

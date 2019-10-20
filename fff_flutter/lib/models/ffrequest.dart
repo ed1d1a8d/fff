@@ -1,4 +1,5 @@
 import "package:fff/models/user_data.dart";
+import 'dart:convert';
 
 class FFRequest {
   final UserData user;
@@ -15,19 +16,24 @@ class FFRequest {
   factory FFRequest.fromJson(Map<String, dynamic> json, bool isIncoming) {
     if (isIncoming) {
       return FFRequest(
-          user: UserData.fromJson(json["user"]),
-          message: json["sender"]
+          user: UserData.fromJson(json["sender"]),
+          message: json["message"],
+          isIncoming: true,
       );
     }
     else {
       return FFRequest(
-          user: UserData.fromJson(json["user"]),
-          message: json["receiver"]
+          user: UserData.fromJson(json["receiver"]),
+          message: json["message"],
+          isIncoming: false,
       );
     }
   }
 
-//  factory FFRequest.fromJsonString(String str) =>
-//      FFRequest.fromJson(json.decode(str));
+  static List<FFRequest> listFromJsonString(String str, bool isIncoming) {
+    return List<FFRequest>.from(
+        json.decode(str).map((x) =>
+            FFRequest.fromJson(x, isIncoming)));
+  }
 
 }
