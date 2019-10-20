@@ -3,6 +3,7 @@ import "package:fff/components/gradient_container.dart";
 import "package:fff/components/search_bar.dart";
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/mock_data.dart";
+import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:flutter/material.dart";
@@ -16,9 +17,9 @@ class AddFriendsSignup extends StatefulWidget {
 
 class _AddFriendsSignupState extends State<AddFriendsSignup> {
   // is null if proper subset of friends is checked
-  int numFriendsChecked = 0;
+  int numFriendsChecked = MockData.onlineFriends.length;
   List<bool> isFriendChecked =
-      new List.filled(MockData.onlineFriends.length, false);
+      new List.filled(MockData.onlineFriends.length, true);
   String filterText = "";
 
   @override
@@ -186,6 +187,9 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                 ),
                 onPressed: () {
                   print("TODO BACKEND");
+
+                  // just go to the home page
+                  Navigator.pushReplacementNamed(context, fff_routes.home);
                 },
                 color: fff_colors.strongBackground,
                 padding: const EdgeInsets.symmetric(
