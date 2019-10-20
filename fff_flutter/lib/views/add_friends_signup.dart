@@ -16,9 +16,9 @@ class AddFriendsSignup extends StatefulWidget {
 
 class _AddFriendsSignupState extends State<AddFriendsSignup> {
   // is null if proper subset of friends is checked
-  int numFriendsChecked = 0;
+  int numFriendsChecked = MockData.onlineFriends.length;
   List<bool> isFriendChecked =
-      new List.filled(MockData.onlineFriends.length, false);
+      new List.filled(MockData.onlineFriends.length, true);
   String filterText = "";
 
   @override
