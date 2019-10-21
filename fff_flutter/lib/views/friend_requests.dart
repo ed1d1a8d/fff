@@ -1,6 +1,7 @@
 import "package:fff/components/hamburger_drawer.dart";
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/mock_data.dart";
+import "package:fff/backend/friend_requests.dart" as fff_backend_friend_requests;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:flutter/material.dart";
@@ -13,7 +14,14 @@ class FriendRequests extends StatefulWidget {
 }
 
 class FriendRequestsState extends State<FriendRequests> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  FriendRequestsState() {
+    // do the initial fetch of data
+    this._fetchData();
+  }
+
+  void _fetchData() {
+    fff_backend_friend_requests.fetchUnrejectedRequests();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +30,7 @@ class FriendRequestsState extends State<FriendRequests> {
         title: Row(
           children: <Widget>[
             Container(
+              height: 45, // TODO REMOVE HARDCODE
               padding: const EdgeInsets.only(right: 10),
               child: Image.asset(
                 "assets/images/add-friends.png",
