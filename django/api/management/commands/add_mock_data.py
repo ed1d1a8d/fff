@@ -8,8 +8,6 @@ from friendship.models import Friend, FriendshipRequest
 
 from api.models import User, FFRequest, FFRequestStatusEnum
 
-import social_app_secret
-
 
 class Command(BaseCommand):
     args = ""
@@ -132,7 +130,7 @@ class Command(BaseCommand):
     def create_social_app(self):
         sapp = SocialApp(provider="facebook", name="Facebook", 
         client_id="379368956094614",
-        secret=facebook_app_secret)
+        secret="4d8dab44f8c87fab6c6a5384a58f7756")
         sapp.save()
         sapp.sites.add(1)
 
