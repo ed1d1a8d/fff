@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
   List<UserData> _onlineFriends;
   List<FFRequest> _outgoingRequests;
 
-  static const _fetchPeriod = const Duration(seconds: 5);
+  static const _fetchPeriod = const Duration(seconds: 10);
   Timer _fetchTimer;
 
   static const _locationOptions =

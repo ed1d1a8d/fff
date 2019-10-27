@@ -22,6 +22,8 @@ urlpatterns = [
          views.OutgoingFFRequests.as_view()),
     path("ffrequests/respond/<int:pk>/<str:action>/",
          views.RespondToFFRequest.as_view()),
+    path("ffrequests/search_friend_request/<int:other_pk>",
+         views.FetchFFSearchForFriend.as_view()),
 
     # Friends
     path("friends/", views.FriendList.as_view()),
