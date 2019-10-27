@@ -1,4 +1,7 @@
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import "package:http/http.dart" as http;
+import "package:fff/backend/constants.dart" as fff_backend_constants;
+import "dart:convert";
 
 /// Contains functions that handle registration and authentication.
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,8 +40,16 @@ Future<bool> loginWithFacebook() async {
       break;
   }
 
-  // TODO: get authToken from fff_backend using fbLoginResult.accessToken
-  _authToken = "fa7c05bff3f4a6cbf221264b19b27840b73b2d8a";
+  // get FFF auth token with FB access token
+  // code is self-explanatory
+  final response = await http.post(
+    fff_backend_constants.server_location + "/auth/facebook/",
+    body: {"access_token": fbLoginResult.accessToken.token},
+  );
+  _authToken = json.decode(response.body)["key"];
+
+  // otherwise, use a hardcoded token here
+  // _authToken = "ceb1cf031743b5f44adf210941713119c0ba7dc4";
 
   // Save credentials to persistent storage
   SharedPreferences prefs = await SharedPreferences.getInstance();
