@@ -16,8 +16,6 @@ class SearchPeople extends StatefulWidget {
 }
 
 class SearchPeopleState extends State<SearchPeople> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-
   String filterText = "";
 
   bool _friendAtIndexVisible(List<UserData> friends, int index) {
@@ -107,6 +105,7 @@ class SearchPeopleState extends State<SearchPeople> {
         title: Row(
           children: <Widget>[
             Container(
+              height: 45, // TODO REMOVE HARDCODE
               padding: const EdgeInsets.only(right: 10),
               child: Image.asset(
                 "assets/images/search-people.png",
