@@ -32,6 +32,11 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "mus.icu",
+
+    # for dev and testing
+    # to tunnel to this backend, run ssh -R fff:80:127.0.0.1:8000 serveo.net in a terminal
+    # your local backend will then be available at http://fff.serveo.net
+    "fff.serveo.net",
 ]
 
 # Application definition
