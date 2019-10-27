@@ -1,18 +1,28 @@
 from django.contrib import admin
 from django.contrib import auth
 
-from . import forms
 from . import models
 
 
+class UserCreationForm(auth.forms.UserCreationForm):
+    class Meta(auth.forms.UserCreationForm):
+        model = models.User
+        fields = "__all__"
+
+
+class UserChangeForm(auth.forms.UserChangeForm):
+    class Meta(auth.forms.UserChangeForm):
+        model = models.User
+        fields = "__all__"
+
+
+@admin.register(models.User)
 class UserAdmin(auth.admin.UserAdmin):
-    add_form = forms.UserCreationForm
-    form = forms.UserChangeForm
-    model = models.User
-    list_display = [
-        "username",
-        "name",
-    ]
+    add_form = UserCreationForm
+    form = UserChangeForm
 
+    fieldsets = auth.admin.UserAdmin.fieldsets + (("FFF Fields", {
+        "fields": ("fcm_token", "longitude", "latitude", "name")
+    }), )
 
-admin.site.register(models.User, UserAdmin)
+    list_display = ("username", "name", "fcm_token")

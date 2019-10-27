@@ -6,6 +6,8 @@ from django.db import models
 
 
 class User(AbstractUser):
+    fcm_token = models.CharField(max_length=255, blank=True)
+
     name = models.CharField(max_length=255, blank=True)
     image_url = models.URLField(max_length=2048, blank=True)
 
@@ -13,6 +15,7 @@ class User(AbstractUser):
     latitude = models.FloatField(null=True, blank=True)
 
     # Always in utc
+    # TODO: Rename to online_until
     lobby_expiration = models.DateTimeField(
         default=datetime.fromtimestamp(0, tz=timezone.utc))
 

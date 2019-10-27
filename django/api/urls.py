@@ -25,18 +25,18 @@ urlpatterns = [
          views.OutgoingFFRequests.as_view()),
     path("ffrequests/respond/<int:pk>/<str:action>/",
          views.RespondToFFRequest.as_view()),
-    path("ffrequests/cancel/<int:pk>/",
-         views.CancelFFRequest.as_view()),
+    path("ffrequests/cancel/<int:pk>/", views.CancelFFRequest.as_view()),
     path("ffrequests/search_friend_request/<int:other_pk>",
          views.FetchFFSearchForFriend.as_view()),
 
-# Friends
-    path("friends/", views.FriendList.as_view()), # Gives you list of user's friends
-    path("fbfriends/", views.AddFacebookFriends.as_view()), # Gives you list of user's fb friends also on FFF
+    # Friends
+    path("friends/",
+         views.FriendList.as_view()),  # Gives you list of user's friends
+    path("fbfriends/", views.AddFacebookFriends.as_view()
+         ),  # Gives you list of user's fb friends also on FFF
     path("friends/requests/<str:action>/", views.FriendRequests.as_view()),
     path("friends/actions/<str:action>/<int:pk>/",
          views.FriendActions.as_view()),
-
 ]
 
 if settings.DEBUG:

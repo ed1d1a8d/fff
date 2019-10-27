@@ -3,23 +3,23 @@ import "dart:convert";
 import "package:fff/backend/constants.dart" as fff_backend_constants;
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import "package:http/http.dart" as http;
+import "package:shared_preferences/shared_preferences.dart";
 
-/// Contains functions that handle registration and authentication.
-import 'package:shared_preferences/shared_preferences.dart';
+const String authEndpoint = fff_backend_constants.server_location + "/auth/";
 
-const String savedAuthTokenKey = "fff_authToken";
-
-final facebookLogin = FacebookLogin();
+const String _savedAuthTokenKey = "fff_authToken";
 String _authToken;
+
+final _facebookLogin = FacebookLogin();
 
 bool isAuthenticated() => _authToken != null;
 
-/// Tries to retrieve credentials from persistent storage
+/// Tries to login with credentials from persistent storage
 /// Returns true if successful
 Future<bool> loginWithSavedCredentials() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  final String savedToken = prefs.getString(savedAuthTokenKey);
+  final String savedToken = prefs.getString(_savedAuthTokenKey);
   if (savedToken == null) return false;
 
   // TODO: Validate savedToken with backend.
@@ -29,9 +29,9 @@ Future<bool> loginWithSavedCredentials() async {
   return true;
 }
 
-/// Returns true if authentication succeeded.
+/// Returns true if login succeeded.
 Future<bool> loginWithFacebook() async {
-  final fbLoginResult = await facebookLogin.logIn(["user_friends"]);
+  final fbLoginResult = await _facebookLogin.logIn(["user_friends"]);
   print(fbLoginResult);
 
   switch (fbLoginResult.status) {
@@ -63,14 +63,14 @@ Future<bool> loginWithFacebook() async {
 
   // Save credentials to persistent storage
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString(savedAuthTokenKey, _authToken);
+  await prefs.setString(_savedAuthTokenKey, _authToken);
 
   return true;
 }
 
 Future<void> logout() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.remove(savedAuthTokenKey);
+  await prefs.remove(_savedAuthTokenKey);
   _authToken = null;
 }
 

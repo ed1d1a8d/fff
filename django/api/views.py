@@ -15,13 +15,14 @@ from .serializers import (
     LobbyExpirationSerializer,
     FFRequestReadSerializer,
     FFRequestWriteSerializer,
-    UserSerializer,
+    UserSelfSerializer,
+    UserPublicSerializer,
     FriendshipRequestSerializer,
 )
 
 
 class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserSelfSerializer
 
     def get_object(self):
         return self.request.user
@@ -29,13 +30,13 @@ class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
+
 class AddFacebookFriends(rest_framework.generics.GenericAPIView):
     def post(self, request):
-        url =  "https://graph.facebook.com/v4.0/{0}/friends".format(
-            request.user.facebook_ID,
-        )
+        url = "https://graph.facebook.com/v4.0/{0}/friends".format(
+            request.user.facebook_ID, )
 
-        print (request.data)
+        print(request.data)
         # mydata = {"access_token": }
 
         # r = requests.post(url = url, data = mydata)
@@ -44,7 +45,7 @@ class AddFacebookFriends(rest_framework.generics.GenericAPIView):
         # friends = json.loads(urllib2.urlopen(request).read()).get('data')
         # for friend in friends:
         #     location = friend.get('location')
-            # Find the corresponding user in our DB and return this to the frontend
+        # Find the corresponding user in our DB and return this to the frontend
 
 
 class LobbyExpiration(rest_framework.generics.GenericAPIView):
@@ -77,7 +78,7 @@ class LobbyExpiration(rest_framework.generics.GenericAPIView):
 
 
 class LobbyFriends(rest_framework.generics.ListAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserPublicSerializer
 
     def get_queryset(self):
         return [
@@ -98,8 +99,7 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
         )
 
     def create(self, request, *args, **kwargs):
-        serializer = FFRequestWriteSerializer(
-            data=request.data)
+        serializer = FFRequestWriteSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors,
                             status=rest_framework.status.HTTP_400_BAD_REQUEST)
@@ -154,7 +154,8 @@ class CancelFFRequest(rest_framework.generics.GenericAPIView):
         if req.status != FFRequestStatusEnum.PENDING.value:
             return HttpResponse("Can't act on non-PENDING request", status=400)
         if req.sender != request.user:
-            return HttpResponse("Can't delete a request that the user didn't send", status=400)
+            return HttpResponse(
+                "Can't delete a request that the user didn't send", status=400)
 
         with transaction.atomic():
             req.status = FFRequestStatusEnum.CANCELLED.value
@@ -199,7 +200,7 @@ class OutgoingFFRequests(rest_framework.generics.ListAPIView):
 
 
 class FriendList(rest_framework.generics.ListAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserPublicSerializer
 
     def get_queryset(self):
         return Friend.objects.friends(self.request.user)
@@ -237,7 +238,7 @@ class FriendActions(rest_framework.generics.GenericAPIView):
         if action == "info":
             if Friend.objects.are_friends(request.user, other_user) != True:
                 return HttpResponse("Target user is not a friend.", status=400)
-            serializer = UserSerializer([other_user], many=True)
+            serializer = UserPublicSerializer([other_user], many=True)
             return JsonResponse(serializer.data, safe=False)
         elif action == "request":
             try:
