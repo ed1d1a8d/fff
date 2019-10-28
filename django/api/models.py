@@ -16,6 +16,10 @@ class User(AbstractUser):
     lobby_expiration = models.DateTimeField(
         default=datetime.fromtimestamp(0, tz=timezone.utc))
 
+    facebook_ID = models.CharField(max_length=255, blank=True)
+
+    first_signin = models.BooleanField(default=True)
+
 
 class FFRequestStatusEnum(Enum):
     PENDING = "pending"
@@ -46,4 +50,3 @@ class FFRequest(models.Model):
 
     def __str__(self):
         return f"{self.message} {self.sender} {self.receiver} {self.status}"
-        
