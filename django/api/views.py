@@ -94,7 +94,7 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
 class RespondToFFRequest(rest_framework.generics.GenericAPIView):
     def post(self, request, pk, action):  # TODO: Redo status codes
         try:
-            req = Request.objects.get(pk=pk)
+            req = FFRequest.objects.get(pk=pk)
         except:
             return HttpResponse(f"Request {pk} does not exist", status=400)
 
@@ -121,6 +121,24 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
             return HttpResponse(status=200)
         else:
             return HttpResponse(f"Invalid action: {action}", status=400)
+
+
+class CancelFFRequest(rest_framework.generics.GenericAPIView):
+    def get(self, request, pk):
+        try:
+            req = FFRequest.objects.get(pk=pk)
+        except:
+            return HttpResponse(f"Request {pk} does not exist", status=400)
+
+        if req.status != FFRequestStatusEnum.PENDING.value:
+            return HttpResponse("Can't act on non-PENDING request", status=400)
+        if req.sender != request.user:
+            return HttpResponse("Can't delete a request that the user didn't send", status=400)
+
+        with transaction.atomic():
+            req.status = FFRequestStatusEnum.CANCELLED.value
+            req.save()
+        return HttpResponse(status=200)
 
 
 class FetchFFSearchForFriend(rest_framework.generics.ListAPIView):
