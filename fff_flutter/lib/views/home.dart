@@ -5,9 +5,9 @@ import "package:fff/components/gradient_container.dart";
 import "package:fff/components/hamburger_drawer.dart";
 import "package:fff/components/timer_box.dart";
 import "package:fff/components/url_avatar.dart";
+import "package:fff/models/ffrequest.dart";
 import "package:fff/models/mock_data.dart";
 import "package:fff/models/user_data.dart";
-import "package:fff/models/ffrequest.dart";
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/no_delay_periodic_timer.dart";
 import "package:fff/utils/spacing.dart" as fff_spacing;
@@ -62,7 +62,6 @@ class _HomeState extends State<Home> {
 
     _fetchTimer =
         noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
-
   }
 
   void _handleFetchTimerCalled() async {
@@ -106,6 +105,8 @@ class _HomeState extends State<Home> {
   _updateUserDataDistances(Position position, List<UserData> users) async {
     if (users == null) return;
     for (final user in users) {
+      // TODO: Handle null positions for other users
+
       user.distance = await Geolocator().distanceBetween(
           position.latitude, position.longitude, user.latitude, user.longitude);
     }
@@ -113,8 +114,10 @@ class _HomeState extends State<Home> {
   }
 
   _updateFFRequestDistances(Position position, List<FFRequest> requests) async {
+    // TODO: Handle null positions
     if (requests == null) return;
     for (final request in requests) {
+      // TODO: Handle null positions for other users
       request.user.distance = await Geolocator().distanceBetween(
           position.latitude,
           position.longitude,
