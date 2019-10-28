@@ -102,6 +102,9 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+SOCIALACCOUNT_ADAPTER="api.adapters.FFFSocialAccountAdapter"
+
+
 SITE_ID = 1
 
 # Don"t actually send emails

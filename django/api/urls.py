@@ -7,7 +7,8 @@ urlpatterns = [
     #path("search/")
     #path("lobby")
     #path("requests/")
-    # Profile
+
+    # Profile - gives information about the current logged in user
     path("self/", views.SelfDetail.as_view()),
 
     # Lobby
@@ -25,12 +26,11 @@ urlpatterns = [
     path("ffrequests/search_friend_request/<int:other_pk>",
          views.FetchFFSearchForFriend.as_view()),
 
-    # Friends
-    path("friends/", views.FriendList.as_view()),
+# Friends
+    path("friends/", views.FriendList.as_view()), # Gives you list of user's friends
+    path("fbfriends/", views.AddFacebookFriends.as_view()), # Gives you list of user's fb friends also on FFF
     path("friends/requests/<str:action>/", views.FriendRequests.as_view()),
     path("friends/actions/<str:action>/<int:pk>/",
          views.FriendActions.as_view()),
-
-    # Add facebook friends
 
 ]

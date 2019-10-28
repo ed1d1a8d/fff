@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = [
-            "id", "username", "name", "image_url", "latitude", "longitude", "facebook_ID", "first_signin"
+            "id", "username", "name", "image_url", "latitude", "longitude", "fb_id", "first_sign_in"
         ]
 
 
