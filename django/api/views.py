@@ -12,7 +12,8 @@ from friendship.models import Friend, FriendshipRequest
 from .models import FFRequest, FFRequestStatusEnum, User
 from .serializers import (
     LobbyExpirationSerializer,
-    FFRequestSerializer,
+    FFRequestReadSerializer,
+    FFRequestWriteSerializer,
     UserSerializer,
     FriendshipRequestSerializer,
 )
@@ -67,7 +68,7 @@ class LobbyFriends(rest_framework.generics.ListAPIView):
 
 
 class CreateFFRequest(rest_framework.generics.CreateAPIView):
-    serializer_class = FFRequestSerializer
+    serializer_class = FFRequestWriteSerializer
 
     def perform_create(self, serializer):
         serializer.save(
@@ -76,10 +77,8 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
         )
 
     def create(self, request, *args, **kwargs):
-        print("creating")
-        print(request.data)
-        serializer = FFRequestSerializer(data=request.data)
-        print(serializer.is_valid())
+        serializer = FFRequestWriteSerializer(
+            data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors,
                             status=rest_framework.status.HTTP_400_BAD_REQUEST)
@@ -126,7 +125,7 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
 
 class FetchFFSearchForFriend(rest_framework.generics.ListAPIView):
 
-    serializer_class = FFRequestSerializer
+    serializer_class = FFRequestReadSerializer
 
     def get_queryset(self):
         friend = User.objects.get(pk=self.kwargs['other_pk'])
@@ -140,7 +139,7 @@ class IncomingFFRequests(rest_framework.generics.ListAPIView):
     # TODO: Filter to non-expired requests.
     # TODO: Double check you can only request a valid status
 
-    serializer_class = FFRequestSerializer
+    serializer_class = FFRequestReadSerializer
 
     def get_queryset(self):
         return FFRequest.objects.filter(
@@ -151,7 +150,7 @@ class IncomingFFRequests(rest_framework.generics.ListAPIView):
 
 class OutgoingFFRequests(rest_framework.generics.ListAPIView):
     # TODO: Filter to non-expired requests.
-    serializer_class = FFRequestSerializer
+    serializer_class = FFRequestReadSerializer
 
     def get_queryset(self):
         return FFRequest.objects.filter(

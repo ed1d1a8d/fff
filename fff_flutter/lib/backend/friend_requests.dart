@@ -1,5 +1,6 @@
 import "package:fff/backend/auth.dart" as fff_auth;
 import "package:fff/backend/constants.dart" as fff_backend_constants;
+import 'package:fff/models/ffrequest.dart';
 import "package:fff/models/user_data.dart";
 import "package:http/http.dart" as http;
 
@@ -24,15 +25,24 @@ Future<bool> createRequest(UserData otherUser, String message) async {
     ffrequestsEndpoint + "/create/",
     headers: fff_auth.getAuthHeaders(),
     body: {
-      "receiver": otherUser.toJsonString(),
+      "receiver": otherUser.id.toString(),
       "message": message
     }
   );
-
-  if (response.statusCode != 200) {
+  if (response.statusCode >= 300) {
     throw new Exception("FAILURE: Could not create request");
   }
-  print("SUCCESS");
 
   return true;
+}
+
+void deleteRequest(FFRequest currRequest) async {
+  final response = await http.post(
+    ffrequestsEndpoint + "/delete/",
+    headers: fff_auth.getAuthHeaders(),
+    body: {"request_id":currRequest.id.toString()});
+  if (response.statusCode >= 300) {
+    throw new Exception("FAILURE: Could not delete request");
+  }
+
 }

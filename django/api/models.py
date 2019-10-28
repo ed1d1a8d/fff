@@ -16,7 +16,6 @@ class User(AbstractUser):
     lobby_expiration = models.DateTimeField(
         default=datetime.fromtimestamp(0, tz=timezone.utc))
 
-
 class FFRequestStatusEnum(Enum):
     PENDING = "pending"
     ACCEPTED = "accepted"
