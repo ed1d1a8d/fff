@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 import rest_framework.generics
 from rest_framework.response import Response
+import requests
 
 from friendship.models import Friend, FriendshipRequest
 
@@ -21,6 +22,27 @@ class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+class AddFacebookFriends(rest_framework.generics.GenericAPIView):
+    def post(self, request):
+        url =  "https://graph.facebook.com/v4.0/{0}/friends".format(
+            request.user.facebook_ID,
+        )
+
+        print (request.data)
+        # mydata = {"access_token": }
+
+        # r = requests.post(url = url, data = mydata)
+        # request = urllib2.Request(url)
+
+        # friends = json.loads(urllib2.urlopen(request).read()).get('data')
+        # for friend in friends:
+        #     location = friend.get('location')
+            # Find the corresponding user in our DB and return this to the frontend
+
 
 class LobbyExpiration(rest_framework.generics.GenericAPIView):
     def get(self, request):

@@ -10,6 +10,7 @@ const String savedAuthTokenKey = "fff_authToken";
 
 final facebookLogin = FacebookLogin();
 String _authToken;
+String facebookAccessToken;
 
 bool isAuthenticated() => _authToken != null;
 
@@ -31,6 +32,7 @@ Future<bool> loginWithSavedCredentials() async {
 /// Returns true if authentication succeeded.
 Future<bool> loginWithFacebook() async {
   final fbLoginResult = await facebookLogin.logIn(["user_friends"]);
+  print(fbLoginResult);
 
   switch (fbLoginResult.status) {
     case FacebookLoginStatus.cancelledByUser:
@@ -47,6 +49,8 @@ Future<bool> loginWithFacebook() async {
     body: {"access_token": fbLoginResult.accessToken.token},
   );
   _authToken = json.decode(response.body)["key"];
+
+  facebookAccessToken = fbLoginResult.accessToken.token;
 
   // otherwise, use a hardcoded token here
   // _authToken = "ceb1cf031743b5f44adf210941713119c0ba7dc4";

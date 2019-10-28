@@ -7,6 +7,7 @@ import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:flutter/material.dart";
+import "package:fff/backend/auth.dart";
 
 class AddFriendsSignup extends StatefulWidget {
   static const String routeName = "add-friends-signup";

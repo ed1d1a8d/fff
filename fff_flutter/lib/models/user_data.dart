@@ -32,8 +32,8 @@ class UserData {
         name: json["name"],
         facebookId: json["facebook_id"],
         imageUrl: json["image_url"],
-        latitude: json["latitude"].toDouble(),
-        longitude: json["longitude"].toDouble(),
+        latitude: json["latitude"]?.toDouble(),
+        longitude: json["longitude"]?.toDouble(),
       );
 
   factory UserData.fromJsonString(String str) =>
