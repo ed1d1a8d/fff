@@ -3,6 +3,9 @@ import "package:fff/backend/constants.dart" as fff_backend_constants;
 import "package:fff/models/user_data.dart";
 import "package:http/http.dart" as http;
 
+final String ffrequestsEndpoint =
+    fff_backend_constants.server_location + "/api/ffrequests";
+
 Future<List<UserData>> fetchUnrejectedRequests() async {
   const String endpoint = fff_backend_constants.server_location +
       "/api/friends/requests/unrejected/";
@@ -14,4 +17,22 @@ Future<List<UserData>> fetchUnrejectedRequests() async {
 
   // return UserData.listFromJsonString(response.body);
   return null; // not finished
+}
+
+Future<bool> createRequest(UserData otherUser, String message) async {
+  final response = await http.post(
+    ffrequestsEndpoint + "/create/",
+    headers: fff_auth.getAuthHeaders(),
+    body: {
+      "receiver": otherUser.toJsonString(),
+      "message": message
+    }
+  );
+
+  if (response.statusCode != 200) {
+    throw new Exception("FAILURE: Could not create request");
+  }
+  print("SUCCESS");
+
+  return true;
 }
