@@ -230,7 +230,7 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            print("TODO BACKEND");
+            fff_request_backend.deleteRequest(widget.ffRequest);
           },
           color: fff_colors.buttonGray,
           padding: const EdgeInsets.symmetric(horizontal: 10),
