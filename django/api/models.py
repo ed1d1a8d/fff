@@ -20,7 +20,6 @@ class User(AbstractUser):
 
     first_sign_in = models.BooleanField(default=True)
 
-
 class FFRequestStatusEnum(Enum):
     PENDING = "pending"
     ACCEPTED = "accepted"
