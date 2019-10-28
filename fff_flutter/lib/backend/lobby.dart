@@ -13,7 +13,7 @@ final String ffrequestsEndpoint =
 
 
 Future<List<UserData>> fetchOnlineFriends() async {
-  if (fff_backend_constants.mockData) {
+  if (fff_backend_constants.localMockData) {
     return MockData.onlineFriends;
   }
 
@@ -28,7 +28,7 @@ Future<List<UserData>> fetchOnlineFriends() async {
 
 Future<List<FFRequest>> fetchIncomingRequests() async {
 
-  if (fff_backend_constants.mockData) {
+  if (fff_backend_constants.localMockData) {
     return MockData.incomingRequests;
   }
 
@@ -43,7 +43,7 @@ Future<List<FFRequest>> fetchIncomingRequests() async {
 }
 
 Future<List<FFRequest>> fetchOutgoingRequests() async {
-  if (fff_backend_constants.mockData) {
+  if (fff_backend_constants.localMockData) {
     return MockData.outgoingRequests;
   }
 
