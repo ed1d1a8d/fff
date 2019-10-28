@@ -22,7 +22,6 @@ class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-
 class LobbyExpiration(rest_framework.generics.GenericAPIView):
     def get(self, request):
         serializer = LobbyExpirationSerializer(request.user)
@@ -125,7 +124,7 @@ class FetchFFSearchForFriend(rest_framework.generics.ListAPIView):
         friend = User.objects.get(pk=self.kwargs['other_pk'])
 
         return FFRequest.objects.filter(
-            (Q(sender=self.request.user) & Q(receiver=friend)) | 
+            (Q(sender=self.request.user) & Q(receiver=friend)) |
             (Q(sender=friend) & Q(receiver=self.request.user))
         )
 

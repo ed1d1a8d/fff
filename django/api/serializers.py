@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = [
-            "id", "username", "name", "image_url", "latitude", "longitude"
+            "id", "username", "name", "image_url", "latitude", "longitude", "facebook_ID", "first_signin"
         ]
 
 
@@ -25,7 +25,7 @@ class FFRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.FFRequest
         fields = [
-            "id", "status", "created_at", "message", "sender", "receiver", 
+            "id", "status", "created_at", "message", "sender", "receiver",
         ]
         read_only_fields = ["status", "sender"]
 
