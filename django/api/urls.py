@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.urls import include, path
+
 from . import views
 
 urlpatterns = [
@@ -31,3 +33,9 @@ urlpatterns = [
     path("friends/actions/<str:action>/<int:pk>/",
          views.FriendActions.as_view()),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path("mockdata/generate_for_user/",
+             views.GenerateMockDataForUser.as_view())
+    ]

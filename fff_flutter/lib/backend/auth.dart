@@ -1,7 +1,8 @@
+import "dart:convert";
+
+import "package:fff/backend/constants.dart" as fff_backend_constants;
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import "package:http/http.dart" as http;
-import "package:fff/backend/constants.dart" as fff_backend_constants;
-import "dart:convert";
 
 /// Contains functions that handle registration and authentication.
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,6 +48,14 @@ Future<bool> loginWithFacebook() async {
     body: {"access_token": fbLoginResult.accessToken.token},
   );
   _authToken = json.decode(response.body)["key"];
+
+  if (fff_backend_constants.remoteMockData) {
+    await http.post(
+        fff_backend_constants.server_location +
+            "/api/mockdata/generate_for_user/",
+        headers: getAuthHeaders());
+    print("Auth token: $_authToken");
+  }
 
   // otherwise, use a hardcoded token here
   // _authToken = "ceb1cf031743b5f44adf210941713119c0ba7dc4";
