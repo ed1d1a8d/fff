@@ -4,7 +4,7 @@ import "package:fff/models/ffrequest.dart";
 import "package:quiver/iterables.dart";
 
 class MockData {
-  static final Duration timerDuration = new Duration(minutes: 5);
+  static final Duration timerDuration = new Duration(minutes: 15);
 
   static final List<String> names = [
     "Edward Park",
