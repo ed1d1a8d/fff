@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 
 import "package:google_maps_flutter/google_maps_flutter.dart";
 
+import "package:fff/backend/friend_requests.dart" as fff_request_backend;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/models/ffrequest.dart";
@@ -186,7 +187,8 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            print("TODO BACKEND");
+            UserData otherUser = widget.user;
+            fff_request_backend.createRequest(otherUser, this.newRequestMessage);
           },
           color: fff_colors.strongBackground,
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -200,7 +202,7 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            print("TODO BACKEND");
+            print("HEY");
           },
           color: fff_colors.buttonGray,
           padding: const EdgeInsets.symmetric(horizontal: 10),

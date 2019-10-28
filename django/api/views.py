@@ -73,7 +73,10 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
         )
 
     def create(self, request, *args, **kwargs):
+        print("creating")
+        print(request.data)
         serializer = FFRequestSerializer(data=request.data)
+        print(serializer.is_valid())
         if not serializer.is_valid():
             return Response(serializer.errors,
                             status=rest_framework.status.HTTP_400_BAD_REQUEST)
