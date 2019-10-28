@@ -14,12 +14,15 @@ import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/views/friend_detail.dart";
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
-import 'package:geolocator/geolocator.dart';
+import "package:geolocator/geolocator.dart";
+import "dart:developer";
+
+final TimerBox lobbyTimer = new TimerBox(MockData.timerDuration);
 
 class Home extends StatefulWidget {
   static const String routeName = "/home";
 
-  static final TimerBox timer = new TimerBox(MockData.timerDuration);
+  static final TimerBox timer = lobbyTimer;
 
   @override
   State<StatefulWidget> createState() {
@@ -49,7 +52,7 @@ class _HomeState extends State<Home> {
   List<UserData> _onlineFriends;
   List<FFRequest> _outgoingRequests;
 
-  static const _fetchPeriod = const Duration(seconds: 10);
+  static const _fetchPeriod = const Duration(seconds: 5);
   Timer _fetchTimer;
 
   static const _locationOptions =
@@ -59,50 +62,59 @@ class _HomeState extends State<Home> {
   @override
   initState() {
     super.initState();
+    log("initState called.");
 
     _fetchTimer =
         noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
   }
 
+  // returns a list containing 3 things: incomingRequests, onlineFriends, and outgoingRequests
+  Future<List> _fetchLobbyData() async {
+    List lobbyData = await Future.wait([
+      fff_lobby_backend.fetchIncomingRequests(),
+      fff_lobby_backend.fetchOnlineFriends(),
+      fff_lobby_backend.fetchOutgoingRequests(),
+    ]);
+    log("Fetched lobby user data.");
+
+    List<Position> positionData = await Future.wait([
+      Geolocator()
+          .getCurrentPosition(desiredAccuracy: _locationOptions.accuracy),
+      Geolocator()
+          .getLastKnownPosition(desiredAccuracy: _locationOptions.accuracy),
+    ]);
+    Position position = positionData[0] ?? positionData[1];
+    log("Fetched user position data.");
+
+    if (position != null) {
+      // TODO: Fix location subscription
+      await Future.wait([
+        _updateFFRequestDistances(position, lobbyData[0]),
+        _updateUserDataDistances(position, lobbyData[1]),
+        _updateFFRequestDistances(position, lobbyData[2]),
+      ]);
+      log("Updated positions of lobby friends.");
+    }
+
+    return lobbyData;
+  }
+
   void _handleFetchTimerCalled() async {
     try {
-      final List<UserData> newOnlineFriends =
-          await fff_lobby_backend.fetchOnlineFriends();
-      print("Fetched new lobby friends");
-
-      final List<FFRequest> newIncomingRequests =
-          await fff_lobby_backend.fetchIncomingRequests();
-      print("Fetched new incoming requests");
-      print(newIncomingRequests);
-
-      final List<FFRequest> newOutgoingRequests =
-          await fff_lobby_backend.fetchOutgoingRequests();
-      print("Fetched new outgoing requests");
-
-      final Position position = (await Geolocator().getCurrentPosition(
-              desiredAccuracy: _locationOptions.accuracy)) ??
-          (await Geolocator().getLastKnownPosition(
-              desiredAccuracy: _locationOptions.accuracy));
-      print("Got new position");
-
-      if (position != null) {
-        // TODO: Fix location subscription
-        await _updateUserDataDistances(position, newOnlineFriends);
-        await _updateFFRequestDistances(position, newIncomingRequests);
-        await _updateFFRequestDistances(position, newOutgoingRequests);
-      }
+      final List lobbyData = await this._fetchLobbyData();
 
       setState(() {
-        _onlineFriends = newOnlineFriends;
-        _incomingRequests = newIncomingRequests;
-        _outgoingRequests = newOutgoingRequests;
+        _incomingRequests = lobbyData[0];
+        _onlineFriends = lobbyData[1];
+        _outgoingRequests = lobbyData[2];
       });
     } catch (error) {
-      print("Failed to fetch friends HOMEFILE. $error");
+      log("$error");
     }
   }
 
-  _updateUserDataDistances(Position position, List<UserData> users) async {
+  Future _updateUserDataDistances(
+      Position position, List<UserData> users) async {
     if (users == null) return;
     for (final user in users) {
       // TODO: Handle null positions for other users
@@ -113,7 +125,8 @@ class _HomeState extends State<Home> {
     users.sort((u1, u2) => u1.distance.compareTo(u2.distance));
   }
 
-  _updateFFRequestDistances(Position position, List<FFRequest> requests) async {
+  Future _updateFFRequestDistances(
+      Position position, List<FFRequest> requests) async {
     // TODO: Handle null positions
     if (requests == null) return;
     for (final request in requests) {
@@ -131,7 +144,7 @@ class _HomeState extends State<Home> {
   @override
   dispose() {
     _fetchTimer.cancel();
-    _positionSubscription.cancel();
+    _positionSubscription?.cancel();
     super.dispose();
   }
 
