@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
@@ -63,6 +65,7 @@ class LobbyFriends(rest_framework.generics.ListAPIView):
                 from_user__lobby_expiration__gt=timezone.now()).all()
         ]
 
+
 class CreateFFRequest(rest_framework.generics.CreateAPIView):
     serializer_class = FFRequestSerializer
 
@@ -117,6 +120,7 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
         else:
             return HttpResponse(f"Invalid action: {action}", status=400)
 
+
 class FetchFFSearchForFriend(rest_framework.generics.ListAPIView):
 
     serializer_class = FFRequestSerializer
@@ -125,9 +129,9 @@ class FetchFFSearchForFriend(rest_framework.generics.ListAPIView):
         friend = User.objects.get(pk=self.kwargs['other_pk'])
 
         return FFRequest.objects.filter(
-            (Q(sender=self.request.user) & Q(receiver=friend)) | 
-            (Q(sender=friend) & Q(receiver=self.request.user))
-        )
+            (Q(sender=self.request.user) & Q(receiver=friend))
+            | (Q(sender=friend) & Q(receiver=self.request.user)))
+
 
 class IncomingFFRequests(rest_framework.generics.ListAPIView):
     # TODO: Filter to non-expired requests.
@@ -225,3 +229,36 @@ class FriendActions(rest_framework.generics.GenericAPIView):
                 return HttpResponse(str(exception), status=400)
 
         return HttpResponse("Invalid action.", status=400)
+
+
+class GenerateMockDataForUser(rest_framework.generics.GenericAPIView):
+    def post(self, request):
+        self.request.user.lobby_expiration = str(
+            datetime(year=2050, month=1, day=1, tzinfo=timezone.utc))
+        request.user.save()
+        for i, other_user in enumerate(
+                User.objects.filter(is_superuser=False).all()):
+            if self.request.user.id != other_user.id:
+                Friend.objects.add_friend(self.request.user,
+                                          other_user).accept()
+
+                if i % 3 == 0:  # Outgoing request
+                    tempRequest = FFRequest(
+                        message="This is an outgoing request!",
+                        status=FFRequestStatusEnum.PENDING.value,
+                        sender=self.request.user,
+                        receiver=other_user,
+                    )
+                    tempRequest.save()
+                elif i % 3 == 1:  # Incoming request
+                    tempRequest = FFRequest(
+                        message="Yo this is an incoming request!",
+                        status=FFRequestStatusEnum.PENDING.value,
+                        sender=other_user,
+                        receiver=self.request.user,
+                    )
+                    tempRequest.save()
+
+        print(f"Generated mock data for {self.request.user}")
+
+        return HttpResponse(status=200)
