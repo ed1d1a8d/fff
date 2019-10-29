@@ -48,8 +48,8 @@ class _FFFAppState extends State<FFFApp> {
       theme: theme,
 
       // Switch this line out for easier debugging
-      // home: Loading(),
-      home: Login(),
+      home: Loading(),
+      // home: Login(),
       // home: AddFriendsSignup(),
       // home: Home(),
       // home: SearchPeople(),
