@@ -1,13 +1,14 @@
-import 'package:fff/backend/auth.dart' as fff_auth;
-import 'package:fff/routes.dart' as fff_routes;
+import "dart:convert";
+import "dart:developer";
+
+import "package:fff/backend/auth.dart" as fff_auth;
+import "package:fff/backend/constants.dart";
+import "package:fff/models/user_data.dart";
+import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
-import "package:fff/models/user_data.dart";
 import "package:flutter/material.dart";
-import 'package:fff/backend/lobby.dart';
 import "package:http/http.dart" as http;
-import "package:fff/backend/constants.dart";
-import "dart:convert";
 
 UserData me;
 
@@ -56,9 +57,10 @@ class Login extends StatelessWidget {
                 color: fff_colors.fb,
                 onPressed: () async {
                   if (await fff_auth.loginWithFacebook()) {
-                    print("Authentication succeeded!");
+                    log("Authentication succeeded!");
 
-                    final response = await http.get(server_location + "/api/self.json",
+                    final response = await http.get(
+                        server_location + "/api/self/detail.json/",
                         headers: fff_auth.getAuthHeaders());
 
 //                    print(response);
@@ -72,13 +74,13 @@ class Login extends StatelessWidget {
 //                        'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
 //                    final profile = JSON.decode(graphResponse.body);
 
-                    print (response.body);
+                    log(response.body);
 
                     me = UserData.fromJson(json.decode(response.body));
 
                     Navigator.pushReplacementNamed(context, fff_routes.home);
                   } else {
-                    print("Authentication failed!");
+                    log("Authentication failed!");
                     // TODO: Notify user that authentication failed for whatever reason.
                   }
                 },

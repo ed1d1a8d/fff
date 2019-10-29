@@ -1,3 +1,5 @@
+import "dart:developer";
+
 import "package:fff/backend/auth.dart" as fff_auth;
 import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
@@ -14,10 +16,10 @@ class Loading extends StatelessWidget {
 
     fff_auth.loginWithSavedCredentials().then((authSucceeded) {
       if (authSucceeded) {
-        print("Succesfully loaded saved credentials");
+        log("Succesfully loaded saved credentials");
         Navigator.pushReplacementNamed(context, fff_routes.home);
       } else {
-        print("Unable to load saved credentials");
+        log("Unable to load saved credentials");
         Navigator.pushReplacementNamed(context, fff_routes.login);
       }
     });
