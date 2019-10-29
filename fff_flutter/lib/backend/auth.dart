@@ -1,4 +1,5 @@
 import "dart:convert";
+import "dart:developer";
 
 import "package:fff/backend/constants.dart" as fff_backend_constants;
 import "package:fff/backend/push_notifications.dart" as fff_push_notifications;
@@ -36,7 +37,6 @@ Future<bool> loginWithSavedCredentials() async {
 /// Returns true if login succeeded.
 Future<bool> loginWithFacebook() async {
   final fbLoginResult = await _facebookLogin.logIn(["user_friends"]);
-  print(fbLoginResult);
 
   switch (fbLoginResult.status) {
     case FacebookLoginStatus.cancelledByUser:
@@ -46,24 +46,22 @@ Future<bool> loginWithFacebook() async {
       break;
   }
 
-  // get FFF auth token with FB access token
-  // code is self-explanatory
+  // Get FFF auth token with FB access token
   final response = await http.post(
     fff_backend_constants.server_location + "/auth/facebook/",
     body: {"access_token": fbLoginResult.accessToken.token},
   );
   _authToken = json.decode(response.body)["key"];
 
+  // Optionally generate mock data for user.
   if (fff_backend_constants.remoteMockData) {
+    log("Requesting backend mock data generation for user...");
+    log("User auth token: $_authToken");
     await http.post(
         fff_backend_constants.server_location +
             "/api/mockdata/generate_for_user/",
         headers: getAuthHeaders());
-    print("Auth token: $_authToken");
   }
-
-  // otherwise, use a hardcoded token here
-  // _authToken = "ceb1cf031743b5f44adf210941713119c0ba7dc4";
 
   // Save credentials to persistent storage
   SharedPreferences prefs = await SharedPreferences.getInstance();

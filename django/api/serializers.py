@@ -7,17 +7,9 @@ from . import models
 class UserSelfSerializer(ModelSerializer):
     class Meta:
         model = models.User
-        fields = ("id", "username", "fcm_token", "name", "image_url", "fb_id",
-                  "first_sign_in"
-                  "latitude", "longitude")
+        fields = ("id", "username", "name", "image_url", "latitude",
+                  "longitude", "fb_id", "first_sign_in")
         extra_kwargs = {"username": {"required": False}}
-
-
-#class DeviceSerializer(ModelSerializer):
-#    class Meta:
-#        model = models.Device
-#        fields = ("registration_id", "user")
-#        read_only_fields = ("user", )
 
 
 class UserPublicSerializer(ModelSerializer):

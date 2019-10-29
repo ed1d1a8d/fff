@@ -107,10 +107,15 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
     serializer_class = FFRequestWriteSerializer
 
     def perform_create(self, serializer):
-        serializer.save(
+        ffrequest = serializer.save(
             status=FFRequestStatusEnum.PENDING.value,
             sender=self.request.user,
         )
+
+        # TODO: Validate body size.
+        # TODO: Change title.
+        Device.objects.filter(user=ffrequest.receiver).all().send_message(
+            title=self.request.user.name, body=ffrequest.message)
 
     def create(self, request, *args, **kwargs):
         serializer = FFRequestWriteSerializer(data=request.data)

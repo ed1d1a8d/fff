@@ -1,3 +1,5 @@
+import "dart:developer";
+
 import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/theme.dart";
 import "package:fff/views/add_friends_signup.dart";
@@ -29,12 +31,12 @@ class _FFFAppState extends State<FFFApp> {
     _fcm.configure(
       // fires if the app is fully terminated
       onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
+        log("onLaunch: $message");
         // TODO: Navigate to specific message screen.
       },
       // fires if the app is closed, but still running in the background
       onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
+        log("onResume: $message");
         // TODO: Navigate to specific message screen.
       },
     );

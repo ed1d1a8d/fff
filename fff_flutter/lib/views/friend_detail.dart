@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 
 import "package:google_maps_flutter/google_maps_flutter.dart";
 
-import "package:fff/backend/friend_requests.dart" as fff_request_backend;
+import "package:fff/backend/ffrequests.dart" as fff_request_backend;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/models/ffrequest.dart";
