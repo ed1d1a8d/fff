@@ -4,20 +4,21 @@ from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
+import rest_framework.status
 import rest_framework.generics
 from rest_framework.response import Response
 import requests
 
 from friendship.models import Friend, FriendshipRequest
 
-from .models import FFRequest, FFRequestStatusEnum, User
+from .models import FFRequest, FFRequestStatusEnum, User, Device
 from .serializers import (
-    LobbyExpirationSerializer,
     FFRequestReadSerializer,
     FFRequestWriteSerializer,
+    FriendshipRequestSerializer,
+    LobbyExpirationSerializer,
     UserSelfSerializer,
     UserPublicSerializer,
-    FriendshipRequestSerializer,
 )
 
 
@@ -46,6 +47,19 @@ class AddFacebookFriends(rest_framework.generics.GenericAPIView):
         # for friend in friends:
         #     location = friend.get('location')
         # Find the corresponding user in our DB and return this to the frontend
+
+
+class DeviceView(rest_framework.generics.GenericAPIView):
+    def put(self, request, registration_id):
+        """Subscribe device to push notifications."""
+        Device.objects.update_or_create(user=request.user,
+                                        registration_id=registration_id)
+        return Response(status=rest_framework.status.HTTP_201_CREATED)
+
+    def delete(self, request, registration_id):
+        """Unsubscribe device from push notifications."""
+        Device.objects.filter(registration_id=registration_id).delete()
+        return Response(status=rest_framework.status.HTTP_200_OK)
 
 
 class LobbyExpiration(rest_framework.generics.GenericAPIView):

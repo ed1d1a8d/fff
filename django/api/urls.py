@@ -4,14 +4,8 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    #path("profile/")
-    #path("friends/")
-    #path("search/")
-    #path("lobby")
-    #path("requests/")
-
-    # Profile - gives information about the current logged in user
-    path("self/", views.SelfDetail.as_view()),
+    path("self/detail/", views.SelfDetail.as_view()),
+    path("self/device/<str:registration_id>/", views.DeviceView.as_view()),
 
     # Lobby
     path("lobby/expiration/", views.LobbyExpiration.as_view()),

@@ -22,7 +22,11 @@ class UserAdmin(auth.admin.UserAdmin):
     form = UserChangeForm
 
     fieldsets = auth.admin.UserAdmin.fieldsets + (("FFF Fields", {
-        "fields": ("fcm_token", "longitude", "latitude", "name")
+        "fields": ("longitude", "latitude", "name")
     }), )
 
-    list_display = ("username", "name", "fcm_token")
+    list_display = ("username", "name")
+
+
+admin.site.register(models.Device)
+admin.site.register(models.FFRequest)

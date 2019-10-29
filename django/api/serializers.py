@@ -1,10 +1,10 @@
-from friendship.models import FriendshipRequest
-from rest_framework import serializers
+import friendship
+from rest_framework.serializers import ModelSerializer
 
 from . import models
 
 
-class UserSelfSerializer(serializers.ModelSerializer):
+class UserSelfSerializer(ModelSerializer):
     class Meta:
         model = models.User
         fields = ("id", "username", "fcm_token", "name", "image_url", "fb_id",
@@ -13,7 +13,14 @@ class UserSelfSerializer(serializers.ModelSerializer):
         extra_kwargs = {"username": {"required": False}}
 
 
-class UserPublicSerializer(serializers.ModelSerializer):
+#class DeviceSerializer(ModelSerializer):
+#    class Meta:
+#        model = models.Device
+#        fields = ("registration_id", "user")
+#        read_only_fields = ("user", )
+
+
+class UserPublicSerializer(ModelSerializer):
     class Meta:
         model = models.User
         fields = ("id", "username", "name", "image_url", "latitude", "fb_id",
@@ -21,13 +28,13 @@ class UserPublicSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
-class LobbyExpirationSerializer(serializers.ModelSerializer):
+class LobbyExpirationSerializer(ModelSerializer):
     class Meta:
         model = models.User
         fields = ("lobby_expiration")
 
 
-class FFRequestReadSerializer(serializers.ModelSerializer):
+class FFRequestReadSerializer(ModelSerializer):
     sender = UserPublicSerializer()
     receiver = UserPublicSerializer()
 
@@ -44,7 +51,7 @@ class FFRequestReadSerializer(serializers.ModelSerializer):
         read_only_fields = ("status", "sender")
 
 
-class FFRequestWriteSerializer(serializers.ModelSerializer):
+class FFRequestWriteSerializer(ModelSerializer):
     class Meta:
         model = models.FFRequest
         fields = (
@@ -58,7 +65,7 @@ class FFRequestWriteSerializer(serializers.ModelSerializer):
         read_only_fields = ("status", "sender")
 
 
-class FriendshipRequestSerializer(serializers.ModelSerializer):
+class FriendshipRequestSerializer(ModelSerializer):
     class Meta:
-        model = FriendshipRequest
+        model = friendship.models.FriendshipRequest
         fields = ("from_user", "to_user", "created")

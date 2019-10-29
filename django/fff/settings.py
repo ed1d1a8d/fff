@@ -61,7 +61,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     # Friendship
     "friendship",
-    # APIs
+    # Push Notifications
+    "fcm_django",
+    # Our APIs
     "api",
 ]
 
@@ -104,6 +106,17 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SOCIALACCOUNT_ADAPTER="api.adapters.FFFSocialAccountAdapter"
 
+FCM_DJANGO_SETTINGS = {
+    "FCM_SERVER_KEY":
+    "AAAAFxX_95g:APA91bGx6CAY-VVJJ0WC7ochpI7woKHcn-NzDFukO1goJyn2DXnf3u_Kir_dlz7pKOvfKhlZkJdOLGcOxz7gKnEdlmF8vkJpFOj-3KF1LLfEicr39y8MGneLp5FRjZxXg3qFcM-5iJCZ",
+    # true if you want to have only one active device per registered user at a time
+    # default: False
+    "ONE_DEVICE_PER_USER": False,
+    # devices to which notifications cannot be sent,
+    # are deleted upon receiving error response from FCM
+    # default: False
+    "DELETE_INACTIVE_DEVICES": True,
+}
 
 SITE_ID = 1
 
