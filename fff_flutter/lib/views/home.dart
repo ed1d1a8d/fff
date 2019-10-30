@@ -296,6 +296,7 @@ class _HomeState extends State<Home> {
                       return GestureDetector(
                         onTap: () =>
                             this._pushFriendDetail(context, data[index], null),
+                        behavior: HitTestBehavior.translucent,
                         child: buildProfilePane(
                           data[index].imageUrl,
                           data[index].name,
@@ -309,6 +310,7 @@ class _HomeState extends State<Home> {
                     return GestureDetector(
                       onTap: () => this._pushFriendDetail(
                           context, data[index].user, data[index]),
+                      behavior: HitTestBehavior.translucent,
                       child: buildProfilePane(
                         data[index].user.imageUrl,
                         data[index].user.name,
