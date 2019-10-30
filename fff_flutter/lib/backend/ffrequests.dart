@@ -36,13 +36,13 @@ Future<bool> createRequest(UserData otherUser, String message) async {
   return true;
 }
 
-void deleteRequest(FFRequest currRequest) async {
+void cancelRequest(FFRequest currRequest) async {
   final response = await http.get(
     ffrequestsEndpoint + "/cancel/" + currRequest.id.toString() + "/",
     headers: fff_auth.getAuthHeaders());
   if (response.statusCode >= 300) {
-    throw new Exception("FAILURE: Could not delete request");
+    throw new Exception("FAILURE: Could not cancel request");
   }
 
-  print("DELETED IT!");
+  print("CANCELLED IT!");
 }
