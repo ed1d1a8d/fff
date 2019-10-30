@@ -30,24 +30,6 @@ class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-    def put(self, request, *args, **kwargs):
-        parser_classes = (parsers.JSONParser,)
-
-        print("!!!!!!!!")
-        # values = json.dumps(request.body)
-        #
-        # print(values)
-        #
-        # self.request.user.first_sign_in = (loaded["first_sign_in"] == "True")
-        # self.request.user.save()
-        # print(self.request.user.first_sign_in)
-        #
-        # print(self.request.user)
-
-        return self.update(request, *args, **kwargs)
-
-        return "Updated self ? ? ?"
-
 class AddFacebookFriends(rest_framework.generics.GenericAPIView):
     def post(self, request):
         print(request.data)
