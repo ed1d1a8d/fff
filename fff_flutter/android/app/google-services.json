@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "99153344408",
+    "firebase_url": "https://freeforfood-8f672.firebaseio.com",
+    "project_id": "freeforfood-8f672",
+    "storage_bucket": "freeforfood-8f672.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99153344408:android:0790207a1098cece469ded",
+        "android_client_info": {
+          "package_name": "com.example.fff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99153344408-5bdbt6knksa6r0kg6rrjs5ci3qgoi7of.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASM567tUt5-_UkMrH2NNUDmkyFIarclBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "99153344408-5bdbt6knksa6r0kg6rrjs5ci3qgoi7of.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,13 +4,8 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    #path("profile/")
-    #path("friends/")
-    #path("search/")
-    #path("lobby")
-    #path("requests/")
-    # Profile
-    path("self/", views.SelfDetail.as_view()),
+    path("self/detail/", views.SelfDetail.as_view()),
+    path("self/device/<str:registration_id>/", views.DeviceView.as_view()),
 
     # Lobby
     path("lobby/expiration/", views.LobbyExpiration.as_view()),
@@ -24,13 +19,15 @@ urlpatterns = [
          views.OutgoingFFRequests.as_view()),
     path("ffrequests/respond/<int:pk>/<str:action>/",
          views.RespondToFFRequest.as_view()),
-    path("ffrequests/cancel/<int:pk>/",
-         views.CancelFFRequest.as_view()),
+    path("ffrequests/cancel/<int:pk>/", views.CancelFFRequest.as_view()),
     path("ffrequests/search_friend_request/<int:other_pk>",
          views.FetchFFSearchForFriend.as_view()),
 
     # Friends
-    path("friends/", views.FriendList.as_view()),
+    path("friends/",
+         views.FriendList.as_view()),  # Gives you list of user's friends
+    path("fbfriends/", views.AddFacebookFriends.as_view()
+         ),  # Gives you list of user's fb friends also on FFF
     path("friends/requests/<str:action>/", views.FriendRequests.as_view()),
     path("friends/actions/<str:action>/<int:pk>/",
          views.FriendActions.as_view()),

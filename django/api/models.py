@@ -3,6 +3,8 @@ from enum import Enum
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
+import fcm_django.models
 
 
 class User(AbstractUser):
@@ -13,8 +15,23 @@ class User(AbstractUser):
     latitude = models.FloatField(null=True, blank=True)
 
     # Always in utc
+    # TODO: Rename to online_until
     lobby_expiration = models.DateTimeField(
         default=datetime.fromtimestamp(0, tz=timezone.utc))
+
+    fb_id = models.CharField(max_length=255, blank=True)
+
+    first_sign_in = models.BooleanField(default=True)
+
+
+class Device(fcm_django.models.AbstractFCMDevice):
+    """Makes registration_id unique and type optional."""
+    registration_id = models.TextField(unique=True)
+    type = models.CharField(max_length=10, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Device"
+
 
 class FFRequestStatusEnum(Enum):
     PENDING = "pending"
@@ -45,4 +62,6 @@ class FFRequest(models.Model):
 
     def __str__(self):
         return f"{self.message} {self.sender} {self.receiver} {self.status}"
-        
+
+    class Meta:
+        verbose_name = "FFRequest"

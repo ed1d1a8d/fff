@@ -1,44 +1,63 @@
-from friendship.models import FriendshipRequest
-from rest_framework import serializers
+import friendship
+from rest_framework.serializers import ModelSerializer
 
 from . import models
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSelfSerializer(ModelSerializer):
     class Meta:
         model = models.User
-        fields = [
-            "id", "username", "name", "image_url", "latitude", "longitude"
-        ]
+        fields = ("id", "username", "name", "image_url", "latitude",
+                  "longitude", "fb_id", "first_sign_in")
+        extra_kwargs = {"username": {"required": False}}
 
 
-class LobbyExpirationSerializer(serializers.ModelSerializer):
+class UserPublicSerializer(ModelSerializer):
     class Meta:
         model = models.User
-        fields = ["lobby_expiration"]
+        fields = ("id", "username", "name", "image_url", "latitude", "fb_id",
+                  "longitude")
+        read_only_fields = fields
 
 
-class FFRequestReadSerializer(serializers.ModelSerializer):
-    sender = UserSerializer()
-    receiver = UserSerializer()
+class LobbyExpirationSerializer(ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ("lobby_expiration")
+
+
+class FFRequestReadSerializer(ModelSerializer):
+    sender = UserPublicSerializer()
+    receiver = UserPublicSerializer()
 
     class Meta:
         model = models.FFRequest
-        fields = [
-            "id", "status", "created_at", "message", "sender", "receiver", 
-        ]
-        read_only_fields = ["status", "sender"]
+        fields = (
+            "id",
+            "status",
+            "created_at",
+            "message",
+            "sender",
+            "receiver",
+        )
+        read_only_fields = ("status", "sender")
 
-class FFRequestWriteSerializer(serializers.ModelSerializer):
 
+class FFRequestWriteSerializer(ModelSerializer):
     class Meta:
         model = models.FFRequest
-        fields = [
-            "id", "status", "created_at", "message", "sender", "receiver", 
-        ]
-        read_only_fields = ["status", "sender"]
+        fields = (
+            "id",
+            "status",
+            "created_at",
+            "message",
+            "sender",
+            "receiver",
+        )
+        read_only_fields = ("status", "sender")
 
-class FriendshipRequestSerializer(serializers.ModelSerializer):
+
+class FriendshipRequestSerializer(ModelSerializer):
     class Meta:
-        model = FriendshipRequest
-        fields = ["from_user", "to_user", "created"]
+        model = friendship.models.FriendshipRequest
+        fields = ("from_user", "to_user", "created")
