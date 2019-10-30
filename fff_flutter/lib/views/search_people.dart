@@ -105,7 +105,7 @@ class SearchPeopleState extends State<SearchPeople> {
         title: Row(
           children: <Widget>[
             Container(
-              height: 45, // TODO REMOVE HARDCODE
+              height: 45,
               padding: const EdgeInsets.only(right: 10),
               child: Image.asset(
                 "assets/images/search-people.png",

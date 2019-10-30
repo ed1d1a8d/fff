@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 
 import "package:google_maps_flutter/google_maps_flutter.dart";
 
-import "package:fff/backend/friend_requests.dart" as fff_request_backend;
+import "package:fff/backend/ffrequests.dart" as fff_request_backend;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/models/ffrequest.dart";
@@ -99,14 +99,14 @@ class _FriendDetailState extends State<FriendDetail> {
                       child: Row(children: this._buildActionRow()),
                     ),
                   ],
-                ), // TODO
+                ),
               ),
             ),
             SizedBox(height: fff_spacing.profileListInsets),
             Image.asset(
               "assets/images/pizza-burger.png",
               height: MediaQuery.of(context).size.height *
-                  0.1, // TODO MOVE THIS OUT
+                  0.1,
             ),
           ],
         ),

@@ -14,12 +14,14 @@ import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/views/friend_detail.dart";
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
-import 'package:geolocator/geolocator.dart';
+import "package:geolocator/geolocator.dart";
+import "dart:developer";
 
 class Home extends StatefulWidget {
   static const String routeName = "/home";
+  final fffTimer;
 
-  static final TimerBox timer = new TimerBox(MockData.timerDuration);
+  Home(this.fffTimer);
 
   @override
   State<StatefulWidget> createState() {
@@ -44,8 +46,7 @@ String _homeTabToString(_HomeTab time) {
 class _HomeState extends State<Home> {
   _HomeTab _curTab = _HomeTab.incomingRequests;
 
-  // TODO: Use a different datatype for requests.
-  List<FFRequest> _incomingRequests; // TODO: Track unread requests.
+  List<FFRequest> _incomingRequests;
   List<UserData> _onlineFriends;
   List<FFRequest> _outgoingRequests;
 
@@ -59,50 +60,68 @@ class _HomeState extends State<Home> {
   @override
   initState() {
     super.initState();
+    log("initState called on home.");
 
     _fetchTimer =
         noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
   }
 
+  // returns a list containing 3 things: incomingRequests, onlineFriends, and outgoingRequests
+  Future<List> _fetchLobbyData() async {
+    List lobbyData;
+    Position position;
+
+    await Future.wait([
+      () async {
+        lobbyData = await Future.wait([
+          fff_lobby_backend.fetchIncomingRequests(),
+          fff_lobby_backend.fetchOnlineFriends(),
+          fff_lobby_backend.fetchOutgoingRequests(),
+        ]);
+        log("Fetched lobby user data.");
+      }(),
+      () async {
+        position = await Geolocator()
+            .getCurrentPosition(desiredAccuracy: _locationOptions.accuracy);
+        if (position == null) {
+          position = await Geolocator()
+              .getCurrentPosition(desiredAccuracy: _locationOptions.accuracy);
+        }
+        log("Fetched user position data.");
+      }(),
+    ]);
+
+    if (position != null) {
+      // TODO: Fix location subscription
+      await Future.wait([
+        _updateFFRequestDistances(position, lobbyData[0]),
+        _updateUserDataDistances(position, lobbyData[1]),
+        _updateFFRequestDistances(position, lobbyData[2]),
+      ]);
+      log("Updated positions of lobby friends.");
+    }
+
+    return lobbyData;
+  }
+
   void _handleFetchTimerCalled() async {
     try {
-      final List<UserData> newOnlineFriends =
-          await fff_lobby_backend.fetchOnlineFriends();
-      print("Fetched new lobby friends");
+      final List lobbyData = await this._fetchLobbyData();
 
-      final List<FFRequest> newIncomingRequests =
-          await fff_lobby_backend.fetchIncomingRequests();
-      print("Fetched new incoming requests");
-      print(newIncomingRequests);
-
-      final List<FFRequest> newOutgoingRequests =
-          await fff_lobby_backend.fetchOutgoingRequests();
-      print("Fetched new outgoing requests");
-
-      final Position position = (await Geolocator().getCurrentPosition(
-              desiredAccuracy: _locationOptions.accuracy)) ??
-          (await Geolocator().getLastKnownPosition(
-              desiredAccuracy: _locationOptions.accuracy));
-      print("Got new position");
-
-      if (position != null) {
-        // TODO: Fix location subscription
-        await _updateUserDataDistances(position, newOnlineFriends);
-        await _updateFFRequestDistances(position, newIncomingRequests);
-        await _updateFFRequestDistances(position, newOutgoingRequests);
+      if (this.mounted) {
+        setState(() {
+          _incomingRequests = lobbyData[0];
+          _onlineFriends = lobbyData[1];
+          _outgoingRequests = lobbyData[2];
+        });
       }
-
-      setState(() {
-        _onlineFriends = newOnlineFriends;
-        _incomingRequests = newIncomingRequests;
-        _outgoingRequests = newOutgoingRequests;
-      });
     } catch (error) {
-      print("Failed to fetch friends HOMEFILE. $error");
+      log("$error");
     }
   }
 
-  _updateUserDataDistances(Position position, List<UserData> users) async {
+  Future _updateUserDataDistances(
+      Position position, List<UserData> users) async {
     if (users == null) return;
     for (final user in users) {
       // TODO: Handle null positions for other users
@@ -113,7 +132,8 @@ class _HomeState extends State<Home> {
     users.sort((u1, u2) => u1.distance.compareTo(u2.distance));
   }
 
-  _updateFFRequestDistances(Position position, List<FFRequest> requests) async {
+  Future _updateFFRequestDistances(
+      Position position, List<FFRequest> requests) async {
     // TODO: Handle null positions
     if (requests == null) return;
     for (final request in requests) {
@@ -130,8 +150,9 @@ class _HomeState extends State<Home> {
 
   @override
   dispose() {
+    log("dispose() called on home.");
     _fetchTimer.cancel();
-    _positionSubscription.cancel();
+    _positionSubscription?.cancel();
     super.dispose();
   }
 
@@ -146,6 +167,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: fff_colors.background,
       appBar: AppBar(
+        brightness: Brightness.light,
         title: Text(
           _homeTabToString(_curTab),
           style: Theme.of(context).textTheme.title,
@@ -173,7 +195,7 @@ class _HomeState extends State<Home> {
                     height: 30,
                     margin: const EdgeInsets.only(
                         right: fff_spacing.profilePicInsets),
-                    child: Home.timer,
+                    child: widget.fffTimer,
                   ),
                   Text(
                     "minutes remaining",
@@ -275,6 +297,7 @@ class _HomeState extends State<Home> {
                       return GestureDetector(
                         onTap: () =>
                             this._pushFriendDetail(context, data[index], null),
+                        behavior: HitTestBehavior.translucent,
                         child: buildProfilePane(
                           data[index].imageUrl,
                           data[index].name,
@@ -288,6 +311,7 @@ class _HomeState extends State<Home> {
                     return GestureDetector(
                       onTap: () => this._pushFriendDetail(
                           context, data[index].user, data[index]),
+                      behavior: HitTestBehavior.translucent,
                       child: buildProfilePane(
                         data[index].user.imageUrl,
                         data[index].user.name,

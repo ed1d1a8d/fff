@@ -5,7 +5,7 @@ import 'package:fff/models/mock_data.dart';
 import "package:fff/models/user_data.dart";
 import "package:http/http.dart" as http;
 
-final String lobbyEndpoint =
+const String lobbyEndpoint =
     fff_backend_constants.server_location + "/api/lobby";
 
 final String ffrequestsEndpoint =

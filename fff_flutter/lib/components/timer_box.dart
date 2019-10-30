@@ -1,4 +1,6 @@
 import "dart:async";
+import "dart:developer";
+
 import "package:flutter/material.dart";
 import "package:flutter/cupertino.dart";
 
@@ -16,10 +18,14 @@ class TimerBox extends StatefulWidget {
 }
 
 class _TimerBoxState extends State<TimerBox> {
-  Timer _timer;
-  Duration timerDuration;
+  static Timer _timer;
+  static Duration timerDuration;
 
-  _TimerBoxState(this.timerDuration) {
+  _TimerBoxState(originalTimerDuration) {
+    log("Set new _TimerBoxState.");
+    if (timerDuration == null) {
+      timerDuration = originalTimerDuration;
+    }
     this.startTimer();
   }
 
@@ -62,7 +68,7 @@ class _TimerBoxState extends State<TimerBox> {
                     child: CupertinoTimerPicker(
                       mode: CupertinoTimerPickerMode.hms,
                       minuteInterval: 1,
-                      initialTimerDuration: this.timerDuration,
+                      initialTimerDuration: _TimerBoxState.timerDuration,
                       onTimerDurationChanged: (Duration changedTimer) {
                         setState(() {
                           timerDuration = changedTimer;
@@ -116,7 +122,7 @@ class _TimerBoxState extends State<TimerBox> {
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
                       child: Text(
-                        this.timerDuration.toString().substring(0, 7),
+                        _TimerBoxState.timerDuration.toString().substring(0, 7),
                         style: TextStyle(fontSize: 14),
                       )))),
         ],
