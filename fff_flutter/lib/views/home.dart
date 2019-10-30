@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
   List<UserData> _onlineFriends;
   List<FFRequest> _outgoingRequests;
 
-  static const _fetchPeriod = const Duration(seconds: 5);
+  static const _fetchPeriod = const Duration(seconds: 10);
   Timer _fetchTimer;
 
   static const _locationOptions =
@@ -62,7 +62,7 @@ class _HomeState extends State<Home> {
   @override
   initState() {
     super.initState();
-    log("initState called.");
+    log("initState called on home.");
 
     _fetchTimer =
         noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
@@ -70,21 +70,28 @@ class _HomeState extends State<Home> {
 
   // returns a list containing 3 things: incomingRequests, onlineFriends, and outgoingRequests
   Future<List> _fetchLobbyData() async {
-    List lobbyData = await Future.wait([
-      fff_lobby_backend.fetchIncomingRequests(),
-      fff_lobby_backend.fetchOnlineFriends(),
-      fff_lobby_backend.fetchOutgoingRequests(),
-    ]);
-    log("Fetched lobby user data.");
+    List lobbyData;
+    Position position;
 
-    List<Position> positionData = await Future.wait([
-      Geolocator()
-          .getCurrentPosition(desiredAccuracy: _locationOptions.accuracy),
-      Geolocator()
-          .getLastKnownPosition(desiredAccuracy: _locationOptions.accuracy),
+    await Future.wait([
+      () async {
+        lobbyData = await Future.wait([
+          fff_lobby_backend.fetchIncomingRequests(),
+          fff_lobby_backend.fetchOnlineFriends(),
+          fff_lobby_backend.fetchOutgoingRequests(),
+        ]);
+        log("Fetched lobby user data.");
+      }(),
+      () async {
+        position = await Geolocator()
+            .getCurrentPosition(desiredAccuracy: _locationOptions.accuracy);
+        if (position == null) {
+          position = await Geolocator()
+              .getCurrentPosition(desiredAccuracy: _locationOptions.accuracy);
+        }
+        log("Fetched user position data.");
+      }(),
     ]);
-    Position position = positionData[0] ?? positionData[1];
-    log("Fetched user position data.");
 
     if (position != null) {
       // TODO: Fix location subscription
@@ -143,6 +150,7 @@ class _HomeState extends State<Home> {
 
   @override
   dispose() {
+    log("dispose() called on home.");
     _fetchTimer.cancel();
     _positionSubscription?.cancel();
     super.dispose();
