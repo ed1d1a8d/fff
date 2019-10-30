@@ -7,6 +7,8 @@ from django.utils import timezone
 import rest_framework.generics
 from rest_framework.response import Response
 import requests
+from rest_framework import parsers
+import json
 
 from friendship.models import Friend, FriendshipRequest
 
@@ -27,15 +29,30 @@ class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
         return self.request.user
 
     def put(self, request, *args, **kwargs):
+        parser_classes = (parsers.JSONParser,)
+
+        print("!!!!!!!!")
+        # values = json.dumps(request.body)
+        #
+        # print(values)
+        #
+        # self.request.user.first_sign_in = (loaded["first_sign_in"] == "True")
+        # self.request.user.save()
+        # print(self.request.user.first_sign_in)
+        #
+        # print(self.request.user)
+
         return self.update(request, *args, **kwargs)
+
+        return "Updated self ? ? ?"
 
 class AddFacebookFriends(rest_framework.generics.GenericAPIView):
     def post(self, request):
+        print(request.data)
         url =  "https://graph.facebook.com/v4.0/{0}/friends".format(
-            request.user.facebook_ID,
+            request.user.fb_id,
         )
 
-        print (request.data)
         # mydata = {"access_token": }
 
         # r = requests.post(url = url, data = mydata)

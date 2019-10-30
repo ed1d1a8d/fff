@@ -29,7 +29,7 @@ class FFFApp extends StatelessWidget {
         fff_routes.login: (BuildContext context) => Login(),
         fff_routes.home: (BuildContext context) => Home(),
         fff_routes.friendRequest: (BuildContext context) => FriendRequests(),
-        fff_routes.addFriendSignup: (BuildContext context) =>
+        fff_routes.addFriendsSignup: (BuildContext context) =>
             AddFriendsSignup(),
         fff_routes.searchPeople: (BuildContext context) => SearchPeople(),
       },
