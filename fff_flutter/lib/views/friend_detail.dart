@@ -99,14 +99,14 @@ class _FriendDetailState extends State<FriendDetail> {
                       child: Row(children: this._buildActionRow()),
                     ),
                   ],
-                ), // TODO
+                ),
               ),
             ),
             SizedBox(height: fff_spacing.profileListInsets),
             Image.asset(
               "assets/images/pizza-burger.png",
               height: MediaQuery.of(context).size.height *
-                  0.1, // TODO MOVE THIS OUT
+                  0.1,
             ),
           ],
         ),

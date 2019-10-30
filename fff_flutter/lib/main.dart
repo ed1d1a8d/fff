@@ -8,6 +8,7 @@ import "package:fff/views/home.dart";
 import "package:fff/views/loading.dart";
 import "package:fff/views/login.dart";
 import 'package:fff/views/search_people.dart';
+import "package:fff/components/timer_box.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
 
@@ -19,7 +20,12 @@ class FFFApp extends StatefulWidget {
 }
 
 class _FFFAppState extends State<FFFApp> {
+  final TimerBox fffTimer = new TimerBox(new Duration(minutes: 15));
   final FirebaseMessaging _fcm = FirebaseMessaging();
+
+  _FFFAppState() {
+    log("_FFFAppState initialized.");
+  }
 
   @override
   void initState() {
@@ -48,8 +54,8 @@ class _FFFAppState extends State<FFFApp> {
       theme: theme,
 
       // Switch this line out for easier debugging
-      home: Loading(),
-      // home: Login(),
+      // home: Loading(),
+      home: Login(),
       // home: AddFriendsSignup(),
       // home: Home(),
       // home: SearchPeople(),
@@ -58,7 +64,7 @@ class _FFFAppState extends State<FFFApp> {
       routes: <String, WidgetBuilder>{
         fff_routes.loading: (BuildContext context) => Loading(),
         fff_routes.login: (BuildContext context) => Login(),
-        fff_routes.home: (BuildContext context) => Home(),
+        fff_routes.home: (BuildContext context) => Home(this.fffTimer),
         fff_routes.friendRequest: (BuildContext context) => FriendRequests(),
         fff_routes.addFriendSignup: (BuildContext context) =>
             AddFriendsSignup(),

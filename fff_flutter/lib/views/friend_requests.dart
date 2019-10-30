@@ -30,7 +30,6 @@ class FriendRequestsState extends State<FriendRequests> {
         title: Row(
           children: <Widget>[
             Container(
-              height: 45, // TODO REMOVE HARDCODE
               padding: const EdgeInsets.only(right: 10),
               child: Image.asset(
                 "assets/images/add-friends.png",

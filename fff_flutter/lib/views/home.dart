@@ -17,12 +17,11 @@ import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:geolocator/geolocator.dart";
 import "dart:developer";
 
-final TimerBox lobbyTimer = new TimerBox(MockData.timerDuration);
-
 class Home extends StatefulWidget {
   static const String routeName = "/home";
+  final fffTimer;
 
-  static final TimerBox timer = lobbyTimer;
+  Home(this.fffTimer);
 
   @override
   State<StatefulWidget> createState() {
@@ -47,8 +46,7 @@ String _homeTabToString(_HomeTab time) {
 class _HomeState extends State<Home> {
   _HomeTab _curTab = _HomeTab.incomingRequests;
 
-  // TODO: Use a different datatype for requests.
-  List<FFRequest> _incomingRequests; // TODO: Track unread requests.
+  List<FFRequest> _incomingRequests;
   List<UserData> _onlineFriends;
   List<FFRequest> _outgoingRequests;
 
@@ -110,11 +108,13 @@ class _HomeState extends State<Home> {
     try {
       final List lobbyData = await this._fetchLobbyData();
 
-      setState(() {
-        _incomingRequests = lobbyData[0];
-        _onlineFriends = lobbyData[1];
-        _outgoingRequests = lobbyData[2];
-      });
+      if (this.mounted) {
+        setState(() {
+          _incomingRequests = lobbyData[0];
+          _onlineFriends = lobbyData[1];
+          _outgoingRequests = lobbyData[2];
+        });
+      }
     } catch (error) {
       log("$error");
     }
@@ -167,6 +167,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: fff_colors.background,
       appBar: AppBar(
+        brightness: Brightness.light,
         title: Text(
           _homeTabToString(_curTab),
           style: Theme.of(context).textTheme.title,
@@ -194,7 +195,7 @@ class _HomeState extends State<Home> {
                     height: 30,
                     margin: const EdgeInsets.only(
                         right: fff_spacing.profilePicInsets),
-                    child: Home.timer,
+                    child: widget.fffTimer,
                   ),
                   Text(
                     "minutes remaining",
