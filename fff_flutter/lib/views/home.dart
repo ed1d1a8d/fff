@@ -86,6 +86,9 @@ class _HomeState extends State<Home> {
         log("Fetched lobby user data.");
       }(),
       () async {
+        // do serially
+        // the first geolocator call may trigger a request for permissions,
+        // which will failed the second call if it is not yet resolved
         position = await Geolocator()
             .getCurrentPosition(desiredAccuracy: _locationOptions.accuracy);
         if (position == null) {
