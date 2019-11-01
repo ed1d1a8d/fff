@@ -17,30 +17,15 @@ import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:geolocator/geolocator.dart";
 import "dart:developer";
 
+enum _HomeTab { incomingRequests, onlineFriends, outgoingRequests }
+
 class Home extends StatefulWidget {
   static const String routeName = "/home";
-  final fffTimer;
-
-  Home(this.fffTimer);
 
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
   }
-}
-
-enum _HomeTab { incomingRequests, onlineFriends, outgoingRequests }
-
-String _homeTabToString(_HomeTab time) {
-  switch (time) {
-    case _HomeTab.incomingRequests:
-      return "Incoming Requests";
-    case _HomeTab.onlineFriends:
-      return "Online Friends";
-    case _HomeTab.outgoingRequests:
-      return "Outgoing Requests";
-  }
-  return null;
 }
 
 class _HomeState extends State<Home> {
@@ -57,10 +42,30 @@ class _HomeState extends State<Home> {
       LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
   StreamSubscription<Position> _positionSubscription;
 
+  // the timerbox that we show here
+  final TimerBox _fffTimerBox = new TimerBox();
+
+  // helper function
+  String _getHomeTabTitle(_HomeTab tab) {
+    switch (tab) {
+      case _HomeTab.incomingRequests:
+        return "Incoming Requests";
+      case _HomeTab.onlineFriends:
+        return "Online Friends";
+      case _HomeTab.outgoingRequests:
+        return "Outgoing Requests";
+    }
+    return null;
+  }
+
   @override
   initState() {
     super.initState();
-    log("initState called on home.");
+    log("Initialized _HomeState.");
+
+    // set the initial duration of the timerbox to a default when we first login
+    // this function does nothing if the timerbox has already been set
+    TimerBox.setInitialDuration(Duration(minutes: 10));
 
     _fetchTimer =
         noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
@@ -97,6 +102,9 @@ class _HomeState extends State<Home> {
         log("Fetched lobby user data.");
       }(),
       () async {
+        // do serially
+        // the first geolocator call may trigger a request for permissions,
+        // which will failed the second call if it is not yet resolved
         position = await Geolocator()
             .getCurrentPosition(desiredAccuracy: _locationOptions.accuracy);
         if (position == null) {
@@ -169,7 +177,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         brightness: Brightness.light,
         title: Text(
-          _homeTabToString(_curTab),
+          this._getHomeTabTitle(_curTab),
           style: Theme.of(context).textTheme.title,
         ),
         backgroundColor: fff_colors.background,
@@ -195,7 +203,7 @@ class _HomeState extends State<Home> {
                     height: 30,
                     margin: const EdgeInsets.only(
                         right: fff_spacing.profilePicInsets),
-                    child: widget.fffTimer,
+                    child: this._fffTimerBox,
                   ),
                   Text(
                     "minutes remaining",
