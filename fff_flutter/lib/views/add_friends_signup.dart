@@ -1,12 +1,20 @@
 import "package:fff/components/fff_check_box.dart";
+import "package:fff/backend/constants.dart";
+import "package:fff/backend/constants.dart" as fff_backend_constants;
+
 import "package:fff/components/gradient_container.dart";
 import "package:fff/components/search_bar.dart";
+import "package:fff/backend/friends.dart" as fff_friends_backend;
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/mock_data.dart";
+import "package:fff/models/user_data.dart";
+import "package:fff/backend/auth.dart" as fff_auth;
 import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:flutter/material.dart";
+import "package:http/http.dart" as http;
+
 
 class AddFriendsSignup extends StatefulWidget {
   static const String routeName = "add-friends-signup";
@@ -15,12 +23,61 @@ class AddFriendsSignup extends StatefulWidget {
   _AddFriendsSignupState createState() => _AddFriendsSignupState();
 }
 
+
 class _AddFriendsSignupState extends State<AddFriendsSignup> {
   // is null if proper subset of friends is checked
-  int numFriendsChecked = MockData.onlineFriends.length;
-  List<bool> isFriendChecked =
-      new List.filled(MockData.onlineFriends.length, true);
+
+  List<SimpleUserData> _fbFriends;
+  int numFriendsChecked;
+  int numFriends;
+  List<bool> isFriendChecked;
+
   String filterText = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    _setFBFriends();
+  }
+
+  Future<List<SimpleUserData>> fetchFBFriendsFuture() async {
+//    if (fff_backend_constants.localMockData) {
+//      return MockData.onlineFriends;
+//    }
+
+    final response = await http.post(
+      fff_backend_constants.server_location + "/api/fbfriends.json",
+      body: {"access_token": fff_auth.accessToken},
+      headers: fff_auth.getAuthHeaders(),
+    );
+
+    if (response.statusCode != 200)
+      throw new Exception("Failed to get FB Friends friends...");
+
+    print("!!!!!!!!!!!!!!!!!!!!!");
+
+    return SimpleUserData.listFromJsonString(response.body);
+  }
+
+  void _setFBFriends() async {
+    try {
+      final List<SimpleUserData> fbfriends = await this.fetchFBFriendsFuture();
+
+      if (this.mounted) {
+        setState(() {
+          _fbFriends = fbfriends;
+          numFriendsChecked = _fbFriends.length;
+          numFriends = _fbFriends.length;
+          List<bool> isFriendChecked =
+            new List.filled(_fbFriends.length, true);
+        });
+      }
+    }
+    catch (error) {
+      print("$error");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,20 +162,20 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                           onTap: () {
                             setState(() {
                               if (numFriendsChecked !=
-                                  MockData.onlineFriends.length) {
+                                  numFriends) {
                                 numFriendsChecked =
-                                    MockData.onlineFriends.length;
+                                    numFriends;
                                 isFriendChecked = new List.filled(
-                                    MockData.onlineFriends.length, true);
+                                    numFriends, true);
                               } else {
                                 numFriendsChecked = 0;
                                 isFriendChecked = new List.filled(
-                                    MockData.onlineFriends.length, false);
+                                    numFriends, false);
                               }
                             });
                           },
                           checked: this.numFriendsChecked ==
-                                  MockData.onlineFriends.length
+                              numFriends
                               ? true
                               : this.numFriendsChecked == 0 ? false : null,
                         ),
@@ -126,22 +183,22 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                     ),
 
                     // List of friends
+
                     Expanded(
                       child: ListView.separated(
                         padding: const EdgeInsets.only(top: 5),
-                        itemCount: MockData.onlineFriends.length,
+                        itemCount: numFriends,
                         itemBuilder: (BuildContext context, int index) {
                           return this.friendAtIndexVisible(index)
                               ? Row(
                                   children: <Widget>[
                                     URLAvatar(
-                                      imageURL: MockData
-                                          .onlineFriends[index].imageUrl,
+                                      imageURL: "http://graph.facebook.com/" + _fbFriends[index].facebookId.toString() + "/picture?type=large",
                                     ),
                                     Container(
                                       margin: const EdgeInsets.only(left: 10),
                                       child: Text(
-                                        MockData.onlineFriends[index].name,
+                                        _fbFriends[index].name,
                                         style:
                                             Theme.of(context).textTheme.display2,
                                       ),
@@ -204,8 +261,9 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
     );
   }
 
+
   bool friendAtIndexVisible(int index) {
-    return MockData.onlineFriends[index].name
+    return _fbFriends[index].name
         .toLowerCase()
         .contains(this.filterText.toLowerCase());
   }

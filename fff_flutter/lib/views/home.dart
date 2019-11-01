@@ -66,6 +66,22 @@ class _HomeState extends State<Home> {
         noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
   }
 
+  void _handleFetchTimerCalled() async {
+    try {
+      final List lobbyData = await this._fetchLobbyData();
+
+      if (this.mounted) {
+        setState(() {
+          _incomingRequests = lobbyData[0];
+          _onlineFriends = lobbyData[1];
+          _outgoingRequests = lobbyData[2];
+        });
+      }
+    } catch (error) {
+      log("$error");
+    }
+  }
+
   // returns a list containing 3 things: incomingRequests, onlineFriends, and outgoingRequests
   Future<List> _fetchLobbyData() async {
     List lobbyData;
@@ -102,22 +118,6 @@ class _HomeState extends State<Home> {
     }
 
     return lobbyData;
-  }
-
-  void _handleFetchTimerCalled() async {
-    try {
-      final List lobbyData = await this._fetchLobbyData();
-
-      if (this.mounted) {
-        setState(() {
-          _incomingRequests = lobbyData[0];
-          _onlineFriends = lobbyData[1];
-          _outgoingRequests = lobbyData[2];
-        });
-      }
-    } catch (error) {
-      log("$error");
-    }
   }
 
   Future _updateUserDataDistances(

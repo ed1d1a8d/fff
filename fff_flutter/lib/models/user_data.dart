@@ -53,4 +53,32 @@ class UserData {
 
   static List<UserData> listFromJsonString(String str) =>
       List<UserData>.from(json.decode(str).map((x) => UserData.fromJson(x)));
+
+}
+
+class SimpleUserData {
+  final String name;
+  final int facebookId;
+  String imageUrl;
+
+  SimpleUserData({
+    this.name,
+    this.facebookId
+  });
+
+  factory SimpleUserData.fromJson(Map<String, dynamic> json) => SimpleUserData(
+    name: json["name"],
+    facebookId: int.parse(json["id"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "facebook_id": facebookId,
+  };
+
+  String toJsonString() => json.encode(toJson());
+
+  static List<SimpleUserData> listFromJsonString(String str) =>
+      List<SimpleUserData>.from(json.decode(str).map((x) => SimpleUserData.fromJson(x)));
+
 }
