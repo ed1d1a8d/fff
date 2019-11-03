@@ -6,7 +6,6 @@ import "package:fff/components/hamburger_drawer.dart";
 import "package:fff/components/timer_box.dart";
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/ffrequest.dart";
-import "package:fff/models/mock_data.dart";
 import "package:fff/models/user_data.dart";
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/no_delay_periodic_timer.dart";
