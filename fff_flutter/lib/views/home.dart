@@ -398,7 +398,11 @@ class _HomeState extends State<Home> {
           (Detail detail, FFRequest ffRequest) {
             setState(() {
               if (detail == Detail.outgoing) {
-                this._outgoingRequests.removeWhere((request) => request == ffRequest);
+                print("start");
+                print(this._outgoingRequests.length);
+                this._outgoingRequests.removeWhere((request) => request.id == ffRequest.id);
+                print(this._outgoingRequests.length);
+                print("end");
               } else if (detail == Detail.online) {
                 this._outgoingRequests.insert(0, ffRequest);
                 this._curTab = _HomeTab.outgoingRequests;

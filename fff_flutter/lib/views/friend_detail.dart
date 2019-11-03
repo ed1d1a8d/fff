@@ -211,7 +211,7 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-//            fff_request_backend.actOnRequest(widget.ffRequest, "rejected");
+            fff_request_backend.actOnRequest(widget.ffRequest, "rejected");
             widget.callback(Detail.incoming, widget.ffRequest);
             Navigator.pop(context);
           },
@@ -247,9 +247,10 @@ class _FriendDetailState extends State<FriendDetail> {
               "Withdrawing Request",
               "withdraw Collin's request?",
               () {
-                fff_request_backend.cancelRequest(widget.ffRequest);
-                widget.callback(Detail.outgoing, widget.ffRequest);
-                Navigator.of(context).popUntil((route) => route.settings.name == Home.routeName);
+                fff_request_backend.cancelRequest(widget.ffRequest).then((cancel) {
+                  widget.callback(Detail.outgoing, widget.ffRequest);
+                  Navigator.of(context).popUntil((route) => route.settings.name == Home.routeName);
+                });
               }
             );
           },

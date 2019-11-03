@@ -47,9 +47,10 @@ void actOnRequest(FFRequest currRequest, String action) async {
   if (response.statusCode >= 300) {
     throw new Exception("FAILURE: Could not take action on request");
   }
+
 }
 
-void cancelRequest(FFRequest currRequest) async {
+Future<bool> cancelRequest(FFRequest currRequest) async {
   final response = await http.get(
     ffrequestsEndpoint + "/cancel/" + currRequest.id.toString() + "/",
     headers: fff_auth.getAuthHeaders());
@@ -57,4 +58,5 @@ void cancelRequest(FFRequest currRequest) async {
     throw new Exception("FAILURE: Could not cancel request");
   }
 
+  return true;
 }
