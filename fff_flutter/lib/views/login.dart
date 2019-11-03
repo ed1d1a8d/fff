@@ -69,13 +69,12 @@ class Login extends StatelessWidget {
 
                     if (r["first_sign_in"]) {
                       // change first sign in to false on backend
-                        print("FIRST SIGN IN");
 
-//                        final updateSignin = await http.put(
-//                          server_location + "/api/self/detail.json/",
-//                          body: {"first_sign_in": "False"},
-//                          headers: fff_auth.getAuthHeaders(),
-//                        );
+                        final updateSignin = await http.put(
+                          server_location + "/api/self/detail.json/",
+                          body: {"first_sign_in": "False"},
+                          headers: fff_auth.getAuthHeaders(),
+                        );
 
                         // trigger add friends sign up page
                         Navigator.pushReplacementNamed(context, fff_routes.addFriendsSignup);

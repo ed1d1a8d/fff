@@ -1,5 +1,6 @@
 import 'package:fff/backend/auth.dart' as fff_auth;
 import 'package:fff/routes.dart' as fff_routes;
+import 'package:fff/views/login.dart';
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 
@@ -12,7 +13,7 @@ class HamburgerDrawer extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _createHeader(),
+          _createHeader(context),
           _createDrawerItem(context, FontAwesomeIcons.home, "Home",
               () => Navigator.pushReplacementNamed(context, fff_routes.home)),
           _createDrawerItem(
@@ -49,11 +50,10 @@ class HamburgerDrawer extends StatelessWidget {
         shape: BoxShape.circle,
         image: DecorationImage(
             fit: BoxFit.fill,
-            image: NetworkImage(
-                "https://scontent.fbed1-2.fna.fbcdn.net/v/t1.0-1/c73.206.614.614a/s100x100/50735968_2302236259809637_5312553092619698176_n.jpg?_nc_cat=104&_nc_oc=AQnj-x9fkxHyDUJPaGK_RlQ_kTJhJBbDXNx29xDpk5A_7NMlgR6Nv4Qg2VCquwC9vf8&_nc_ht=scontent.fbed1-2.fna&oh=165917455e36027c7672ef070ed06e8d&oe=5E3A0206")));
+            image: NetworkImage(me.imageUrl)));
   }
 
-  Widget _createHeader() {
+  Widget _createHeader(context) {
     return DrawerHeader(
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
@@ -62,18 +62,17 @@ class HamburgerDrawer extends StatelessWidget {
           Container(
             width: 75,
             height: 75,
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
             decoration: _createHeaderProfile(),
           ),
           SizedBox(height: 14),
           Text(
-            "Stella Yang",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+            me.name,
+            style: Theme.of(context).textTheme.headline,
           ),
           SizedBox(height: 4),
-          Text("@stellay"),
+          Text("@" + me.username,
+          style: Theme.of(context).textTheme.body1),
         ],
       ),
       decoration: BoxDecoration(
