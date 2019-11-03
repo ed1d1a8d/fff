@@ -40,13 +40,19 @@ class AddFacebookFriends(rest_framework.generics.GenericAPIView):
         returnlist = []
 
         if r.status_code == 200:
+            existing_fff_friends = Friend.objects.friends(request.user)
+            print(existing_fff_friends)
+
             fbresponse = r.json()
             friendlist = fbresponse["friends"]["data"]
 
             for friend in friendlist:
                 u = User.objects.get(fb_id = friend["id"])
-                serializer = UserPublicSerializer(u)
-                returnlist.append(serializer.data)
+                if (u not in existing_fff_friends):
+                    serializer = UserPublicSerializer(u)
+                    returnlist.append(serializer.data)
+
+            print(returnlist)
 
             return JsonResponse(returnlist, safe=False)
 

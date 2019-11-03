@@ -1,3 +1,4 @@
+import 'package:fff/views/add_fb_friends.dart';
 import "package:fff/views/add_friends_signup.dart";
 import "package:fff/views/friend_requests.dart";
 import "package:fff/views/home.dart";
@@ -13,3 +14,4 @@ const String searchPeople = SearchPeople.routeName;
 const String friendRequest = FriendRequests.routeName;
 const String addFriendsSignup = AddFriendsSignup.routeName;
 const String friendDetail = FriendDetail.routeName;
+const String addFBFriends = AddFBFriends.routeName;

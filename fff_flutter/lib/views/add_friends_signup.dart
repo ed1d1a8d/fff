@@ -26,14 +26,14 @@ class AddFriendsSignup extends StatefulWidget {
 class _AddFriendsSignupState extends State<AddFriendsSignup> {
   // is null if proper subset of friends is checked
 
-  List<UserData> _fbFriends = [];
+  List<UserData> _fbFriends;
   int _numFriendsChecked = 0;
   int _numFriends;
   List<bool> _isFriendChecked;
 
   String filterText = "";
 
-  static const _fetchPeriod = const Duration(seconds: 10);
+  static const _fetchPeriod = const Duration(seconds: 120);
   Timer _fetchTimer;
 
   @override
@@ -210,9 +210,13 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                         ),
 
                         // List of friends
-                        _fbFriends.length == 0 ? Center(
+
+                        _fbFriends == null ? Center(
                           child: CircularProgressIndicator(),
-                        )
+                        ) :
+
+                        (_fbFriends.length == 0 ? Text("You are the first of your Facebook friends using FFF! (Or maybe you've already added all of your Facebook friends.)",
+                        style: Theme.of(context).textTheme.display2)
                             : Expanded(
                           child: ListView.separated(
                             padding: const EdgeInsets.only(top: 5),
@@ -256,7 +260,7 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                                   : Container();
                             },
                           ),
-                        ),
+                        )),
                       ],
                     ),
                   ),
@@ -273,8 +277,19 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                     ),
                     onPressed: () {
                       print("TODO BACKEND");
+                      List<UserData> friendsToAdd = [];
 
+                      if (_fbFriends != null) {
+                        for (int i = 0; i < _fbFriends.length; i++) {
+                          if (_isFriendChecked[i]) {
+                            // if friend is checked, add them
+                            friendsToAdd.add(_fbFriends[i]);
+                            print(_fbFriends[i].name);
+                          }
+                        }
+                      }
 
+                      // Friends to add contains the UserDatas of all the selected friends
 
                       // just go to the home page
                       Navigator.pushReplacementNamed(context, fff_routes.home);

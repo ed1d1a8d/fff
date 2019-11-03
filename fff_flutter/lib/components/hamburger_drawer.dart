@@ -16,6 +16,9 @@ class HamburgerDrawer extends StatelessWidget {
           _createHeader(context),
           _createDrawerItem(context, FontAwesomeIcons.home, "Home",
               () => Navigator.pushReplacementNamed(context, fff_routes.home)),
+          _createDrawerItem(context, FontAwesomeIcons.facebook, "Add Facebook Friends",
+                  () => Navigator.pushReplacementNamed(
+                  context, fff_routes.addFBFriends)),
           _createDrawerItem(
               context,
               FontAwesomeIcons.search,
@@ -28,8 +31,6 @@ class HamburgerDrawer extends StatelessWidget {
               "Friend Requests",
               () => Navigator.pushReplacementNamed(
                   context, fff_routes.friendRequest)),
-          _createDrawerItem(context, FontAwesomeIcons.questionCircle, "Help",
-              () => throw new UnimplementedError("TODO: QUESTION")),
           new Expanded(
             child: new Align(
               alignment: Alignment.bottomCenter,
@@ -50,7 +51,7 @@ class HamburgerDrawer extends StatelessWidget {
         shape: BoxShape.circle,
         image: DecorationImage(
             fit: BoxFit.fill,
-            image: NetworkImage(me.imageUrl)));
+            image: NetworkImage("")));
   }
 
   Widget _createHeader(context) {
@@ -67,11 +68,11 @@ class HamburgerDrawer extends StatelessWidget {
           ),
           SizedBox(height: 14),
           Text(
-            me.name,
+            "Stella",
             style: Theme.of(context).textTheme.headline,
           ),
           SizedBox(height: 4),
-          Text("@" + me.username,
+          Text("@" + "stellay",
           style: Theme.of(context).textTheme.body1),
         ],
       ),

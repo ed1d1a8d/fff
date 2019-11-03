@@ -3,6 +3,7 @@ import "dart:developer";
 import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/theme.dart";
 import "package:fff/components/timer_box.dart";
+import 'package:fff/views/add_fb_friends.dart';
 import "package:fff/views/add_friends_signup.dart";
 import "package:fff/views/friend_requests.dart";
 import "package:fff/views/home.dart";
@@ -74,6 +75,7 @@ class _FFFAppState extends State<FFFApp> {
         fff_routes.addFriendsSignup: (BuildContext context) =>
             AddFriendsSignup(),
         fff_routes.searchPeople: (BuildContext context) => SearchPeople(),
+        fff_routes.addFBFriends: (BuildContext context) => AddFBFriends(),
       },
     );
   }

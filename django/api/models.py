@@ -23,6 +23,9 @@ class User(AbstractUser):
 
     first_sign_in = models.BooleanField(default=True)
 
+    def __str__(self):
+        return f"{self.id} {self.name}"
+
 
 class Device(fcm_django.models.AbstractFCMDevice):
     """Makes registration_id unique and type optional."""
