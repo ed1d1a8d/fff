@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
 
   void _handleFetchTimerCalled() async {
     try {
-      final List lobbyData = await this._fetchLobbyData();
+      final List<List> lobbyData = await this._fetchLobbyData();
 
       if (this.mounted) {
         log("setState called on Home.");
@@ -122,8 +122,8 @@ class _HomeState extends State<Home> {
   }
 
   // returns a list containing 3 things: incomingRequests, onlineFriends, and outgoingRequests
-  Future<List> _fetchLobbyData() async {
-    List lobbyData;
+  Future<List<List>> _fetchLobbyData() async {
+    List<List> lobbyData;
     Position position;
 
     await Future.wait([
@@ -134,6 +134,23 @@ class _HomeState extends State<Home> {
           fff_lobby_backend.fetchOutgoingRequests(),
         ]);
         // log("Fetched lobby user data.");
+
+        // filter the online friends for those who don't have a request associated with them as well
+        // TODO: assume here that you can't have an incoming and outgoing request to the same user at one time
+        Set<int> requestedUserIds = new Set<int>();
+        for (FFRequest request in lobbyData[0]) {
+          requestedUserIds.add(request.user.id);
+        }
+        for (FFRequest request in lobbyData[2]) {
+          requestedUserIds.add(request.user.id);
+        }
+
+        List<UserData> filteredOnlineFriends = new List<UserData>();
+        for (UserData userData in lobbyData[1]) {
+          if (requestedUserIds.contains(userData.id)) continue;
+          filteredOnlineFriends.add(userData);
+        }
+        lobbyData[1] = filteredOnlineFriends;
       }(),
       () async {
         // do serially
