@@ -292,37 +292,28 @@ class FriendList(rest_framework.generics.ListAPIView):
 class FriendRequests(rest_framework.generics.GenericAPIView):
     # return a response depending on the action passed in
     def get(self, request, action):
-        if action == "unrejected":
+        if action == "incoming":
             try:
                 pending = Friend.objects.unrejected_requests(user=request.user)
                 serializer = FriendshipRequestSerializer(pending, many=True)
                 return JsonResponse(serializer.data, safe=False)
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
-        elif action == "unread":
-            try:
-                unread = Friend.objects.unread_requests(user=request.user)
-                serializer = FriendshipRequestSerializer(unread, many=True)
-                return JsonResponse(serializer.data, safe=False)
-            except Exception as exception:
-                return HttpResponse(str(exception), status=400)
+        elif action == "outgoing":
+            # TODO: Implement
+            return HttpResponse(str(exception), status=400)
         return HttpResponse("Invalid action.", status=400)
 
 
 class FriendActions(rest_framework.generics.GenericAPIView):
     # return a response depending on the action passed in
-    def get(self, request, action, pk):
+    def post(self, request, action, pk):
         try:
             other_user = User.objects.get(pk=pk)
         except:
             return HttpResponse("User pk does not exist.", status=400)
 
-        if action == "info":
-            if Friend.objects.are_friends(request.user, other_user) != True:
-                return HttpResponse("Target user is not a friend.", status=400)
-            serializer = UserPublicSerializer([other_user], many=True)
-            return JsonResponse(serializer.data, safe=False)
-        elif action == "request":
+        if action == "request":
             try:
                 Friend.objects.add_friend(request.user, other_user)
                 return HttpResponse(
