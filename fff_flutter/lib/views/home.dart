@@ -245,11 +245,6 @@ class _HomeState extends State<Home> {
                       fontSize: 16,
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                        left: fff_spacing.profilePicInsets),
-                    child: Icon(FontAwesomeIcons.questionCircle, size: 16),
-                  ),
                 ],
               ),
             ),
