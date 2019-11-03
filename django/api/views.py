@@ -26,16 +26,19 @@ from .serializers import (
 
 from django.utils.dateparse import parse_datetime
 
+
 class Dumb(rest_framework.generics.GenericAPIView):
     # return a response depending on the action passed in
     def get(self, request):
         return HttpResponse("dumb, but authenticated", status=200)
+
 
 class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
     serializer_class = UserSelfSerializer
 
     def get_object(self):
         return self.request.user
+
 
 class AddFacebookFriends(rest_framework.generics.GenericAPIView):
     def post(self, request, format):
@@ -54,7 +57,7 @@ class AddFacebookFriends(rest_framework.generics.GenericAPIView):
             friendlist = fbresponse["friends"]["data"]
 
             for friend in friendlist:
-                u = User.objects.get(fb_id = friend["id"])
+                u = User.objects.get(fb_id=friend["id"])
                 if (u not in existing_fff_friends):
                     serializer = UserPublicSerializer(u)
                     returnlist.append(serializer.data)
@@ -91,6 +94,7 @@ class LobbyExpiration(rest_framework.generics.GenericAPIView):
         new_lobby_expiration = serializer.validated_data["lobby_expiration"]
 
         with transaction.atomic():
+            # lazy ff request expiration
             if min(request.user.lobby_expiration,
                    new_lobby_expiration) < timezone.now():
                 print(f"Deleting expired requests for {request.user}..."
@@ -100,7 +104,8 @@ class LobbyExpiration(rest_framework.generics.GenericAPIView):
                     sender=request.user).update(
                         status=FFRequestStatusEnum.EXPIRED.value)
 
-            print("Updating lobby expiration for a user from", repr(request.user.lobby_expiration), "to", repr(new_lobby_expiration))
+            # print("Updating lobby expiration for a user from", repr(
+            #     request.user.lobby_expiration), "to", repr(new_lobby_expiration))
             request.user.lobby_expiration = new_lobby_expiration
             request.user.save()
 
@@ -209,16 +214,33 @@ class FetchFFSearchForFriend(rest_framework.generics.ListAPIView):
 
 
 class IncomingFFRequests(rest_framework.generics.ListAPIView):
-    # TODO: Filter to non-expired requests.
     # TODO: Double check you can only request a valid status
 
     serializer_class = FFRequestReadSerializer
 
     def get_queryset(self):
-        return FFRequest.objects.filter(
+        requests = FFRequest.objects.filter(
             status=self.kwargs["status"],
             receiver=self.request.user,
-        ).select_related("sender", "receiver")
+        ) # .select_related("sender", "receiver")
+
+        # filter for non-expired requests
+        # FF requests are cancelled lazily - they are not cancelled when an
+        # associated user's time expires, but only when either we retrieve the
+        # request or the user updates their time
+        # a request is expired when either of its users has expired
+        filteredRequests = []
+        for ffRequest in requests:
+            if ffRequest.sender.lobby_expiration < timezone.now():
+                print("FF Request lazily cancelled for sender", ffRequest.sender,
+                      "expired at", ffRequest.sender.lobby_expiration)
+                with transaction.atomic():
+                    ffRequest.status = FFRequestStatusEnum.EXPIRED.value
+                    ffRequest.save()
+                continue
+            filteredRequests.append(ffRequest)
+
+        return filteredRequests
 
 
 class OutgoingFFRequests(rest_framework.generics.ListAPIView):
@@ -226,10 +248,24 @@ class OutgoingFFRequests(rest_framework.generics.ListAPIView):
     serializer_class = FFRequestReadSerializer
 
     def get_queryset(self):
-        return FFRequest.objects.filter(
+        requests = FFRequest.objects.filter(
             status=self.kwargs["status"],
             sender=self.request.user,
-        ).select_related("sender", "receiver")
+        ) # .select_related("sender", "receiver")
+
+        # filter for non-expired requests - see above comment
+        filteredRequests = []
+        for ffRequest in requests:
+            if ffRequest.receiver.lobby_expiration < timezone.now():
+                print("FF Request lazily cancelled for receiver", ffRequest.receiver,
+                      "expired at", ffRequest.receiver.lobby_expiration)
+                with transaction.atomic():
+                    ffRequest.status = FFRequestStatusEnum.EXPIRED.value
+                    ffRequest.save()
+                continue
+            filteredRequests.append(ffRequest)
+            
+        return filteredRequests
 
 
 class FriendList(rest_framework.generics.ListAPIView):
