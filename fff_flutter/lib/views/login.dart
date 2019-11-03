@@ -63,20 +63,24 @@ class Login extends StatelessWidget {
                         server_location + "/api/self/detail.json/",
                         headers: fff_auth.getAuthHeaders());
 
-//                    print(response);
-
-//                    final addingFBIDToBackend = await http.put(
-//                      server_location + "/api/self.json",
-//                      body: {"facebook_ID": "test"},
-//                    );
-//
-//                    final myProfileData = await http.get(
-//                        'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
-//                    final profile = JSON.decode(graphResponse.body);
-
-                    log(response.body);
+                    Map<String, dynamic> r = (jsonDecode(response.body));
 
                     me = UserData.fromJson(json.decode(response.body));
+
+                    if (r["first_sign_in"]) {
+                      // change first sign in to false on backend
+                        print("FIRST SIGN IN");
+
+                        final updateSignin = await http.put(
+                          server_location + "/api/self/detail.json/",
+                          body: {"first_sign_in": "False"},
+                          headers: fff_auth.getAuthHeaders(),
+                        );
+
+                        // trigger add friends sign up page
+                        Navigator.pushReplacementNamed(context, fff_routes.addFriendsSignup);
+                        return;
+                    }
 
                     Navigator.pushReplacementNamed(context, fff_routes.home);
                   } else {

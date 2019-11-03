@@ -11,5 +11,5 @@ const String login = Login.routeName;
 const String home = Home.routeName;
 const String searchPeople = SearchPeople.routeName;
 const String friendRequest = FriendRequests.routeName;
-const String addFriendSignup = AddFriendsSignup.routeName;
+const String addFriendsSignup = AddFriendsSignup.routeName;
 const String friendDetail = FriendDetail.routeName;

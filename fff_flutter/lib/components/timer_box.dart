@@ -5,48 +5,75 @@ import "package:flutter/material.dart";
 import "package:flutter/cupertino.dart";
 
 class TimerBox extends StatefulWidget {
-  final Duration originalTimerDuration;
-
-  TimerBox(originalTimerDuration)
-      : this.originalTimerDuration = originalTimerDuration == null
-            ? new Duration()
-            : originalTimerDuration;
-
   @override
-  State<StatefulWidget> createState() =>
-      _TimerBoxState(this.originalTimerDuration);
+  State<StatefulWidget> createState() => _TimerBoxState();
+
+  // this function is only useful during its first call
+  static void setInitialDuration(Duration newDuration) {
+    _TimerBoxState.setInitialDuration(newDuration);
+  }
+
+  // this function just sets the duration of the timer to a new value regardless
+  static void setDuration(Duration newDuration) {
+    _TimerBoxState.setDuration(newDuration);
+  }
 }
 
 class _TimerBoxState extends State<TimerBox> {
-  static Timer _timer;
-  static Duration timerDuration;
+  static const Duration _oneSecond = const Duration(seconds: 1);
 
-  _TimerBoxState(originalTimerDuration) {
-    log("Set new _TimerBoxState.");
-    if (timerDuration == null) {
-      timerDuration = originalTimerDuration;
+  // all variables here static because we only want one TimerBox per app
+  static Duration _timerDuration;
+  static Timer _internalTimer;
+
+  // this variable determines if the timer is visible rn
+  static _TimerBoxState _mountedInstance;
+
+  _TimerBoxState() {
+    log("Initialized new _TimerBoxState.");
+    _TimerBoxState._mountedInstance = this;
+
+    // internal timer should only be set once
+    // what it does is controlled by other static variables
+    if (_TimerBoxState._internalTimer == null) {
+      _TimerBoxState._internalTimer = new Timer.periodic(
+          _TimerBoxState._oneSecond, _TimerBoxState._handleInternalTimer);
     }
-    this.startTimer();
   }
 
-  void stopTimer() {
-    _timer.cancel();
+  @override
+  dispose() {
+    _TimerBoxState._mountedInstance = null;
+    super.dispose();
   }
 
-  void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(oneSec, (Timer timer) {
-      if (this.mounted)
-        setState(
-          () {
-            if (timerDuration.inSeconds < 1) {
-              timer.cancel();
-            } else {
-              timerDuration = timerDuration - Duration(seconds: 1);
-            }
-          },
-        );
-    });
+  static void _handleInternalTimer(Timer timer) {
+    // don't do anything if the duration is too small
+    if (_TimerBoxState._timerDuration.inSeconds >= 1) {
+      _TimerBoxState.setDuration(
+          _TimerBoxState._timerDuration - _TimerBoxState._oneSecond);
+    }
+  }
+
+  // set new duration for the timer and handle everything associated with it
+  static void setDuration(Duration newDuration) {
+    Function makeDurationChange = () {
+      _TimerBoxState._timerDuration = newDuration;
+    };
+
+    // only setstate when an instance of this state is mounted
+    if (_TimerBoxState._mountedInstance == null) {
+      makeDurationChange();
+    } else {
+      _TimerBoxState._mountedInstance.setState(makeDurationChange);
+    }
+  }
+
+  // set a new duration only if the duration now is null
+  static void setInitialDuration(Duration newDuration) {
+    if (_TimerBoxState._timerDuration == null) {
+      _TimerBoxState.setDuration(newDuration);
+    }
   }
 
   void _showDialog() {
@@ -56,47 +83,37 @@ class _TimerBoxState extends State<TimerBox> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Countdown Timer"),
+          title: new Text("Free (For Food) Timer"),
           content: Container(
-              // Container to specify Alert Size
-              height: 330,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: 300,
-                    height: 200,
-                    child: CupertinoTimerPicker(
-                      mode: CupertinoTimerPickerMode.hms,
-                      minuteInterval: 1,
-                      initialTimerDuration: _TimerBoxState.timerDuration,
-                      onTimerDurationChanged: (Duration changedTimer) {
-                        setState(() {
-                          timerDuration = changedTimer;
-                        });
-                      },
-                    ),
+            // Container to specify Alert Size
+            height: 330,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 300,
+                  height: 200,
+                  child: CupertinoTimerPicker(
+                    mode: CupertinoTimerPickerMode.hms,
+                    minuteInterval: 1,
+                    initialTimerDuration: _TimerBoxState._timerDuration,
+                    onTimerDurationChanged: (Duration newDuration) {
+                      _TimerBoxState.setDuration(newDuration);
+                    },
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                      "This allows friends to request food with you for the next ___ minutes.",
-                      style: Theme.of(context).textTheme.body1),
-                  SizedBox(height: 14),
-                  Text(
-                      "The timer will continue to run even when you are not in the app.",
-                      style: Theme.of(context).textTheme.body1),
-                ],
-              )),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Set"),
-              onPressed: () {
-                stopTimer();
-                startTimer();
-                Navigator.of(context).pop();
-              },
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "This allows friends to request food with you for the next few minutes.",
+                  style: Theme.of(context).textTheme.body1,
+                ),
+                SizedBox(height: 14),
+                Text(
+                  "The timer will continue to run even when you are not in the app.",
+                  style: Theme.of(context).textTheme.body1,
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
@@ -117,14 +134,17 @@ class _TimerBoxState extends State<TimerBox> {
             ),
           ),
           Positioned.fill(
-              child: Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
-                      child: Text(
-                        _TimerBoxState.timerDuration.toString().substring(0, 7),
-                        style: TextStyle(fontSize: 14),
-                      )))),
+            child: Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
+                child: Text(
+                  _TimerBoxState._timerDuration.toString().substring(0, 7),
+                  style: TextStyle(fontSize: 14),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
       onTap: () {

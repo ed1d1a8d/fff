@@ -8,7 +8,6 @@ import "package:fff/views/home.dart";
 import "package:fff/views/loading.dart";
 import "package:fff/views/login.dart";
 import 'package:fff/views/search_people.dart';
-import "package:fff/components/timer_box.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
 
@@ -20,7 +19,6 @@ class FFFApp extends StatefulWidget {
 }
 
 class _FFFAppState extends State<FFFApp> {
-  final TimerBox fffTimer = new TimerBox(new Duration(minutes: 15));
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   _FFFAppState() {
@@ -32,9 +30,13 @@ class _FFFAppState extends State<FFFApp> {
     super.initState();
 
     // noop on android
-    _fcm.requestNotificationPermissions(IosNotificationSettings());
+    _fcm.requestNotificationPermissions();
 
     _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        log("onMessage: $message");
+        // TODO: Navigate to specific message screen.
+      },
       // fires if the app is fully terminated
       onLaunch: (Map<String, dynamic> message) async {
         log("onLaunch: $message");
@@ -64,9 +66,9 @@ class _FFFAppState extends State<FFFApp> {
       routes: <String, WidgetBuilder>{
         fff_routes.loading: (BuildContext context) => Loading(),
         fff_routes.login: (BuildContext context) => Login(),
-        fff_routes.home: (BuildContext context) => Home(this.fffTimer),
+        fff_routes.home: (BuildContext context) => Home(),
         fff_routes.friendRequest: (BuildContext context) => FriendRequests(),
-        fff_routes.addFriendSignup: (BuildContext context) =>
+        fff_routes.addFriendsSignup: (BuildContext context) =>
             AddFriendsSignup(),
         fff_routes.searchPeople: (BuildContext context) => SearchPeople(),
       },

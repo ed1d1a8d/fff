@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>99153344408-u347jdaavu04lbsvc7it1etnjjqr724r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.99153344408-u347jdaavu04lbsvc7it1etnjjqr724r</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCadDkhw1XKWnO2AbExQ-jUI9EVd0nQcEw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>99153344408</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fff.fff</string>
+	<key>PROJECT_ID</key>
+	<string>freeforfood-8f672</string>
+	<key>STORAGE_BUCKET</key>
+	<string>freeforfood-8f672.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:99153344408:ios:b8637ef7873a678e469ded</string>
+	<key>DATABASE_URL</key>
+	<string>https://freeforfood-8f672.firebaseio.com</string>
+</dict>
+</plist>

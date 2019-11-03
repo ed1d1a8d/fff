@@ -8,6 +8,8 @@ import rest_framework.status
 import rest_framework.generics
 from rest_framework.response import Response
 import requests
+from rest_framework import parsers
+import json
 
 from friendship.models import Friend, FriendshipRequest
 
@@ -28,16 +30,13 @@ class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-
 class AddFacebookFriends(rest_framework.generics.GenericAPIView):
     def post(self, request):
-        url = "https://graph.facebook.com/v4.0/{0}/friends".format(
-            request.user.facebook_ID, )
-
         print(request.data)
+        url =  "https://graph.facebook.com/v4.0/{0}/friends".format(
+            request.user.fb_id,
+        )
+
         # mydata = {"access_token": }
 
         # r = requests.post(url = url, data = mydata)
@@ -115,7 +114,7 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
         # TODO: Validate body size.
         # TODO: Change title.
         Device.objects.filter(user=ffrequest.receiver).all().send_message(
-            title=self.request.user.name, body=ffrequest.message)
+            title=self.request.user.name, body=ffrequest.message, click_action="FLUTTER_NOTIFICATION_CLICK")
 
     def create(self, request, *args, **kwargs):
         serializer = FFRequestWriteSerializer(data=request.data)
