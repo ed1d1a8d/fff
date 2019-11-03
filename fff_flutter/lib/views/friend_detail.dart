@@ -1,7 +1,9 @@
+import "dart:developer";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
 import "package:google_maps_flutter/google_maps_flutter.dart";
+import "package:url_launcher/url_launcher.dart";
 
 import "package:fff/backend/fff_timer.dart" as fff_timer_backend;
 import "package:fff/backend/ffrequests.dart" as fff_request_backend;
@@ -36,13 +38,13 @@ class FriendDetail extends StatefulWidget {
   _FriendDetailState createState() => _FriendDetailState();
 
   static bool isShowingAcceptedView() {
-    return _FriendDetailState.showingAcceptedView;
+    return _FriendDetailState.showingAcceptedView > 0;
   }
 }
 
 class _FriendDetailState extends State<FriendDetail> {
   // set to true if a state with showingAcceptedView is currently mounted
-  static bool showingAcceptedView = false;
+  static int showingAcceptedView = 0;
 
   GoogleMapController mapController;
 
@@ -51,7 +53,8 @@ class _FriendDetailState extends State<FriendDetail> {
 
   @override
   initState() {
-    _FriendDetailState.showingAcceptedView = widget.showingAcceptedView;
+    _FriendDetailState.showingAcceptedView += widget.showingAcceptedView ? 1 : 0;
+    log("Initialized _FriendDetailState; showingAcceptedView = " + _FriendDetailState.showingAcceptedView.toString());
 
     // if we are showing an accepted friend detail page, then update the timer as well so that it is synced up with backend, because the backend probably changed the timer
     if (widget.showingAcceptedView) {
@@ -63,7 +66,8 @@ class _FriendDetailState extends State<FriendDetail> {
 
   @override
   dispose() {
-    _FriendDetailState.showingAcceptedView = false;
+    _FriendDetailState.showingAcceptedView -= widget.showingAcceptedView ? 1 : 0;
+    log("Disposed _FriendDetailState; showingAcceptedView = " + _FriendDetailState.showingAcceptedView.toString());
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -99,7 +103,16 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.button,
           ),
           onPressed: () {
-            print("TODO");
+            // transition to open the fb link
+            final String url = "https://m.me/" + widget.user.facebookId;
+            log("Opening " + url + " in browser.");
+
+            canLaunch(url).then((_) {
+              launch(url);
+            }).catchError((error) {
+              // TODO report user
+              log("Could not launch. $error");
+            });
           },
           color: fff_colors.strongBackground,
           padding: const EdgeInsets.symmetric(
@@ -314,7 +327,7 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            DialogButton(context, "Reject", "reject this food request?", () {
+            DialogButton(context, "Accept", "accept this food request?", () {
               fff_request_backend.actOnRequest(widget.ffRequest, "accepted");
               Navigator.pop(context);
               widget.callback(Detail.incoming, widget.ffRequest, true);
