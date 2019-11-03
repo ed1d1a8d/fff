@@ -102,6 +102,7 @@ class SearchPeopleState extends State<SearchPeople> {
 
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
         title: Row(
           children: <Widget>[
             Container(

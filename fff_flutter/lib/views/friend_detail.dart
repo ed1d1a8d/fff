@@ -50,6 +50,7 @@ class _FriendDetailState extends State<FriendDetail> {
       resizeToAvoidBottomInset: false, // don't resize when keyboard up
       backgroundColor: fff_colors.background,
       appBar: AppBar(
+        brightness: Brightness.light,
         textTheme: Theme.of(context)
             .textTheme
             .apply(bodyColor: Colors.black, displayColor: Colors.black),

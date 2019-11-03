@@ -27,6 +27,7 @@ class FriendRequestsState extends State<FriendRequests> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
         title: Row(
           children: <Widget>[
             Container(
