@@ -21,27 +21,24 @@ class FFRequest {
         id: json["id"],
         user: UserData.fromJson(json["sender"]),
         message: json["message"],
-          isIncoming: true,
+        isIncoming: true,
       );
-    }
-    else {
+    } else {
       return FFRequest(
-          id: json["id"],
-          user: UserData.fromJson(json["receiver"]),
-          message: json["message"],
-          isIncoming: false,
+        id: json["id"],
+        user: UserData.fromJson(json["receiver"]),
+        message: json["message"],
+        isIncoming: false,
       );
     }
   }
 
   static FFRequest fromJsonString(String str, bool isIncoming) {
-    FFRequest.fromJson(json.decode(str), isIncoming);
+    return FFRequest.fromJson(json.decode(str), isIncoming);
   }
 
   static List<FFRequest> listFromJsonString(String str, bool isIncoming) {
     return List<FFRequest>.from(
-        json.decode(str).map((x) =>
-            FFRequest.fromJson(x, isIncoming)));
+        json.decode(str).map((x) => FFRequest.fromJson(x, isIncoming)));
   }
-
 }

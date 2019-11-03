@@ -3,11 +3,13 @@ import "package:flutter/material.dart";
 
 import "package:google_maps_flutter/google_maps_flutter.dart";
 
+import "package:fff/backend/fff_timer.dart" as fff_timer_backend;
 import "package:fff/backend/ffrequests.dart" as fff_request_backend;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/views/home.dart";
 import "package:fff/components/Dialog.dart";
+import "package:fff/components/timer_box.dart";
 import "package:fff/models/ffrequest.dart";
 import "package:fff/models/user_data.dart";
 import "package:fff/components/url_avatar.dart";
@@ -18,26 +20,51 @@ class FriendDetail extends StatefulWidget {
   final UserData user;
   final FFRequest ffRequest;
   final Function callback;
-  final bool isAccepted; // if this is true, then show the accepted screen
+  final bool
+      showingAcceptedView; // if this is true, then show the accepted screen
 
   FriendDetail(
     this.user,
     this.ffRequest,
     this.callback, {
     Key key,
-    isAccepted,
-  })  : this.isAccepted = isAccepted == true,
+    showingAcceptedView,
+  })  : this.showingAcceptedView = showingAcceptedView == true,
         super(key: key);
 
   @override
   _FriendDetailState createState() => _FriendDetailState();
+
+  static bool isShowingAcceptedView() {
+    return _FriendDetailState.showingAcceptedView;
+  }
 }
 
 class _FriendDetailState extends State<FriendDetail> {
+  // set to true if a state with showingAcceptedView is currently mounted
+  static bool showingAcceptedView = false;
+
   GoogleMapController mapController;
 
   // what the user might type as a request to send to the other user
   String newRequestMessage = "";
+
+  @override
+  initState() {
+    _FriendDetailState.showingAcceptedView = widget.showingAcceptedView;
+
+    // if we are showing an accepted friend detail page, then update the timer as well so that it is synced up with backend, because the backend probably changed the timer
+    if (widget.showingAcceptedView) {
+      fff_timer_backend.getExpirationTime().then((newExpirationTime) {
+        TimerBox.setExpirationTime(newExpirationTime);
+      });
+    }
+  }
+
+  @override
+  dispose() {
+    _FriendDetailState.showingAcceptedView = false;
+  }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -55,7 +82,7 @@ class _FriendDetailState extends State<FriendDetail> {
     // if the ff request is accepted, then build a different view
     List<Widget> widgets = [_mapWidget(context, friendCenter)];
 
-    if (widget.isAccepted) {
+    if (widget.showingAcceptedView) {
       widgets.addAll([
         Spacer(flex: 3),
         Container(
@@ -246,14 +273,17 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            UserData otherUser = widget.user;
+            DialogButton(context, "Send", "send this food request?", () {
+              UserData otherUser = widget.user;
 
-            fff_request_backend
-                .createRequest(otherUser, this.newRequestMessage)
-                .then((ffRequest) {
-              widget.callback(Detail.online, ffRequest);
-              Navigator.of(context)
-                  .popUntil((route) => route.settings.name == Home.routeName);
+              fff_request_backend
+                  .createRequest(otherUser, this.newRequestMessage)
+                  .then((FFRequest returnedRequest) {
+                // Navigator.of(context)
+                //     .popUntil((route) => route.settings.name == Home.routeName);
+                Navigator.pop(context);
+                widget.callback(Detail.online, returnedRequest, false);
+              });
             });
           },
           color: fff_colors.strongBackground,
@@ -268,9 +298,11 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            fff_request_backend.actOnRequest(widget.ffRequest, "rejected");
-            widget.callback(Detail.incoming, widget.ffRequest);
-            Navigator.pop(context);
+            DialogButton(context, "Reject", "reject this food request?", () {
+              fff_request_backend.actOnRequest(widget.ffRequest, "rejected");
+              Navigator.pop(context);
+              widget.callback(Detail.incoming, widget.ffRequest, false);
+            });
           },
           color: fff_colors.buttonGray,
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -282,8 +314,11 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            fff_request_backend.actOnRequest(widget.ffRequest, "accepted");
-            Navigator.pop(context);
+            DialogButton(context, "Reject", "reject this food request?", () {
+              fff_request_backend.actOnRequest(widget.ffRequest, "accepted");
+              Navigator.pop(context);
+              widget.callback(Detail.incoming, widget.ffRequest, true);
+            });
           },
           color: fff_colors.buttonGreen,
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -299,15 +334,13 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            DialogButton(
-                context, "Withdrawing Request", "withdraw Collin's request?",
+            DialogButton(context, "Withdrawal", "withdraw this food request?",
                 () {
               fff_request_backend
                   .cancelRequest(widget.ffRequest)
                   .then((cancel) {
-                widget.callback(Detail.outgoing, widget.ffRequest);
-                Navigator.of(context)
-                    .popUntil((route) => route.settings.name == Home.routeName);
+                Navigator.pop(context);
+                widget.callback(Detail.outgoing, widget.ffRequest, false);
               });
             });
           },

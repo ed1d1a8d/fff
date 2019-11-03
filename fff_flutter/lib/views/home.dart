@@ -119,8 +119,8 @@ class _HomeState extends State<Home> {
 
   void _handleFetchTimerCalled() async {
     try {
-      // only fetch data if the timer has not expired yet
-      if (!FFFTimerExpired.mounted) {
+      // only fetch data if the timer has not expired yet and not showing accepted screen
+      if (!FFFTimerExpired.mounted && !FriendDetail.isShowingAcceptedView()) {
         final List<List> lobbyData = await this._fetchLobbyData();
 
         // make changes to the static data - and call setstate if we're mounted
@@ -132,9 +132,10 @@ class _HomeState extends State<Home> {
 
         if (_HomeState._mountedInstances.length == 0) {
           updateStaticData();
+        log("Fetched lobby data.");
         } else {
           for (_HomeState instance in _HomeState._mountedInstances) {
-            log("setState called on Home instance.");
+            log("Fetched lobby data and called setState on Home instance.");
             instance.setState(updateStaticData);
           }
         }
@@ -468,26 +469,64 @@ class _HomeState extends State<Home> {
         builder: (context) => FriendDetail(
           user,
           ffRequest,
-          (Detail detail, FFRequest ffRequest) {
-            setState(() {
-              if (detail == Detail.outgoing) {
-                print("start");
-                print(_HomeState._outgoingRequests.length);
+          (Detail detail, FFRequest ffRequest, bool incomingRequestAccepted) {
+            if (detail == Detail.outgoing) {
+              // this callback means the outgoing request was withdrawn
+              // print("start");
+              // print(_HomeState._outgoingRequests.length);
+              this.setState(() {
                 _HomeState._outgoingRequests
-                    .removeWhere((request) => request.id == ffRequest.id);
-                print(_HomeState._outgoingRequests.length);
-                print("end");
-              } else if (detail == Detail.online) {
+                    .removeWhere((request) => request.user.id == ffRequest.user.id);
+
+                // add back to online friends
+                _HomeState._onlineFriends.add(ffRequest.user);
+              });
+              // print(_HomeState._outgoingRequests.length);
+              // print("end");
+            } else if (detail == Detail.online) {
+              // this means an outgoing request was sent
+              this.setState(() {
+                // TODO: this doesn't work too well
+                log(ffRequest.toString());
                 _HomeState._outgoingRequests.insert(0, ffRequest);
                 this._curTab = _HomeTab.outgoingRequests;
-              } else { // incoming
+
+                // filter out online friends for this requested friend
+                _HomeState._onlineFriends
+                    .removeWhere((user) => user.id == ffRequest.user.id);
+              });
+            } else {
+              // incoming request was either accepted or rejected
+              // use the incomingRequestAccepted flag to check this
+              this.setState(() {
                 _HomeState._incomingRequests
-                    .removeWhere((request) => request == ffRequest);
-                // TODO IMPLEMENT ACCEPT LOGIC
+                    .removeWhere((request) => request.user.id == ffRequest.user.id);
+              });
+
+              // if accepted an incoming request
+              if (incomingRequestAccepted == true) {
+                log("Accepted an incoming request. Showing accepted view...");
+
+                // push onto the navigator
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FriendDetail(
+                      user,
+                      ffRequest,
+                      () {},
+                      showingAcceptedView: true,
+                    ),
+                  ),
+                );
+              } else {
+                // add back to online friends
+                this.setState(() {
+                  _HomeState._onlineFriends.add(ffRequest.user);
+                });
               }
-            });
+            }
           },
-          // isAccepted: true,
         ),
       ),
     );

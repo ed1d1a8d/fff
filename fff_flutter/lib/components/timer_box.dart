@@ -5,6 +5,7 @@ import "package:fff/routes.dart" as fff_routes;
 import "package:fff/backend/fff_timer.dart" as fff_timer_backend;
 import "package:fff/components/fff_timer_tuner.dart";
 import "package:fff/views/fff_timer_expired.dart";
+import "package:fff/views/friend_detail.dart";
 import "package:flutter/material.dart";
 import "package:flutter/cupertino.dart";
 
@@ -79,7 +80,8 @@ class _TimerBoxState extends State<TimerBox> {
     // if the timer has expired
     if (_TimerBoxState._hasExpired()) {
       // only transition if we haven't already yet; this internal timer doesn't get stopped, ever
-      if (!FFFTimerExpired.mounted) {
+      // also check that we're not showing the accepted view - if we are, then we can't mount this timer thing until that dissipates
+      if (!FFFTimerExpired.mounted && !FriendDetail.isShowingAcceptedView()) {
         FFFTimerExpired.mounted = true;
 
         // pop up an expiration screen

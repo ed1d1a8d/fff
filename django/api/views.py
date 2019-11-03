@@ -146,8 +146,16 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
                 request.user, User.objects.get(pk=receiver.id)) != True:
             return HttpResponse(f"Can't send request to non-friends",
                                 status=400)
+        
+        # create the request
+        super().create(request, *args, **kwargs)
 
-        return super().create(request, *args, **kwargs)
+        # serialize the request and pass it back; the default create doesn't serialize the users
+        # TODO: clean up
+        newRequest = FFRequest.objects.get(sender = request.user, receiver=receiver, status=FFRequestStatusEnum.PENDING.value)
+        # print(newRequest, repr(newRequest))
+        responseSerializer = FFRequestReadSerializer(newRequest)
+        return JsonResponse(responseSerializer.data, safe=False, status=201)
 
 
 class RespondToFFRequest(rest_framework.generics.GenericAPIView):
@@ -173,6 +181,11 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
                     status=FFRequestStatusEnum.PENDING.value,
                     receiver=request.user).update(
                         status=FFRequestStatusEnum.REJECTED.value)
+
+                # expire the user's lobby timer
+                request.user.lobby_expiration = timezone.now()
+                request.user.save()
+
             return HttpResponse(status=200)
         elif action == FFRequestStatusEnum.REJECTED.value:
             req.status = action
