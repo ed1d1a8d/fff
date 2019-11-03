@@ -36,6 +36,18 @@ Future<bool> createRequest(UserData otherUser, String message) async {
   return true;
 }
 
+void actOnRequest(FFRequest currRequest, String action) async {
+  action = "/" + action + "/";
+  final endpoint = ffrequestsEndpoint + "/respond/" + currRequest.id.toString() + action;
+  final response = await http.post(
+    endpoint,
+    headers: fff_auth.getAuthHeaders()
+  );
+  if (response.statusCode >= 300) {
+    throw new Exception("FAILURE: Could not take action on request");
+  }
+}
+
 void cancelRequest(FFRequest currRequest) async {
   final response = await http.get(
     ffrequestsEndpoint + "/cancel/" + currRequest.id.toString() + "/",
@@ -44,5 +56,4 @@ void cancelRequest(FFRequest currRequest) async {
     throw new Exception("FAILURE: Could not cancel request");
   }
 
-  print("CANCELLED IT!");
 }

@@ -6,6 +6,7 @@ import "package:google_maps_flutter/google_maps_flutter.dart";
 import "package:fff/backend/ffrequests.dart" as fff_request_backend;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
+import "package:fff/components/Dialog.dart";
 import "package:fff/models/ffrequest.dart";
 import "package:fff/models/user_data.dart";
 import "package:fff/components/url_avatar.dart";
@@ -202,7 +203,8 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            print("HEY");
+            fff_request_backend.actOnRequest(widget.ffRequest, "rejected");
+            Navigator.pop(context);
           },
           color: fff_colors.buttonGray,
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -214,7 +216,9 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            print("TODO BACKEND");
+            fff_request_backend.actOnRequest(widget.ffRequest, "accepted");
+            Navigator.pop(context);
+            // TODO DISPLAY ACCEPT VIEW
           },
           color: fff_colors.buttonGreen,
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -230,7 +234,14 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            fff_request_backend.cancelRequest(widget.ffRequest);
+
+            asdfsafd(
+              context,
+              "Withdrawing Request",
+              "withdraw Collin's request?"
+            );
+//            fff_request_backend.cancelRequest(widget.ffRequest);
+//            Navigator.pop(context);
           },
           color: fff_colors.buttonGray,
           padding: const EdgeInsets.symmetric(horizontal: 10),
