@@ -11,6 +11,7 @@ import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/no_delay_periodic_timer.dart";
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/views/friend_detail.dart";
+import "package:fff/views/fff_timer_expired.dart";
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:geolocator/geolocator.dart";
@@ -27,24 +28,33 @@ class Home extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _HomeState();
   }
+
+  // used on logout
+  static void resetFetchBackendTimer() {
+    _HomeState._fetchBackendTimer.cancel();
+    _HomeState._fetchBackendTimer = null;
+  }
 }
 
 class _HomeState extends State<Home> {
-  _HomeTab _curTab = _HomeTab.incomingRequests;
-
-  List<FFRequest> _incomingRequests;
-  List<UserData> _onlineFriends;
-  List<FFRequest> _outgoingRequests;
-
   static const _fetchPeriod = const Duration(seconds: 10);
-  Timer _fetchTimer;
-
   static const _locationOptions =
       LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
-  StreamSubscription<Position> _positionSubscription;
 
   // the timerbox that we show here
   final TimerBox _fffTimerBox = new TimerBox();
+
+  // request the backend every _fetchPeriod; timer runs even when page is not mounted
+  static Timer _fetchBackendTimer;
+  static Set<_HomeState> _mountedInstances = Set();
+
+  // lobby information - kept updated by _fetchBackendTimer;
+  static List<FFRequest> _incomingRequests;
+  static List<UserData> _onlineFriends;
+  static List<FFRequest> _outgoingRequests;
+
+  _HomeTab _curTab = _HomeTab.incomingRequests;
+  StreamSubscription<Position> _positionSubscription;
 
   // helper function
   String _getHomeTabTitle(_HomeTab tab) {
@@ -99,22 +109,35 @@ class _HomeState extends State<Home> {
   initState() {
     super.initState();
     log("Initialized _HomeState.");
+    _HomeState._mountedInstances.add(this);
 
-    _fetchTimer =
-        noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
+    if (_HomeState._fetchBackendTimer == null) {
+      _HomeState._fetchBackendTimer =
+          noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
+    }
   }
 
   void _handleFetchTimerCalled() async {
     try {
-      final List<List> lobbyData = await this._fetchLobbyData();
+      // only fetch data if the timer has not expired yet
+      if (!FFFTimerExpired.mounted) {
+        final List<List> lobbyData = await this._fetchLobbyData();
 
-      if (this.mounted) {
-        log("setState called on Home.");
-        setState(() {
-          _incomingRequests = lobbyData[0];
-          _onlineFriends = lobbyData[1];
-          _outgoingRequests = lobbyData[2];
-        });
+        // make changes to the static data - and call setstate if we're mounted
+        Function updateStaticData = () {
+          _HomeState._incomingRequests = lobbyData[0];
+          _HomeState._onlineFriends = lobbyData[1];
+          _HomeState._outgoingRequests = lobbyData[2];
+        };
+
+        if (_HomeState._mountedInstances.length == 0) {
+          updateStaticData();
+        } else {
+          for (_HomeState instance in _HomeState._mountedInstances) {
+            log("setState called on Home instance.");
+            instance.setState(updateStaticData);
+          }
+        }
       }
     } catch (error) {
       log("$error");
@@ -210,8 +233,8 @@ class _HomeState extends State<Home> {
   @override
   dispose() {
     log("dispose() called on Home.");
-    _fetchTimer.cancel();
     _positionSubscription?.cancel();
+    _HomeState._mountedInstances.remove(this);
     super.dispose();
   }
 
@@ -326,11 +349,11 @@ class _HomeState extends State<Home> {
     final List<dynamic> data = () {
       switch (_curTab) {
         case _HomeTab.incomingRequests:
-          return _incomingRequests;
+          return _HomeState._incomingRequests;
         case _HomeTab.onlineFriends:
-          return _onlineFriends;
+          return _HomeState._onlineFriends;
         case _HomeTab.outgoingRequests:
-          return _outgoingRequests;
+          return _HomeState._outgoingRequests;
       }
       return null;
     }();
@@ -449,18 +472,16 @@ class _HomeState extends State<Home> {
             setState(() {
               if (detail == Detail.outgoing) {
                 print("start");
-                print(this._outgoingRequests.length);
-                this
-                    ._outgoingRequests
+                print(_HomeState._outgoingRequests.length);
+                _HomeState._outgoingRequests
                     .removeWhere((request) => request.id == ffRequest.id);
-                print(this._outgoingRequests.length);
+                print(_HomeState._outgoingRequests.length);
                 print("end");
               } else if (detail == Detail.online) {
-                this._outgoingRequests.insert(0, ffRequest);
+                _HomeState._outgoingRequests.insert(0, ffRequest);
                 this._curTab = _HomeTab.outgoingRequests;
-              } else {
-                this
-                    ._incomingRequests
+              } else { // incoming
+                _HomeState._incomingRequests
                     .removeWhere((request) => request == ffRequest);
                 // TODO IMPLEMENT ACCEPT LOGIC
               }
