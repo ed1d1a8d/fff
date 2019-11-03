@@ -68,6 +68,7 @@ class _FriendDetailState extends State<FriendDetail> {
   dispose() {
     _FriendDetailState.showingAcceptedView -= widget.showingAcceptedView ? 1 : 0;
     log("Disposed _FriendDetailState; showingAcceptedView = " + _FriendDetailState.showingAcceptedView.toString());
+    super.dispose();
   }
 
   void _onMapCreated(GoogleMapController controller) {
