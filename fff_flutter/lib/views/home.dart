@@ -18,7 +18,7 @@ import "dart:developer";
 
 enum _HomeTab { incomingRequests, onlineFriends, outgoingRequests }
 
-enum Detail { incoming, online, outgoing}
+enum Detail { incoming, online, outgoing }
 
 class Home extends StatefulWidget {
   static const String routeName = "/home";
@@ -55,6 +55,42 @@ class _HomeState extends State<Home> {
         return "Online Friends";
       case _HomeTab.outgoingRequests:
         return "Outgoing Requests";
+    }
+    return null;
+  }
+
+  Column _getNoneText(_HomeTab tab) {
+    switch (tab) {
+      case _HomeTab.incomingRequests:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("You have no incoming requests.",
+                style: Theme.of(context).textTheme.display2),
+          ],
+        );
+      case _HomeTab.onlineFriends:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("None of your friends are currently online.",
+                style: Theme.of(context).textTheme.display2),
+            SizedBox(height: 12),
+            Text("Try adding more through the hamburger menu.",
+                style: Theme.of(context).textTheme.display2),
+          ],
+        );
+      case _HomeTab.outgoingRequests:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("You have no outgoing requests.",
+                style: Theme.of(context).textTheme.display2),
+            SizedBox(height: 12),
+            Text("Send some through the Online Friends tab.",
+                style: Theme.of(context).textTheme.display2),
+          ],
+        );
     }
     return null;
   }
@@ -296,42 +332,44 @@ class _HomeState extends State<Home> {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : ListView.separated(
-                  itemCount: data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (data[index] is UserData) {
-                      return GestureDetector(
-                        onTap: () =>
-                            this._pushFriendDetail(context, data[index], null),
-                        behavior: HitTestBehavior.translucent,
-                        child: buildProfilePane(
-                          data[index].imageUrl,
-                          data[index].name,
-                          data[index].distance,
-                          null,
-                        ),
-                      );
-                    }
+              : (data.length == 0
+                  ? _getNoneText(_curTab)
+                  : ListView.separated(
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (data[index] is UserData) {
+                          return GestureDetector(
+                            onTap: () => this
+                                ._pushFriendDetail(context, data[index], null),
+                            behavior: HitTestBehavior.translucent,
+                            child: buildProfilePane(
+                              data[index].imageUrl,
+                              data[index].name,
+                              data[index].distance,
+                              null,
+                            ),
+                          );
+                        }
 
-                    // if data[index] is FFRequest
-                    return GestureDetector(
-                      onTap: () => this._pushFriendDetail(
-                          context, data[index].user, data[index]),
-                      behavior: HitTestBehavior.translucent,
-                      child: buildProfilePane(
-                        data[index].user.imageUrl,
-                        data[index].user.name,
-                        data[index].user.distance,
-                        data[index].message,
+                        // if data[index] is FFRequest
+                        return GestureDetector(
+                          onTap: () => this._pushFriendDetail(
+                              context, data[index].user, data[index]),
+                          behavior: HitTestBehavior.translucent,
+                          child: buildProfilePane(
+                            data[index].user.imageUrl,
+                            data[index].user.name,
+                            data[index].user.distance,
+                            data[index].message,
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(
+                        height: 20,
+                        color: fff_colors.black,
                       ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(
-                    height: 20,
-                    color: fff_colors.black,
-                  ),
-                ),
+                    )),
         ),
       ),
     );
@@ -392,27 +430,28 @@ class _HomeState extends State<Home> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FriendDetail(
-          user,
-          ffRequest,
-          (Detail detail, FFRequest ffRequest) {
-            setState(() {
-              if (detail == Detail.outgoing) {
-                print("start");
-                print(this._outgoingRequests.length);
-                this._outgoingRequests.removeWhere((request) => request.id == ffRequest.id);
-                print(this._outgoingRequests.length);
-                print("end");
-              } else if (detail == Detail.online) {
-                this._outgoingRequests.insert(0, ffRequest);
-                this._curTab = _HomeTab.outgoingRequests;
-              } else {
-                this._incomingRequests.removeWhere((request) => request == ffRequest);
-                // TODO IMPLEMENT ACCEPT LOGIC
-              }
-
-            });
-          }),
+        builder: (context) =>
+            FriendDetail(user, ffRequest, (Detail detail, FFRequest ffRequest) {
+          setState(() {
+            if (detail == Detail.outgoing) {
+              print("start");
+              print(this._outgoingRequests.length);
+              this
+                  ._outgoingRequests
+                  .removeWhere((request) => request.id == ffRequest.id);
+              print(this._outgoingRequests.length);
+              print("end");
+            } else if (detail == Detail.online) {
+              this._outgoingRequests.insert(0, ffRequest);
+              this._curTab = _HomeTab.outgoingRequests;
+            } else {
+              this
+                  ._incomingRequests
+                  .removeWhere((request) => request == ffRequest);
+              // TODO IMPLEMENT ACCEPT LOGIC
+            }
+          });
+        }),
       ),
     );
   }
