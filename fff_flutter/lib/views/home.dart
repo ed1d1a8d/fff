@@ -425,28 +425,32 @@ class _HomeState extends State<Home> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            FriendDetail(user, ffRequest, (Detail detail, FFRequest ffRequest) {
-          setState(() {
-            if (detail == Detail.outgoing) {
-              print("start");
-              print(this._outgoingRequests.length);
-              this
-                  ._outgoingRequests
-                  .removeWhere((request) => request.id == ffRequest.id);
-              print(this._outgoingRequests.length);
-              print("end");
-            } else if (detail == Detail.online) {
-              this._outgoingRequests.insert(0, ffRequest);
-              this._curTab = _HomeTab.outgoingRequests;
-            } else {
-              this
-                  ._incomingRequests
-                  .removeWhere((request) => request == ffRequest);
-              // TODO IMPLEMENT ACCEPT LOGIC
-            }
-          });
-        }),
+        builder: (context) => FriendDetail(
+          user,
+          ffRequest,
+          (Detail detail, FFRequest ffRequest) {
+            setState(() {
+              if (detail == Detail.outgoing) {
+                print("start");
+                print(this._outgoingRequests.length);
+                this
+                    ._outgoingRequests
+                    .removeWhere((request) => request.id == ffRequest.id);
+                print(this._outgoingRequests.length);
+                print("end");
+              } else if (detail == Detail.online) {
+                this._outgoingRequests.insert(0, ffRequest);
+                this._curTab = _HomeTab.outgoingRequests;
+              } else {
+                this
+                    ._incomingRequests
+                    .removeWhere((request) => request == ffRequest);
+                // TODO IMPLEMENT ACCEPT LOGIC
+              }
+            });
+          },
+          isAccepted: true,
+        ),
       ),
     );
   }

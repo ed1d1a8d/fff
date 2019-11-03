@@ -18,13 +18,16 @@ class FriendDetail extends StatefulWidget {
   final UserData user;
   final FFRequest ffRequest;
   final Function callback;
+  final bool isAccepted; // if this is true, then show the accepted screen
 
   FriendDetail(
     this.user,
     this.ffRequest,
     this.callback, {
     Key key,
-  }) : super(key: key);
+    isAccepted,
+  })  : this.isAccepted = isAccepted == true,
+        super(key: key);
 
   @override
   _FriendDetailState createState() => _FriendDetailState();
@@ -45,10 +48,99 @@ class _FriendDetailState extends State<FriendDetail> {
     String friendName = widget.user.name;
     LatLng friendCenter = LatLng(widget.user.latitude, widget.user.longitude);
     String date = widget.user.lastFoodDate;
-    // String date = "September 19 2019";
     String lastFFF = date == null
         ? "You have never eaten with $friendName."
         : "The last time you ate with $friendName was on $date.";
+
+    // if the ff request is accepted, then build a different view
+    List<Widget> widgets = [_mapWidget(context, friendCenter)];
+
+    if (widget.isAccepted) {
+      widgets.addAll([
+        Spacer(flex: 3),
+        Container(
+          child: Text(
+            friendName + " and you are getting food together!",
+            style: Theme.of(context).textTheme.display3,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Spacer(flex: 2),
+        MaterialButton(
+          child: Text(
+            "Message " + friendName,
+            style: Theme.of(context).textTheme.button,
+          ),
+          onPressed: () {
+            print("TODO");
+          },
+          color: fff_colors.strongBackground,
+          padding: const EdgeInsets.symmetric(
+            vertical: 15,
+            horizontal: 25,
+          ),
+        ),
+        Spacer(flex: 2),
+        Container(
+          child: Text(
+            "Have a good meal!",
+            style: Theme.of(context).textTheme.headline,
+          ),
+        ),
+        Spacer(flex: 1),
+        Container(
+          child: Text(
+            "Your timer has been set to 0.\nTime to leave the app and grab food!",
+            style: Theme.of(context).textTheme.body1,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Spacer(flex: 2),
+        Image.asset(
+          "assets/images/pizza-burger.png",
+          width: MediaQuery.of(context).size.width * 0.5,
+        ),
+        Spacer(flex: 3),
+      ]);
+    } else {
+      widgets.addAll([
+        SizedBox(height: fff_spacing.profileListInsets),
+        Container(
+          // expand to fill the width of the outside container to left align the text inside
+          constraints:
+              BoxConstraints.tightFor(width: MediaQuery.of(context).size.width),
+          child: Text(
+            lastFFF,
+            style: Theme.of(context).textTheme.body2,
+          ),
+        ),
+        SizedBox(height: fff_spacing.profileListInsets),
+        Expanded(
+          child: GradientContainer(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: this._buildTextField(),
+                ),
+                Divider(
+                  color: fff_colors.black,
+                ),
+                Container(
+                  child: Row(children: this._buildActionRow()),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: fff_spacing.profileListInsets),
+        Image.asset(
+          "assets/images/pizza-burger.png",
+          height: MediaQuery.of(context).size.height * 0.1,
+        ),
+      ]);
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false, // don't resize when keyboard up
@@ -75,45 +167,7 @@ class _FriendDetailState extends State<FriendDetail> {
         constraints: BoxConstraints.expand(),
         padding: const EdgeInsets.all(fff_spacing.viewEdgeInsets),
         child: Column(
-          children: <Widget>[
-            _mapWidget(context, friendCenter),
-            SizedBox(height: fff_spacing.profileListInsets),
-            Container(
-              // expand to fill the width of the outside container to left align the text inside
-              constraints: BoxConstraints.tightFor(
-                  width: MediaQuery.of(context).size.width),
-              child: Text(
-                lastFFF,
-                style: Theme.of(context).textTheme.body2,
-              ),
-            ),
-            SizedBox(height: fff_spacing.profileListInsets),
-            Expanded(
-              child: GradientContainer(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: this._buildTextField(),
-                    ),
-                    Divider(
-                      color: fff_colors.black,
-                    ),
-                    Container(
-                      child: Row(children: this._buildActionRow()),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: fff_spacing.profileListInsets),
-            Image.asset(
-              "assets/images/pizza-burger.png",
-              height: MediaQuery.of(context).size.height *
-                  0.1,
-            ),
-          ],
+          children: widgets,
         ),
       ),
     );
@@ -194,9 +248,12 @@ class _FriendDetailState extends State<FriendDetail> {
           onPressed: () {
             UserData otherUser = widget.user;
 
-            fff_request_backend.createRequest(otherUser, this.newRequestMessage).then((ffRequest) {
+            fff_request_backend
+                .createRequest(otherUser, this.newRequestMessage)
+                .then((ffRequest) {
               widget.callback(Detail.online, ffRequest);
-              Navigator.of(context).popUntil((route) => route.settings.name == Home.routeName);
+              Navigator.of(context)
+                  .popUntil((route) => route.settings.name == Home.routeName);
             });
           },
           color: fff_colors.strongBackground,
@@ -243,16 +300,16 @@ class _FriendDetailState extends State<FriendDetail> {
           ),
           onPressed: () {
             DialogButton(
-              context,
-              "Withdrawing Request",
-              "withdraw Collin's request?",
-              () {
-                fff_request_backend.cancelRequest(widget.ffRequest).then((cancel) {
-                  widget.callback(Detail.outgoing, widget.ffRequest);
-                  Navigator.of(context).popUntil((route) => route.settings.name == Home.routeName);
-                });
-              }
-            );
+                context, "Withdrawing Request", "withdraw Collin's request?",
+                () {
+              fff_request_backend
+                  .cancelRequest(widget.ffRequest)
+                  .then((cancel) {
+                widget.callback(Detail.outgoing, widget.ffRequest);
+                Navigator.of(context)
+                    .popUntil((route) => route.settings.name == Home.routeName);
+              });
+            });
           },
           color: fff_colors.buttonGray,
           padding: const EdgeInsets.symmetric(horizontal: 10),
