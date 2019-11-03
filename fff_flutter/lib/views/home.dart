@@ -6,7 +6,6 @@ import "package:fff/components/hamburger_drawer.dart";
 import "package:fff/components/timer_box.dart";
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/ffrequest.dart";
-import "package:fff/models/mock_data.dart";
 import "package:fff/models/user_data.dart";
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/no_delay_periodic_timer.dart";
@@ -65,12 +64,25 @@ class _HomeState extends State<Home> {
     super.initState();
     log("Initialized _HomeState.");
 
-    // set the initial duration of the timerbox to a default when we first login
-    // this function does nothing if the timerbox has already been set
-    TimerBox.setInitialDuration(Duration(minutes: 10));
-
     _fetchTimer =
         noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
+  }
+
+  void _handleFetchTimerCalled() async {
+    try {
+      final List lobbyData = await this._fetchLobbyData();
+
+      if (this.mounted) {
+        log("setState called on Home.");
+        setState(() {
+          _incomingRequests = lobbyData[0];
+          _onlineFriends = lobbyData[1];
+          _outgoingRequests = lobbyData[2];
+        });
+      }
+    } catch (error) {
+      log("$error");
+    }
   }
 
   // returns a list containing 3 things: incomingRequests, onlineFriends, and outgoingRequests
@@ -85,7 +97,7 @@ class _HomeState extends State<Home> {
           fff_lobby_backend.fetchOnlineFriends(),
           fff_lobby_backend.fetchOutgoingRequests(),
         ]);
-        log("Fetched lobby user data.");
+        // log("Fetched lobby user data.");
       }(),
       () async {
         // do serially
@@ -97,7 +109,7 @@ class _HomeState extends State<Home> {
           position = await Geolocator()
               .getCurrentPosition(desiredAccuracy: _locationOptions.accuracy);
         }
-        log("Fetched user position data.");
+        // log("Fetched user position data.");
       }(),
     ]);
 
@@ -108,26 +120,10 @@ class _HomeState extends State<Home> {
         _updateUserDataDistances(position, lobbyData[1]),
         _updateFFRequestDistances(position, lobbyData[2]),
       ]);
-      log("Updated positions of lobby friends.");
+      // log("Updated positions of lobby friends.");
     }
 
     return lobbyData;
-  }
-
-  void _handleFetchTimerCalled() async {
-    try {
-      final List lobbyData = await this._fetchLobbyData();
-
-      if (this.mounted) {
-        setState(() {
-          _incomingRequests = lobbyData[0];
-          _onlineFriends = lobbyData[1];
-          _outgoingRequests = lobbyData[2];
-        });
-      }
-    } catch (error) {
-      log("$error");
-    }
   }
 
   Future _updateUserDataDistances(
@@ -160,7 +156,7 @@ class _HomeState extends State<Home> {
 
   @override
   dispose() {
-    log("dispose() called on home.");
+    log("dispose() called on Home.");
     _fetchTimer.cancel();
     _positionSubscription?.cancel();
     super.dispose();

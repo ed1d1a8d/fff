@@ -27,9 +27,11 @@ class FriendRequestsState extends State<FriendRequests> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
         title: Row(
           children: <Widget>[
             Container(
+              height: 45,
               padding: const EdgeInsets.only(right: 10),
               child: Image.asset(
                 "assets/images/add-friends.png",

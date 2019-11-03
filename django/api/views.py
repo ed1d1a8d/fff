@@ -23,7 +23,6 @@ from .serializers import (
     UserPublicSerializer,
 )
 
-
 class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
     serializer_class = UserSelfSerializer
 
@@ -31,21 +30,27 @@ class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
         return self.request.user
 
 class AddFacebookFriends(rest_framework.generics.GenericAPIView):
-    def post(self, request):
-        print(request.data)
-        url =  "https://graph.facebook.com/v4.0/{0}/friends".format(
+    def post(self, request, format):
+        url = "https://graph.facebook.com/v4.0/{0}/?fields=friends&access_token={1}".format(
             request.user.fb_id,
+            request.data["access_token"]
         )
 
-        # mydata = {"access_token": }
+        r = requests.get(url)
+        returnlist = []
 
-        # r = requests.post(url = url, data = mydata)
-        # request = urllib2.Request(url)
+        if r.status_code == 200:
+            fbresponse = r.json()
+            friendlist = fbresponse["friends"]["data"]
 
-        # friends = json.loads(urllib2.urlopen(request).read()).get('data')
-        # for friend in friends:
-        #     location = friend.get('location')
-        # Find the corresponding user in our DB and return this to the frontend
+            for friend in friendlist:
+                u = User.objects.get(fb_id = friend["id"])
+                serializer = UserPublicSerializer(u)
+                returnlist.append(serializer.data)
+
+            return JsonResponse(returnlist, safe=False)
+
+        return("Error")
 
 
 class DeviceView(rest_framework.generics.GenericAPIView):

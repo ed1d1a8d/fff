@@ -53,4 +53,5 @@ class UserData {
 
   static List<UserData> listFromJsonString(String str) =>
       List<UserData>.from(json.decode(str).map((x) => UserData.fromJson(x)));
+
 }

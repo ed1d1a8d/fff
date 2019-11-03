@@ -16,6 +16,8 @@ final _facebookLogin = FacebookLogin();
 
 bool isAuthenticated() => _authToken != null;
 
+String accessToken;
+
 /// Tries to login with credentials from persistent storage
 /// Returns true if successful
 Future<bool> loginWithSavedCredentials() async {
@@ -37,6 +39,7 @@ Future<bool> loginWithSavedCredentials() async {
 /// Returns true if login succeeded.
 Future<bool> loginWithFacebook() async {
   final fbLoginResult = await _facebookLogin.logIn(["user_friends"]);
+  accessToken = fbLoginResult.accessToken.token;
 
   switch (fbLoginResult.status) {
     case FacebookLoginStatus.cancelledByUser:
