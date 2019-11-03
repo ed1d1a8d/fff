@@ -20,7 +20,7 @@ Future<List<UserData>> fetchUnrejectedRequests() async {
   return null; // not finished
 }
 
-Future<bool> createRequest(UserData otherUser, String message) async {
+Future<FFRequest> createRequest(UserData otherUser, String message) async {
   final response = await http.post(
     ffrequestsEndpoint + "/create/",
     headers: fff_auth.getAuthHeaders(),
@@ -33,10 +33,24 @@ Future<bool> createRequest(UserData otherUser, String message) async {
     throw new Exception("FAILURE: Could not create request");
   }
 
-  return true;
+  print(response.body);
+  return FFRequest.fromJsonString(response.body, false);
 }
 
-void cancelRequest(FFRequest currRequest) async {
+void actOnRequest(FFRequest currRequest, String action) async {
+  action = "/" + action + "/";
+  final endpoint = ffrequestsEndpoint + "/respond/" + currRequest.id.toString() + action;
+  final response = await http.post(
+    endpoint,
+    headers: fff_auth.getAuthHeaders()
+  );
+  if (response.statusCode >= 300) {
+    throw new Exception("FAILURE: Could not take action on request");
+  }
+
+}
+
+Future<bool> cancelRequest(FFRequest currRequest) async {
   final response = await http.get(
     ffrequestsEndpoint + "/cancel/" + currRequest.id.toString() + "/",
     headers: fff_auth.getAuthHeaders());
@@ -44,5 +58,5 @@ void cancelRequest(FFRequest currRequest) async {
     throw new Exception("FAILURE: Could not cancel request");
   }
 
-  print("CANCELLED IT!");
+  return true;
 }

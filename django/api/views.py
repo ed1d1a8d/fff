@@ -41,7 +41,6 @@ class AddFacebookFriends(rest_framework.generics.GenericAPIView):
 
         if r.status_code == 200:
             existing_fff_friends = Friend.objects.friends(request.user)
-            print(existing_fff_friends)
 
             fbresponse = r.json()
             friendlist = fbresponse["friends"]["data"]
@@ -51,8 +50,6 @@ class AddFacebookFriends(rest_framework.generics.GenericAPIView):
                 if (u not in existing_fff_friends):
                     serializer = UserPublicSerializer(u)
                     returnlist.append(serializer.data)
-
-            print(returnlist)
 
             return JsonResponse(returnlist, safe=False)
 
@@ -122,8 +119,6 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
             sender=self.request.user,
         )
 
-        # TODO: Validate body size.
-        # TODO: Change title.
         Device.objects.filter(user=ffrequest.receiver).all().send_message(
             title=self.request.user.name, body=ffrequest.message, click_action="FLUTTER_NOTIFICATION_CLICK")
 
