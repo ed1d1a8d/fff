@@ -62,10 +62,6 @@ class _HomeState extends State<Home> {
     super.initState();
     log("Initialized _HomeState.");
 
-    // set the initial duration of the timerbox to a default when we first login
-    // this function does nothing if the timerbox has already been set
-    TimerBox.setInitialDuration(Duration(minutes: 10));
-
     _fetchTimer =
         noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
   }
@@ -75,6 +71,7 @@ class _HomeState extends State<Home> {
       final List lobbyData = await this._fetchLobbyData();
 
       if (this.mounted) {
+        log("setState called on Home.");
         setState(() {
           _incomingRequests = lobbyData[0];
           _onlineFriends = lobbyData[1];
@@ -98,7 +95,7 @@ class _HomeState extends State<Home> {
           fff_lobby_backend.fetchOnlineFriends(),
           fff_lobby_backend.fetchOutgoingRequests(),
         ]);
-        log("Fetched lobby user data.");
+        // log("Fetched lobby user data.");
       }(),
       () async {
         // do serially
@@ -110,7 +107,7 @@ class _HomeState extends State<Home> {
           position = await Geolocator()
               .getCurrentPosition(desiredAccuracy: _locationOptions.accuracy);
         }
-        log("Fetched user position data.");
+        // log("Fetched user position data.");
       }(),
     ]);
 
@@ -121,7 +118,7 @@ class _HomeState extends State<Home> {
         _updateUserDataDistances(position, lobbyData[1]),
         _updateFFRequestDistances(position, lobbyData[2]),
       ]);
-      log("Updated positions of lobby friends.");
+      // log("Updated positions of lobby friends.");
     }
 
     return lobbyData;
@@ -157,7 +154,7 @@ class _HomeState extends State<Home> {
 
   @override
   dispose() {
-    log("dispose() called on home.");
+    log("dispose() called on Home.");
     _fetchTimer.cancel();
     _positionSubscription?.cancel();
     super.dispose();

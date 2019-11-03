@@ -8,14 +8,9 @@ class TimerBox extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _TimerBoxState();
 
-  // this function is only useful during its first call
-  static void setInitialDuration(Duration newDuration) {
-    _TimerBoxState.setInitialDuration(newDuration);
-  }
-
   // this function just sets the duration of the timer to a new value regardless
-  static void setDuration(Duration newDuration) {
-    _TimerBoxState.setDuration(newDuration);
+  static void setExpirationTime(DateTime newExpirationTime) {
+    _TimerBoxState.setExpirationTime(newExpirationTime);
   }
 }
 
@@ -23,15 +18,15 @@ class _TimerBoxState extends State<TimerBox> {
   static const Duration _oneSecond = const Duration(seconds: 1);
 
   // all variables here static because we only want one TimerBox per app
-  static Duration _timerDuration;
+  static DateTime _expirationTime;
   static Timer _internalTimer;
 
   // this variable determines if the timer is visible rn
-  static _TimerBoxState _mountedInstance;
+  static Set<_TimerBoxState> _mountedInstances = Set();
 
   _TimerBoxState() {
     log("Initialized new _TimerBoxState.");
-    _TimerBoxState._mountedInstance = this;
+    _TimerBoxState._mountedInstances.add(this);
 
     // internal timer should only be set once
     // what it does is controlled by other static variables
@@ -43,37 +38,35 @@ class _TimerBoxState extends State<TimerBox> {
 
   @override
   dispose() {
-    _TimerBoxState._mountedInstance = null;
+    _TimerBoxState._mountedInstances.remove(this);
     super.dispose();
   }
 
   static void _handleInternalTimer(Timer timer) {
-    // don't do anything if the duration is too small
-    if (_TimerBoxState._timerDuration.inSeconds >= 1) {
-      _TimerBoxState.setDuration(
-          _TimerBoxState._timerDuration - _TimerBoxState._oneSecond);
+    // if the timer has expired
+    if (_TimerBoxState.durationToExpiration().inMilliseconds == 0) {
+      // pop up an expiration screen
+      log("Timer expired!");
+    } else {
+      // only setstate when an instance of this state is mounted
+      for (_TimerBoxState instance in _TimerBoxState._mountedInstances) {
+        instance.setState((){});
+      }
     }
   }
 
   // set new duration for the timer and handle everything associated with it
-  static void setDuration(Duration newDuration) {
-    Function makeDurationChange = () {
-      _TimerBoxState._timerDuration = newDuration;
-    };
-
-    // only setstate when an instance of this state is mounted
-    if (_TimerBoxState._mountedInstance == null) {
-      makeDurationChange();
-    } else {
-      _TimerBoxState._mountedInstance.setState(makeDurationChange);
-    }
+  static void setExpirationTime(DateTime newExpirationTime) {
+    _TimerBoxState._expirationTime = newExpirationTime;
   }
 
-  // set a new duration only if the duration now is null
-  static void setInitialDuration(Duration newDuration) {
-    if (_TimerBoxState._timerDuration == null) {
-      _TimerBoxState.setDuration(newDuration);
+  // return 0 if expiration has passed - otherwise, duration to expiration
+  static Duration durationToExpiration() {
+    DateTime now = new DateTime.now();
+    if (now.isAfter(_TimerBoxState._expirationTime)) {
+      return new Duration();
     }
+    return _TimerBoxState._expirationTime.difference(now);
   }
 
   void _showDialog() {
@@ -95,9 +88,10 @@ class _TimerBoxState extends State<TimerBox> {
                   child: CupertinoTimerPicker(
                     mode: CupertinoTimerPickerMode.hms,
                     minuteInterval: 1,
-                    initialTimerDuration: _TimerBoxState._timerDuration,
+                    initialTimerDuration: _TimerBoxState.durationToExpiration(),
                     onTimerDurationChanged: (Duration newDuration) {
-                      _TimerBoxState.setDuration(newDuration);
+                      // update the expiration time?
+                      log("TODO");
                     },
                   ),
                 ),
@@ -139,7 +133,7 @@ class _TimerBoxState extends State<TimerBox> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
                 child: Text(
-                  _TimerBoxState._timerDuration.toString().substring(0, 7),
+                  _TimerBoxState.durationToExpiration().toString().substring(0, 7),
                   style: TextStyle(fontSize: 14),
                 ),
               ),

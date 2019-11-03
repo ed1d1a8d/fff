@@ -2,6 +2,7 @@ import "dart:developer";
 
 import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/theme.dart";
+import "package:fff/components/timer_box.dart";
 import "package:fff/views/add_friends_signup.dart";
 import "package:fff/views/friend_requests.dart";
 import "package:fff/views/home.dart";
@@ -23,6 +24,8 @@ class _FFFAppState extends State<FFFApp> {
 
   _FFFAppState() {
     log("_FFFAppState initialized.");
+
+    TimerBox.setExpirationTime(new DateTime.now().add(new Duration(minutes: 20)));
   }
 
   @override
