@@ -19,6 +19,8 @@ import "dart:developer";
 
 enum _HomeTab { incomingRequests, onlineFriends, outgoingRequests }
 
+enum Detail { incoming, online, outgoing}
+
 class Home extends StatefulWidget {
   static const String routeName = "/home";
 
@@ -394,7 +396,23 @@ class _HomeState extends State<Home> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FriendDetail(user, ffRequest),
+        builder: (context) => FriendDetail(
+          user,
+          ffRequest,
+          (Detail detail, FFRequest ffRequest) {
+            setState(() {
+              if (detail == Detail.outgoing) {
+                this._outgoingRequests.removeWhere((request) => request == ffRequest);
+              } else if (detail == Detail.online) {
+                this._outgoingRequests.insert(0, ffRequest);
+                this._curTab = _HomeTab.outgoingRequests;
+              } else {
+                this._incomingRequests.removeWhere((request) => request == ffRequest);
+                // TODO IMPLEMENT ACCEPT LOGIC
+              }
+
+            });
+          }),
       ),
     );
   }

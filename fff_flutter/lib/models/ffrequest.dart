@@ -34,6 +34,10 @@ class FFRequest {
     }
   }
 
+  static FFRequest fromJsonString(String str, bool isIncoming) {
+    FFRequest.fromJson(json.decode(str), isIncoming);
+  }
+
   static List<FFRequest> listFromJsonString(String str, bool isIncoming) {
     return List<FFRequest>.from(
         json.decode(str).map((x) =>

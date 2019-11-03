@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void asdfsafd(BuildContext context, String title, String content) {
+void DialogButton(BuildContext context, String title, String content, Function callback) {
   title = "Confirm " + title;
   content = "Are you sure you want to ";
 
@@ -14,6 +14,12 @@ void asdfsafd(BuildContext context, String title, String content) {
         actions: <Widget>[
           new FlatButton(
             child: new Text("Confirm"),
+            onPressed: () {
+              callback();
+            }
+          ),
+          new FlatButton(
+            child: new Text("Cancel"),
             onPressed: () {
               Navigator.of(context).pop();
             }

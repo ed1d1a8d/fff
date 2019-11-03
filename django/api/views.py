@@ -111,8 +111,6 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
             sender=self.request.user,
         )
 
-        # TODO: Validate body size.
-        # TODO: Change title.
         Device.objects.filter(user=ffrequest.receiver).all().send_message(
             title=self.request.user.name, body=ffrequest.message, click_action="FLUTTER_NOTIFICATION_CLICK")
 
@@ -126,6 +124,7 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
                 request.user, User.objects.get(pk=receiver.id)) != True:
             return HttpResponse(f"Can't send request to non-friends",
                                 status=400)
+
 
         return super().create(request, *args, **kwargs)
 

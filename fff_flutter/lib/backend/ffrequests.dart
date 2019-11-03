@@ -20,7 +20,7 @@ Future<List<UserData>> fetchUnrejectedRequests() async {
   return null; // not finished
 }
 
-Future<bool> createRequest(UserData otherUser, String message) async {
+Future<FFRequest> createRequest(UserData otherUser, String message) async {
   final response = await http.post(
     ffrequestsEndpoint + "/create/",
     headers: fff_auth.getAuthHeaders(),
@@ -33,7 +33,8 @@ Future<bool> createRequest(UserData otherUser, String message) async {
     throw new Exception("FAILURE: Could not create request");
   }
 
-  return true;
+  print(response.body);
+  return FFRequest.fromJsonString(response.body, false);
 }
 
 void actOnRequest(FFRequest currRequest, String action) async {

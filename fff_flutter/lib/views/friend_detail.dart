@@ -6,6 +6,7 @@ import "package:google_maps_flutter/google_maps_flutter.dart";
 import "package:fff/backend/ffrequests.dart" as fff_request_backend;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
+import "package:fff/views/home.dart";
 import "package:fff/components/Dialog.dart";
 import "package:fff/models/ffrequest.dart";
 import "package:fff/models/user_data.dart";
@@ -16,10 +17,12 @@ class FriendDetail extends StatefulWidget {
   static const String routeName = "friend-detail";
   final UserData user;
   final FFRequest ffRequest;
+  final Function callback;
 
   FriendDetail(
     this.user,
-    this.ffRequest, {
+    this.ffRequest,
+    this.callback, {
     Key key,
   }) : super(key: key);
 
@@ -189,7 +192,11 @@ class _FriendDetailState extends State<FriendDetail> {
           ),
           onPressed: () {
             UserData otherUser = widget.user;
-            fff_request_backend.createRequest(otherUser, this.newRequestMessage);
+
+            fff_request_backend.createRequest(otherUser, this.newRequestMessage).then((ffRequest) {
+              widget.callback(Detail.online, ffRequest);
+              Navigator.of(context).popUntil((route) => route.settings.name == Home.routeName);
+            });
           },
           color: fff_colors.strongBackground,
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -203,7 +210,8 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            fff_request_backend.actOnRequest(widget.ffRequest, "rejected");
+//            fff_request_backend.actOnRequest(widget.ffRequest, "rejected");
+            widget.callback(Detail.incoming, widget.ffRequest);
             Navigator.pop(context);
           },
           color: fff_colors.buttonGray,
@@ -218,7 +226,6 @@ class _FriendDetailState extends State<FriendDetail> {
           onPressed: () {
             fff_request_backend.actOnRequest(widget.ffRequest, "accepted");
             Navigator.pop(context);
-            // TODO DISPLAY ACCEPT VIEW
           },
           color: fff_colors.buttonGreen,
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -234,14 +241,16 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-
-            asdfsafd(
+            DialogButton(
               context,
               "Withdrawing Request",
-              "withdraw Collin's request?"
+              "withdraw Collin's request?",
+              () {
+                fff_request_backend.cancelRequest(widget.ffRequest);
+                widget.callback(Detail.outgoing, widget.ffRequest);
+                Navigator.of(context).popUntil((route) => route.settings.name == Home.routeName);
+              }
             );
-//            fff_request_backend.cancelRequest(widget.ffRequest);
-//            Navigator.pop(context);
           },
           color: fff_colors.buttonGray,
           padding: const EdgeInsets.symmetric(horizontal: 10),
