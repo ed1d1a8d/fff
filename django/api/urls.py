@@ -4,6 +4,9 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
+    # auth'd dumb endpoint
+    path("dumb/", views.Dumb.as_view()),
+
     path("self/detail/", views.SelfDetail.as_view()),
     path("self/device/<str:registration_id>/", views.DeviceView.as_view()),
 
@@ -11,7 +14,7 @@ urlpatterns = [
     path("lobby/expiration/", views.LobbyExpiration.as_view()),
     path("lobby/friends/", views.LobbyFriends.as_view()),
 
-    # Free for _ requests
+    # Free for ;) requests
     path("ffrequests/create/", views.CreateFFRequest.as_view()),
     path("ffrequests/incoming/<str:status>/",
          views.IncomingFFRequests.as_view()),

@@ -23,7 +23,7 @@ class UserPublicSerializer(ModelSerializer):
 class LobbyExpirationSerializer(ModelSerializer):
     class Meta:
         model = models.User
-        fields = ("lobby_expiration")
+        fields = ("lobby_expiration",)
 
 
 class FFRequestReadSerializer(ModelSerializer):

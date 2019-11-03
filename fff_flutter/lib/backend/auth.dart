@@ -26,13 +26,22 @@ Future<bool> loginWithSavedCredentials() async {
   final String savedToken = prefs.getString(_savedAuthTokenKey);
   if (savedToken == null) return false;
 
-  // TODO: Validate savedToken with backend.
-  // TODO: Handle offline case.
+  // validate authtoken with backend
+  bool isValid;
+  await http.get(
+    fff_backend_constants.server_location + "/api/dumb/",
+    headers: {"Authorization": "Token $savedToken"},
+  ).then((http.Response response) {
+    log("Accessing authenticated dumb endpoint with saved auth token... " +
+        response.statusCode.toString());
+    isValid = response.statusCode == 200;
+  }).catchError((_) {
+    isValid = false;
+  });
+  if (!isValid) return false;
 
   _authToken = savedToken;
-
   await fff_push_notifications.subscribe();
-
   return true;
 }
 

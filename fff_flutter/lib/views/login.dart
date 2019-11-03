@@ -2,18 +2,55 @@ import "dart:convert";
 import "dart:developer";
 
 import "package:fff/backend/auth.dart" as fff_auth;
-import "package:fff/backend/constants.dart";
+import "package:fff/backend/fff_timer.dart" as fff_timer_backend;
+import "package:fff/backend/constants.dart" as fff_constants_backend;
 import "package:fff/models/user_data.dart";
 import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
+import "package:fff/components/timer_box.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 
+// TODO: refactor to another location
 UserData me;
 
 class Login extends StatelessWidget {
   static const String routeName = "/login";
+
+  // this function sets all the relevant fields on me and the timer expiration
+  // TODO: refactor to another place
+  static Future<bool> loadUserData() async {
+    final response = await http.get(
+      fff_constants_backend.server_location + "/api/self/detail.json/",
+      headers: fff_auth.getAuthHeaders(),
+    );
+
+    Map<String, dynamic> jsonResponseBody = jsonDecode(response.body);
+    me = UserData.fromJson(json.decode(response.body));
+
+    // set the timer to the expiration that we have on the backend
+    // lobbyExpirationResponse is now a json like this { "lobby_expiration": "2050-01-01T00:00:00Z" }
+    DateTime expirationTime = await fff_timer_backend.getExpirationTime();
+
+    // if the expiration is past (it will always be on first login, and probably on most logins)
+    // set it to 20 minutes in the future
+    final DateTime now = DateTime.now();
+    if (now.isAfter(expirationTime)) {
+      log("Previous expiration time " +
+          expirationTime.toLocal().toString() +
+          " is before current time " +
+          now.toString() +
+          ". Setting new time...");
+      expirationTime = now.add(new Duration(minutes: 20));
+
+      // TODO: error handling
+      await fff_timer_backend.setExpirationTime(expirationTime);
+    }
+    TimerBox.setExpirationTime(expirationTime);
+
+    return jsonResponseBody["first_sign_in"];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,27 +95,22 @@ class Login extends StatelessWidget {
                 onPressed: () async {
                   if (await fff_auth.loginWithFacebook()) {
                     log("Authentication succeeded!");
+                    bool isFirstLogin = await Login.loadUserData();
 
-                    final response = await http.get(
-                        server_location + "/api/self/detail.json/",
-                        headers: fff_auth.getAuthHeaders());
-
-                    Map<String, dynamic> r = (jsonDecode(response.body));
-
-                    me = UserData.fromJson(json.decode(response.body));
-
-                    if (r["first_sign_in"]) {
+                    if (isFirstLogin) {
                       // change first sign in to false on backend
 
-//                        final updateSignin = await http.put(
-//                          server_location + "/api/self/detail.json/",
-//                          body: {"first_sign_in": "False"},
-//                          headers: fff_auth.getAuthHeaders(),
-//                        );
+                      final updateSignin = await http.put(
+                        fff_constants_backend.server_location +
+                            "/api/self/detail.json/",
+                        body: {"first_sign_in": "False"},
+                        headers: fff_auth.getAuthHeaders(),
+                      );
 
-                        // trigger add friends sign up page
-                        Navigator.pushReplacementNamed(context, fff_routes.addFriendsSignup);
-                        return;
+                      // trigger add friends sign up page
+                      Navigator.pushReplacementNamed(
+                          context, fff_routes.addFriendsSignup);
+                      return;
                     }
 
                     Navigator.pushReplacementNamed(context, fff_routes.home);

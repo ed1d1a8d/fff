@@ -51,7 +51,7 @@ class HamburgerDrawer extends StatelessWidget {
         shape: BoxShape.circle,
         image: DecorationImage(
             fit: BoxFit.fill,
-            image: NetworkImage("")));
+            image: NetworkImage(me.imageUrl)));
   }
 
   Widget _createHeader(context) {
@@ -68,12 +68,9 @@ class HamburgerDrawer extends StatelessWidget {
           ),
           SizedBox(height: 14),
           Text(
-            "Stella",
+            me.name,
             style: Theme.of(context).textTheme.headline,
           ),
-          SizedBox(height: 4),
-          Text("@" + "stellay",
-          style: Theme.of(context).textTheme.body1),
         ],
       ),
       decoration: BoxDecoration(

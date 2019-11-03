@@ -21,7 +21,7 @@ Future<List<UserData>> fetchOnlineFriends() async {
       headers: fff_auth.getAuthHeaders());
 
   if (response.statusCode != 200)
-    throw new Exception("Failed to get lobby friends...");
+    throw new Exception("Failed to get lobby friends: $response.statusCode .");
 
   return UserData.listFromJsonString(response.body);
 }
@@ -36,7 +36,7 @@ Future<List<FFRequest>> fetchIncomingRequests() async {
       headers: fff_auth.getAuthHeaders());
 
   if (response.statusCode != 200)
-    throw new Exception("Failed to get incoming requests...");
+    throw new Exception("Failed to get incoming requests: $response.statusCode .");
 
   // second argument set to true because it IS an INCOMING request
   return FFRequest.listFromJsonString(response.body, true);
@@ -51,7 +51,7 @@ Future<List<FFRequest>> fetchOutgoingRequests() async {
       headers: fff_auth.getAuthHeaders());
 
   if (response.statusCode != 200)
-    throw new Exception("Failed to get outgoing requests...");
+    throw new Exception("Failed to get outgoing requests: $response.statusCode .");
 
   // second argument set to false because it is NOT an INCOMING request
   return FFRequest.listFromJsonString(response.body, false);

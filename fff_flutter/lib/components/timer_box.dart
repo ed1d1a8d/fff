@@ -1,6 +1,10 @@
 import "dart:async";
 import "dart:developer";
 
+import "package:fff/routes.dart" as fff_routes;
+import "package:fff/backend/fff_timer.dart" as fff_timer_backend;
+import "package:fff/components/fff_timer_tuner.dart";
+import "package:fff/views/fff_timer_expired.dart";
 import "package:flutter/material.dart";
 import "package:flutter/cupertino.dart";
 
@@ -11,6 +15,24 @@ class TimerBox extends StatefulWidget {
   // this function just sets the duration of the timer to a new value regardless
   static void setExpirationTime(DateTime newExpirationTime) {
     _TimerBoxState.setExpirationTime(newExpirationTime);
+  }
+
+  static Duration durationToExpiration() {
+    return _TimerBoxState.durationToExpiration();
+  }
+
+  // update both the backend and frontend with an expiry time
+  // should not have race conditions with all other places where this is called
+  static void queueSimulataneousExpirationUpdate(DateTime newExpirationTime) {
+    _TimerBoxState._expirationTimePendingUpdate = newExpirationTime;
+    if (!_TimerBoxState._backendUpdating) {
+      _TimerBoxState._backendUpdating = true;
+      _TimerBoxState.simultaneousUpdate();
+    }
+  }
+
+  static void setGlobalContextFromMain(BuildContext context) {
+    _TimerBoxState._globalContext = context;
   }
 }
 
@@ -23,6 +45,13 @@ class _TimerBoxState extends State<TimerBox> {
 
   // this variable determines if the timer is visible rn
   static Set<_TimerBoxState> _mountedInstances = Set();
+
+  // backend request in progress from timer adjuster
+  static bool _backendUpdating = false;
+  static DateTime _expirationTimePendingUpdate;
+
+  // global context, set by main, used to push the expired page when needed
+  static BuildContext _globalContext;
 
   _TimerBoxState() {
     log("Initialized new _TimerBoxState.");
@@ -42,15 +71,28 @@ class _TimerBoxState extends State<TimerBox> {
     super.dispose();
   }
 
+  static bool _hasExpired() {
+    return _TimerBoxState.durationToExpiration().inMilliseconds == 0;
+  }
+
   static void _handleInternalTimer(Timer timer) {
     // if the timer has expired
-    if (_TimerBoxState.durationToExpiration().inMilliseconds == 0) {
-      // pop up an expiration screen
-      log("Timer expired!");
+    if (_TimerBoxState._hasExpired()) {
+      // only transition if we haven't already yet; this internal timer doesn't get stopped, ever
+      if (!FFFTimerExpired.mounted) {
+        FFFTimerExpired.mounted = true;
+
+        // pop up an expiration screen
+        log("FFF Timer expired! Transitioning to expired view with context + " +
+            _TimerBoxState._globalContext.toString() +
+            ".");
+        Navigator.pushReplacementNamed(
+            _TimerBoxState._globalContext, fff_routes.fffTimerExpired);
+      }
     } else {
       // only setstate when an instance of this state is mounted
       for (_TimerBoxState instance in _TimerBoxState._mountedInstances) {
-        instance.setState((){});
+        instance.setState(() {});
       }
     }
   }
@@ -69,6 +111,21 @@ class _TimerBoxState extends State<TimerBox> {
     return _TimerBoxState._expirationTime.difference(now);
   }
 
+  static void simultaneousUpdate() {
+    DateTime newExpirationTime = _TimerBoxState._expirationTimePendingUpdate;
+    _TimerBoxState._expirationTimePendingUpdate = null;
+    fff_timer_backend.setExpirationTime(newExpirationTime).then((_) {
+      TimerBox.setExpirationTime(newExpirationTime);
+
+      // trigger another simultaneous update if _expirationTimePendingUpdate has been set again
+      if (_TimerBoxState._expirationTimePendingUpdate != null) {
+        _TimerBoxState.simultaneousUpdate();
+      } else {
+        _TimerBoxState._backendUpdating = false;
+      }
+    });
+  }
+
   void _showDialog() {
     // flutter defined function
     showDialog(
@@ -77,37 +134,7 @@ class _TimerBoxState extends State<TimerBox> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Free (For Food) Timer"),
-          content: Container(
-            // Container to specify Alert Size
-            height: 330,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  width: 300,
-                  height: 200,
-                  child: CupertinoTimerPicker(
-                    mode: CupertinoTimerPickerMode.hms,
-                    minuteInterval: 1,
-                    initialTimerDuration: _TimerBoxState.durationToExpiration(),
-                    onTimerDurationChanged: (Duration newDuration) {
-                      // update the expiration time?
-                      log("TODO");
-                    },
-                  ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  "This allows friends to request food with you for the next few minutes.",
-                  style: Theme.of(context).textTheme.body1,
-                ),
-                SizedBox(height: 14),
-                Text(
-                  "The timer will continue to run even when you are not in the app.",
-                  style: Theme.of(context).textTheme.body1,
-                ),
-              ],
-            ),
-          ),
+          content: FFFTimerTuner(true),
         );
       },
     );
@@ -133,7 +160,9 @@ class _TimerBoxState extends State<TimerBox> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
                 child: Text(
-                  _TimerBoxState.durationToExpiration().toString().substring(0, 7),
+                  _TimerBoxState.durationToExpiration()
+                      .toString()
+                      .substring(0, 7),
                   style: TextStyle(fontSize: 14),
                 ),
               ),

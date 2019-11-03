@@ -10,6 +10,7 @@ from rest_framework.response import Response
 import requests
 from rest_framework import parsers
 import json
+from django.db import models
 
 from friendship.models import Friend, FriendshipRequest
 
@@ -22,6 +23,13 @@ from .serializers import (
     UserSelfSerializer,
     UserPublicSerializer,
 )
+
+from django.utils.dateparse import parse_datetime
+
+class Dumb(rest_framework.generics.GenericAPIView):
+    # return a response depending on the action passed in
+    def get(self, request):
+        return HttpResponse("dumb, but authenticated", status=200)
 
 class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
     serializer_class = UserSelfSerializer
@@ -92,6 +100,7 @@ class LobbyExpiration(rest_framework.generics.GenericAPIView):
                     sender=request.user).update(
                         status=FFRequestStatusEnum.EXPIRED.value)
 
+            print("Updating lobby expiration for a user from", repr(request.user.lobby_expiration), "to", repr(new_lobby_expiration))
             request.user.lobby_expiration = new_lobby_expiration
             request.user.save()
 
@@ -299,9 +308,10 @@ class FriendActions(rest_framework.generics.GenericAPIView):
 
 class GenerateMockDataForUser(rest_framework.generics.GenericAPIView):
     def post(self, request):
-        self.request.user.lobby_expiration = str(
-            datetime(year=2050, month=1, day=1, tzinfo=timezone.utc))
-        request.user.save()
+        # use default expiration
+        # self.request.user.lobby_expiration = str(
+        #     datetime(year=1970, month=1, day=1, tzinfo=timezone.utc))
+        # request.user.save()
         for i, other_user in enumerate(
                 User.objects.filter(is_superuser=False).all()):
             if self.request.user.id != other_user.id:
