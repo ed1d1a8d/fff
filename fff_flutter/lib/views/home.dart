@@ -449,7 +449,7 @@ class _HomeState extends State<Home> {
               }
             });
           },
-          isAccepted: true,
+          // isAccepted: true,
         ),
       ),
     );
