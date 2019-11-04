@@ -1,11 +1,15 @@
+import "dart:developer";
+
+import "package:fff/backend/friends.dart" as fff_backend_friends;
 import "package:fff/components/hamburger_drawer.dart";
+import "package:fff/components/search_bar.dart";
 import "package:fff/components/url_avatar.dart";
-import "package:fff/models/user_data.dart";
+import "package:fff/models/friend_request.dart";
 import "package:fff/models/search_friends_data.dart";
+import "package:fff/models/user_data.dart";
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
-import "package:fff/components/search_bar.dart";
-import 'package:flutter/cupertino.dart';
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
 class SearchPeople extends StatefulWidget {
@@ -16,42 +20,90 @@ class SearchPeople extends StatefulWidget {
 }
 
 class SearchPeopleState extends State<SearchPeople> {
-  String filterText = "";
+  List<UserData> _friends;
+  List<UserData> _requestedPeople;
+  List<UserData> _otherPeople;
 
-  bool _friendAtIndexVisible(List<UserData> friends, int index) {
-    return friends[index]
-        .name
-        .toLowerCase()
-        .contains(this.filterText.toLowerCase());
+  String _filterText = "";
+
+  @override
+  initState() {
+    super.initState();
+
+    fff_backend_friends.fetchFriends().then((List<UserData> friends) {
+      setState(() {
+        _friends = friends;
+        _friends.sort((u1, u2) => u1.name.compareTo(u2.name));
+        log("Set _friends.");
+      });
+    });
+
+    fff_backend_friends
+        .fetchOutgoingRequests()
+        .then((List<FriendRequest> outgoingRequests) {
+      setState(() {
+        _requestedPeople = outgoingRequests.map((fr) => fr.toUser).toList();
+        _requestedPeople.sort((u1, u2) => u1.name.compareTo(u2.name));
+        log("Set _requestedPeople.");
+      });
+    });
+
+    fff_backend_friends.fetchNonFriends().then((List<UserData> nonFriends) {
+      setState(() {
+        _otherPeople = nonFriends;
+        _otherPeople.sort((u1, u2) => u1.name.compareTo(u2.name));
+        log("Set _otherPeople.");
+      });
+    });
+
+    log("Initialized SearchPeopleState.");
   }
 
-  bool _otherPeopleAtIndexVisible(List<UserData> otherPeople, int index) {
-    return otherPeople[index]
-        .name
-        .toLowerCase()
-        .contains(this.filterText.toLowerCase());
+  void _sendFriendRequest(UserData toUser) async {
+    if (await fff_backend_friends.createRequest(toUser)) {
+      setState(() {
+        _otherPeople.removeWhere((x) => x.id == toUser.id);
+        _otherPeople.sort((u1, u2) => u1.name.compareTo(u2.name));
+        _requestedPeople.add(toUser);
+        _requestedPeople.sort((u1, u2) => u1.name.compareTo(u2.name));
+      });
+    }
   }
 
-  void _addUserToCombinedList(
-      UserData user, List<Widget> combinedList, bool divider) {
+  bool _userVisible(UserData user) =>
+      user.name.toLowerCase().contains(_filterText.toLowerCase());
+
+  void _addUserToCombinedList(UserData toUser, List<Widget> combinedList,
+      {bool addFriendButton = false}) {
     combinedList.add(Row(
-      children: <Widget>[
-        URLAvatar(
-          imageURL: user.imageUrl,
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 10),
-          child: Text(
-            user.name,
-            style: Theme.of(context).textTheme.display2,
-          ),
-        ),
-        Spacer(),
-      ],
-    ));
-
-    // add the divider
-    if (divider) combinedList.add(Divider(color: fff_colors.black));
+        children: <Widget>[
+              URLAvatar(
+                imageURL: toUser.imageUrl,
+              ),
+              Container(
+                margin: const EdgeInsets.only(left: 10),
+                child: Text(
+                  toUser.name,
+                  style: Theme.of(context).textTheme.display2,
+                ),
+              ),
+              Spacer(),
+            ] +
+            (addFriendButton
+                ? [
+                    Container(
+                      child: MaterialButton(
+                        child: Text(
+                          "Add",
+                          style: Theme.of(context).textTheme.body1,
+                        ),
+                        onPressed: () => _sendFriendRequest(toUser),
+                        color: fff_colors.buttonGreen,
+                        padding: const EdgeInsets.all(0),
+                      ),
+                    )
+                  ]
+                : [])));
   }
 
   Widget _buildListSectionLabel(String labelText) {
@@ -69,25 +121,28 @@ class SearchPeopleState extends State<SearchPeople> {
   List<Widget> _buildFilteredCombinedList(
       List<UserData> friends, List<UserData> otherPeople) {
     List<Widget> combinedList = <Widget>[];
+    if (_friends == null || _requestedPeople == null || _otherPeople == null) {
+      return combinedList;
+    }
 
     // friends section
     combinedList.add(this._buildListSectionLabel("Friends"));
-    for (int a = 0; a < friends.length; a++) {
-      if (!this._friendAtIndexVisible(friends, a)) continue;
-      this._addUserToCombinedList(
-          friends[a], combinedList, a < friends.length - 1);
-    }
+    _friends
+        .where(_userVisible)
+        .forEach((user) => _addUserToCombinedList(user, combinedList));
+    combinedList.add(Divider(color: fff_colors.black));
 
     // small divide between sections
     combinedList.add(SizedBox(height: 20));
 
     // other people section
     combinedList.add(this._buildListSectionLabel("Other People"));
-    for (int a = 0; a < otherPeople.length; a++) {
-      if (!this._otherPeopleAtIndexVisible(otherPeople, a)) continue;
-      this._addUserToCombinedList(
-          otherPeople[a], combinedList, a < friends.length - 1);
-    }
+    _requestedPeople
+        .where(_userVisible)
+        .forEach((user) => _addUserToCombinedList(user, combinedList));
+    _otherPeople.where(_userVisible).forEach((user) =>
+        _addUserToCombinedList(user, combinedList, addFriendButton: true));
+    combinedList.add(Divider(color: fff_colors.black));
 
     combinedList.add(SizedBox(height: 20));
 
@@ -124,36 +179,42 @@ class SearchPeopleState extends State<SearchPeople> {
       ),
       backgroundColor: fff_colors.white,
       drawer: HamburgerDrawer(),
-      body: Column(
-        children: <Widget>[
-          // search bar
-          Container(
-            padding: EdgeInsets.fromLTRB(
-                fff_spacing.viewEdgeInsets,
-                fff_spacing.profilePicInsets,
-                fff_spacing.viewEdgeInsets,
-                fff_spacing.profileListInsets),
-            color: fff_colors.navBarBackground,
-            child: SearchBar(
-              onChanged: (String text) {
-                setState(() {
-                  filterText = text;
-                });
-              },
-              color: fff_colors.white,
-            ),
-          ),
+      body:
+          (_friends == null || _requestedPeople == null || _otherPeople == null)
+              ? Center(child: CircularProgressIndicator())
+              : Column(
+                  children: <Widget>[
+                    // search bar
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          fff_spacing.viewEdgeInsets,
+                          fff_spacing.profilePicInsets,
+                          fff_spacing.viewEdgeInsets,
+                          fff_spacing.profileListInsets),
+                      color: fff_colors.navBarBackground,
+                      child: SearchBar(
+                        onChanged: (String text) {
+                          setState(() {
+                            _filterText = text;
+                          });
+                        },
+                        color: fff_colors.white,
+                      ),
+                    ),
 
-          // list of friends
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(fff_spacing.viewEdgeInsets,
-                  fff_spacing.profilePicInsets, fff_spacing.viewEdgeInsets, 0),
-              children: combinedList,
-            ),
-          ),
-        ],
-      ),
+                    // list of friends
+                    Expanded(
+                      child: ListView(
+                        padding: const EdgeInsets.fromLTRB(
+                            fff_spacing.viewEdgeInsets,
+                            fff_spacing.profilePicInsets,
+                            fff_spacing.viewEdgeInsets,
+                            0),
+                        children: combinedList,
+                      ),
+                    ),
+                  ],
+                ),
     );
   }
 }

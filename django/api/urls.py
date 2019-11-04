@@ -7,6 +7,7 @@ urlpatterns = [
     # auth'd dumb endpoint
     path("dumb/", views.Dumb.as_view()),
 
+    # self
     path("self/detail/", views.SelfDetail.as_view()),
     path("self/device/<str:registration_id>/", views.DeviceView.as_view()),
 
@@ -27,9 +28,11 @@ urlpatterns = [
          views.FetchFFSearchForFriend.as_view()),
 
     # Friends
-    path("friends/",
+    path("friends/friends/",
          views.FriendList.as_view()),  # Gives you list of user's friends
-    path("fbfriends/", views.AddFacebookFriends.as_view()
+    path("friends/nonfriends/", views.NonFriendList.as_view()
+         ),  # A list of all non-friends who you have not requested
+    path("friends/fbfriends/", views.AddFacebookFriends.as_view()
          ),  # Gives you list of user's fb friends also on FFF
     path("friends/requests/<str:action>/", views.FriendRequests.as_view()),
     path("friends/actions/<str:action>/<int:pk>/",
