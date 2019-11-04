@@ -38,17 +38,17 @@ class _FFFAppState extends State<FFFApp> {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         log("onMessage: $message");
-        // TODO: Navigate to specific message screen.
+        await Home.shortCircuitFetchBackendTimer();
       },
       // fires if the app is fully terminated
       onLaunch: (Map<String, dynamic> message) async {
         log("onLaunch: $message");
-        // TODO: Navigate to specific message screen.
+        await Home.shortCircuitFetchBackendTimer();
       },
       // fires if the app is closed, but still running in the background
       onResume: (Map<String, dynamic> message) async {
         log("onResume: $message");
-        // TODO: Navigate to specific message screen.
+        await Home.shortCircuitFetchBackendTimer();
       },
     );
   }

@@ -189,6 +189,10 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
                 # expire the user's lobby timer
                 request.user.lobby_expiration = timezone.now()
                 request.user.save()
+                
+                # send push to sender's device
+                Device.objects.filter(user=req.sender).all().send_message(
+                    title="Let's FFF!", body=rec.receiver.name + " has accepted your FFF request!", click_action="FLUTTER_NOTIFICATION_CLICK")
 
             return HttpResponse(status=200)
         elif action == FFRequestStatusEnum.REJECTED.value:
@@ -291,31 +295,13 @@ class AcceptedFFRequests(rest_framework.generics.ListAPIView):
 
         # Selects all accepted FF Requests sent by this user but not yet seen by this user
         requests = FFRequest.objects.filter(
-            status=FFRequestStatusEnum.accepted,
+            status=FFRequestStatusEnum.ACCEPTED.value,
             sender=self.request.user,
             has_sender_seen_accepted_view=False,
         )
 
-        # filter for non-expired requests - see above comment
-        filteredRequests = []
-        for ffRequest in requests:
-            if ffRequest.receiver.lobby_expiration < timezone.now():
-                print("FF Request lazily cancelled for receiver", ffRequest.receiver,
-                      "expired at", ffRequest.receiver.lobby_expiration)
-                with transaction.atomic():
-                    ffRequest.status = FFRequestStatusEnum.EXPIRED.value
-                    ffRequest.save()
-                continue
-            filteredRequests.append(ffRequest)
-
-
-        if len(filteredRequests) == 0: # currently no accepted requests
-            return filteredRequests
-        elif len(filteredRequests) == 1: # currently ONE (or more) accepted requests exist. But we only care about the first one
-            acceptedrequest = filteredRequests[0]
-            acceptedrequest.has_sender_seen_accepted_view = True
-            acceptedrequest.save()
-            return [acceptedrequest]
+        # just return all requests which match this; should probably be 0 or 1 but we don't check
+        return requests
 
 class FriendList(rest_framework.generics.ListAPIView):
     serializer_class = UserPublicSerializer

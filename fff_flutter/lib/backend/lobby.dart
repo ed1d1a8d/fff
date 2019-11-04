@@ -56,3 +56,14 @@ Future<List<FFRequest>> fetchOutgoingRequests() async {
   // second argument set to false because it is NOT an INCOMING request
   return FFRequest.listFromJsonString(response.body, false);
 }
+
+Future<List<FFRequest>> fetchUnreadAcceptedFFRequests() async {
+  final response = await http.get(ffrequestsEndpoint + "/accepted_and_unread/",
+      headers: fff_auth.getAuthHeaders());
+
+  if (response.statusCode != 200)
+    throw new Exception("Failed to fetch unread requests: " + response.statusCode.toString() + ".");
+
+  // unread is, by definition, an outgoing request
+  return FFRequest.listFromJsonString(response.body, false);
+}

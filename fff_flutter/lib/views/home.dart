@@ -34,6 +34,11 @@ class Home extends StatefulWidget {
     _HomeState._fetchBackendTimer.cancel();
     _HomeState._fetchBackendTimer = null;
   }
+
+  // for on launch or on push
+  static Future shortCircuitFetchBackendTimer() async {
+    await _HomeState._handleFetchTimerCalled();
+  }
 }
 
 class _HomeState extends State<Home> {
@@ -47,6 +52,7 @@ class _HomeState extends State<Home> {
   // request the backend every _fetchPeriod; timer runs even when page is not mounted
   static Timer _fetchBackendTimer;
   static Set<_HomeState> _mountedInstances = Set();
+  static BuildContext _mountedContext;
 
   // lobby information - kept updated by _fetchBackendTimer;
   static List<FFRequest> _incomingRequests;
@@ -109,19 +115,20 @@ class _HomeState extends State<Home> {
   initState() {
     super.initState();
     log("Initialized _HomeState.");
+    _HomeState._mountedContext = this.context;
     _HomeState._mountedInstances.add(this);
 
     if (_HomeState._fetchBackendTimer == null) {
       _HomeState._fetchBackendTimer =
-          noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
+          noDelayPeriodicTimer(_fetchPeriod, _HomeState._handleFetchTimerCalled);
     }
   }
 
-  void _handleFetchTimerCalled() async {
+  static Future _handleFetchTimerCalled() async {
     try {
       // only fetch data if the timer has not expired yet and not showing accepted screen
       if (!FFFTimerExpired.mounted && !FriendDetail.isShowingAcceptedView()) {
-        final List<List> lobbyData = await this._fetchLobbyData();
+        final List<List> lobbyData = await _HomeState._fetchLobbyData();
 
         // make changes to the static data - and call setstate if we're mounted
         Function updateStaticData = () {
@@ -132,7 +139,7 @@ class _HomeState extends State<Home> {
 
         if (_HomeState._mountedInstances.length == 0) {
           updateStaticData();
-        log("Fetched lobby data.");
+          log("Fetched lobby data.");
         } else {
           for (_HomeState instance in _HomeState._mountedInstances) {
             log("Fetched lobby data and called setState on Home instance.");
@@ -146,7 +153,7 @@ class _HomeState extends State<Home> {
   }
 
   // returns a list containing 3 things: incomingRequests, onlineFriends, and outgoingRequests
-  Future<List<List>> _fetchLobbyData() async {
+  static Future<List<List>> _fetchLobbyData() async {
     List<List> lobbyData;
     Position position;
 
@@ -188,6 +195,28 @@ class _HomeState extends State<Home> {
         }
         // log("Fetched user position data.");
       }(),
+      () async {
+        // pull any accepted FF requests that we haven't marked as read yet
+        List<FFRequest> unreadRequests =
+            await fff_lobby_backend.fetchUnreadAcceptedFFRequests();
+
+        // if this list isn't empty, then update the view immediately to the accepted screen
+        if (unreadRequests.length > 0) {
+          FFRequest request = unreadRequests[0];
+
+          Navigator.push(
+            _HomeState._mountedContext,
+            MaterialPageRoute(
+              builder: (context) => FriendDetail(
+                request.user,
+                request,
+                () {},
+                showingAcceptedView: true,
+              ),
+            ),
+          );
+        }
+      }(),
     ]);
 
     if (position != null) {
@@ -203,7 +232,7 @@ class _HomeState extends State<Home> {
     return lobbyData;
   }
 
-  Future _updateUserDataDistances(
+  static Future _updateUserDataDistances(
       Position position, List<UserData> users) async {
     if (users == null) return;
     for (final user in users) {
@@ -215,7 +244,7 @@ class _HomeState extends State<Home> {
     users.sort((u1, u2) => u1.distance.compareTo(u2.distance));
   }
 
-  Future _updateFFRequestDistances(
+  static Future _updateFFRequestDistances(
       Position position, List<FFRequest> requests) async {
     // TODO: Handle null positions
     if (requests == null) return;
@@ -475,8 +504,8 @@ class _HomeState extends State<Home> {
               // print("start");
               // print(_HomeState._outgoingRequests.length);
               this.setState(() {
-                _HomeState._outgoingRequests
-                    .removeWhere((request) => request.user.id == ffRequest.user.id);
+                _HomeState._outgoingRequests.removeWhere(
+                    (request) => request.user.id == ffRequest.user.id);
 
                 // add back to online friends
                 _HomeState._onlineFriends.add(ffRequest.user);
@@ -499,8 +528,8 @@ class _HomeState extends State<Home> {
               // incoming request was either accepted or rejected
               // use the incomingRequestAccepted flag to check this
               this.setState(() {
-                _HomeState._incomingRequests
-                    .removeWhere((request) => request.user.id == ffRequest.user.id);
+                _HomeState._incomingRequests.removeWhere(
+                    (request) => request.user.id == ffRequest.user.id);
               });
 
               // if accepted an incoming request
