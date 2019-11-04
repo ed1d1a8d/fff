@@ -16,6 +16,7 @@ import "package:fff/models/ffrequest.dart";
 import "package:fff/models/user_data.dart";
 import "package:fff/components/url_avatar.dart";
 import "package:fff/components/gradient_container.dart";
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class FriendDetail extends StatefulWidget {
   static const String routeName = "friend-detail";
@@ -207,9 +208,9 @@ class _FriendDetailState extends State<FriendDetail> {
       body: Container(
         constraints: BoxConstraints.expand(),
         padding: const EdgeInsets.all(fff_spacing.viewEdgeInsets),
-        child: Column(
-          children: widgets,
-        ),
+          child: Column(
+            children: widgets,
+          ),
       ),
     );
   }
@@ -238,19 +239,23 @@ class _FriendDetailState extends State<FriendDetail> {
     // case on FFRequest status
     if (widget.ffRequest == null) {
       innerWidget = Material(
-        child: TextField(
-          onChanged: (text) => this.newRequestMessage = text,
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          style: Theme.of(context).textTheme.body1,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: const EdgeInsets.only(left: 5),
-            fillColor: fff_colors.white,
-            filled: true,
-            hintText: "Write a short message to your friend!",
+        child: Container(
+          child: TextFormField(
+            onChanged: (text) => this.newRequestMessage = text,
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            textInputAction: TextInputAction.done,
+            autocorrect: false,
+            style: Theme.of(context).textTheme.body1,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.only(left: 5),
+              fillColor: fff_colors.white,
+              filled: true,
+              hintText: "Write a short message to your friend!",
+            ),
           ),
-        ),
+        )
       );
     } else if (widget.ffRequest.isIncoming) {
       innerWidget = Text(widget.ffRequest.message,
