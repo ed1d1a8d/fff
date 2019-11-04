@@ -97,11 +97,15 @@ class LobbyExpiration(rest_framework.generics.GenericAPIView):
             # lazy ff request expiration
             if min(request.user.lobby_expiration,
                    new_lobby_expiration) < timezone.now():
-                print(f"Deleting expired requests for {request.user}..."
+                print(f"Deleting expired requests to and from {request.user}..."
                       )  # TODO: Replace with better logging.
                 FFRequest.objects.filter(
                     status=FFRequestStatusEnum.PENDING.value,
                     sender=request.user).update(
+                        status=FFRequestStatusEnum.EXPIRED.value)
+                FFRequest.objects.filter(
+                    status=FFRequestStatusEnum.PENDING.value,
+                    receiver=request.user).update(
                         status=FFRequestStatusEnum.EXPIRED.value)
 
             # print("Updating lobby expiration for a user from", repr(
