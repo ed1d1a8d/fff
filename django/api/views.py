@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+import json
 
 from django.db import transaction
 from django.db.models import Q
@@ -9,7 +10,6 @@ import rest_framework.generics
 from rest_framework.response import Response
 import requests
 from rest_framework import parsers
-import json
 from django.db import models
 
 from friendship.models import Friend, FriendshipRequest
@@ -41,30 +41,34 @@ class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
 
 
 class AddFacebookFriends(rest_framework.generics.GenericAPIView):
-    def post(self, request, format):
+    def post(self, request):
         url = "https://graph.facebook.com/v4.0/{0}/?fields=friends&access_token={1}".format(
-            request.user.fb_id,
-            request.data["access_token"]
-        )
+            request.user.fb_id, request.data["access_token"])
 
         r = requests.get(url)
         returnlist = []
 
         if r.status_code == 200:
             existing_fff_friends = Friend.objects.friends(request.user)
+            # TODO: Fix jank requestedUsers
+            requestedUsers = FriendshipRequest.objects.select_related(
+                "to_user").filter(from_user=self.request.user,
+                                  rejected__isnull=True).values_list("to_user",
+                                                                     flat=True)
 
             fbresponse = r.json()
             friendlist = fbresponse["friends"]["data"]
 
             for friend in friendlist:
                 u = User.objects.get(fb_id=friend["id"])
-                if (u not in existing_fff_friends):
+                if (u not in existing_fff_friends
+                        and u.id not in requestedUsers):
                     serializer = UserPublicSerializer(u)
                     returnlist.append(serializer.data)
 
             return JsonResponse(returnlist, safe=False)
 
-        return("Error")
+        return HttpResponse("Error in getting facebook friends.", status=400)
 
 
 class DeviceView(rest_framework.generics.GenericAPIView):
@@ -97,8 +101,9 @@ class LobbyExpiration(rest_framework.generics.GenericAPIView):
             # lazy ff request expiration
             if min(request.user.lobby_expiration,
                    new_lobby_expiration) < timezone.now():
-                print(f"Deleting expired requests to and from {request.user}..."
-                      )  # TODO: Replace with better logging.
+                print(
+                    f"Deleting expired requests to and from {request.user}..."
+                )  # TODO: Replace with better logging.
                 FFRequest.objects.filter(
                     status=FFRequestStatusEnum.PENDING.value,
                     sender=request.user).update(
@@ -137,9 +142,6 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
             sender=self.request.user,
         )
 
-        Device.objects.filter(user=ffrequest.receiver).all().send_message(
-            title=self.request.user.name, body=ffrequest.message, click_action="FLUTTER_NOTIFICATION_CLICK")
-
     def create(self, request, *args, **kwargs):
         serializer = FFRequestWriteSerializer(data=request.data)
         if not serializer.is_valid():
@@ -157,7 +159,9 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
         # serialize the request and pass it back; the default create doesn't serialize the users
         # TODO: clean up
         newRequest = FFRequest.objects.get(
-            sender=request.user, receiver=receiver, status=FFRequestStatusEnum.PENDING.value)
+            sender=request.user,
+            receiver=receiver,
+            status=FFRequestStatusEnum.PENDING.value)
         # print(newRequest, repr(newRequest))
         responseSerializer = FFRequestReadSerializer(newRequest)
         return JsonResponse(responseSerializer.data, safe=False, status=201)
@@ -193,7 +197,9 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
 
                 # send push to sender's device
                 Device.objects.filter(user=req.sender).all().send_message(
-                    title="Let's FFF!", body=rec.receiver.name + " has accepted your FFF request!", click_action="FLUTTER_NOTIFICATION_CLICK")
+                    title="Let's FFF!",
+                    body=rec.receiver.name + " has accepted your FFF request!",
+                    click_action="FLUTTER_NOTIFICATION_CLICK")
 
             return HttpResponse(status=200)
         elif action == FFRequestStatusEnum.REJECTED.value:
@@ -254,8 +260,9 @@ class IncomingFFRequests(rest_framework.generics.ListAPIView):
         filteredRequests = []
         for ffRequest in requests:
             if ffRequest.sender.lobby_expiration < timezone.now():
-                print("FF Request lazily cancelled for sender", ffRequest.sender,
-                      "expired at", ffRequest.sender.lobby_expiration)
+                print("FF Request lazily cancelled for sender",
+                      ffRequest.sender, "expired at",
+                      ffRequest.sender.lobby_expiration)
                 with transaction.atomic():
                     ffRequest.status = FFRequestStatusEnum.EXPIRED.value
                     ffRequest.save()
@@ -279,8 +286,9 @@ class OutgoingFFRequests(rest_framework.generics.ListAPIView):
         filteredRequests = []
         for ffRequest in requests:
             if ffRequest.receiver.lobby_expiration < timezone.now():
-                print("FF Request lazily cancelled for receiver", ffRequest.receiver,
-                      "expired at", ffRequest.receiver.lobby_expiration)
+                print("FF Request lazily cancelled for receiver",
+                      ffRequest.receiver, "expired at",
+                      ffRequest.receiver.lobby_expiration)
                 with transaction.atomic():
                     ffRequest.status = FFRequestStatusEnum.EXPIRED.value
                     ffRequest.save()
@@ -315,21 +323,39 @@ class FriendList(rest_framework.generics.ListAPIView):
         return Friend.objects.friends(self.request.user)
 
 
+class NonFriendList(rest_framework.generics.ListAPIView):
+    serializer_class = UserPublicSerializer
+
+    def get_queryset(self):
+        # TODO: Make this less jank.
+        requestedUsers = FriendshipRequest.objects.select_related(
+            "to_user").filter(from_user=self.request.user,
+                              rejected__isnull=True).values_list("to_user",
+                                                                 flat=True)
+        return User.objects.exclude(
+            friends__from_user=self.request.user).exclude(
+                pk__in=requestedUsers).exclude(
+                    id=self.request.user.id).exclude(is_superuser=True)
+
+
 # friend requests
 class FriendRequests(rest_framework.generics.GenericAPIView):
     # return a response depending on the action passed in
     def get(self, request, action):
-        if action == "unrejected":
+        if action == "incoming":
             try:
                 pending = Friend.objects.unrejected_requests(user=request.user)
                 serializer = FriendshipRequestSerializer(pending, many=True)
                 return JsonResponse(serializer.data, safe=False)
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
-        elif action == "unread":
+        elif action == "outgoing":
             try:
-                unread = Friend.objects.unread_requests(user=request.user)
-                serializer = FriendshipRequestSerializer(unread, many=True)
+                pending = FriendshipRequest.objects.select_related(
+                    "from_user",
+                    "to_user").filter(from_user=request.user,
+                                      rejected__isnull=True).all()
+                serializer = FriendshipRequestSerializer(pending, many=True)
                 return JsonResponse(serializer.data, safe=False)
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
@@ -338,20 +364,17 @@ class FriendRequests(rest_framework.generics.GenericAPIView):
 
 class FriendActions(rest_framework.generics.GenericAPIView):
     # return a response depending on the action passed in
-    def get(self, request, action, pk):
+    def post(self, request, action, pk):
         try:
             other_user = User.objects.get(pk=pk)
         except:
             return HttpResponse("User pk does not exist.", status=400)
 
-        if action == "info":
-            if Friend.objects.are_friends(request.user, other_user) != True:
-                return HttpResponse("Target user is not a friend.", status=400)
-            serializer = UserPublicSerializer([other_user], many=True)
-            return JsonResponse(serializer.data, safe=False)
-        elif action == "request":
+        if action == "request":
             try:
+                print("HELLO?????")
                 Friend.objects.add_friend(request.user, other_user)
+                print("YOOO)OOO!!!")
                 return HttpResponse(
                     f"Sent friendship request to pk {other_user.id}.")
             except Exception as exception:
@@ -380,6 +403,24 @@ class FriendActions(rest_framework.generics.GenericAPIView):
                 return HttpResponse(str(exception), status=400)
 
         return HttpResponse("Invalid action.", status=400)
+
+
+class BulkAddFriends(rest_framework.generics.GenericAPIView):
+    def post(self, request):
+        try:
+            ids = [int(id) for id in json.loads(request.data["ids"])]
+        except:
+            return HttpResponse("Invalid json.", status=400)
+
+        try:
+            toUsers = [User.objects.get(pk=id) for id in ids]
+        except:
+            return HttpResponse("Invalid user ids.", status=400)
+
+        for toUser in toUsers:
+            Friend.objects.add_friend(request.user, toUser)
+
+        return HttpResponse("Invalid user ids.", status=200)
 
 
 class GenerateMockDataForUser(rest_framework.generics.GenericAPIView):

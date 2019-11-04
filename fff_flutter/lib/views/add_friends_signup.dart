@@ -1,19 +1,17 @@
-import "package:fff/components/fff_check_box.dart";
-import "package:fff/backend/constants.dart" as fff_backend_constants;
 import "dart:async";
+import "dart:developer";
+
+import "package:fff/backend/friends.dart" as fff_backend_friends;
+import "package:fff/components/fff_check_box.dart";
 import "package:fff/components/gradient_container.dart";
 import "package:fff/components/search_bar.dart";
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/user_data.dart";
-import "package:fff/backend/auth.dart" as fff_auth;
 import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
+import "package:fff/utils/no_delay_periodic_timer.dart";
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:flutter/material.dart";
-import "package:http/http.dart" as http;
-import "package:fff/utils/no_delay_periodic_timer.dart";
-import "dart:developer";
-
 
 class AddFriendsSignup extends StatefulWidget {
   static const String routeName = "add-friends-signup";
@@ -21,7 +19,6 @@ class AddFriendsSignup extends StatefulWidget {
   @override
   _AddFriendsSignupState createState() => _AddFriendsSignupState();
 }
-
 
 class _AddFriendsSignupState extends State<AddFriendsSignup> {
   // is null if proper subset of friends is checked
@@ -40,60 +37,26 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
   void initState() {
     super.initState();
 
-    _fetchTimer = noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
+    _fetchTimer =
+        noDelayPeriodicTimer(_fetchPeriod, this._handleFetchTimerCalled);
   }
 
   void _handleFetchTimerCalled() async {
     try {
-      final List<UserData> fbFriends = await this._fetchSetData();
+      final List<UserData> fbFriends =
+          await fff_backend_friends.fetchFBFriends();
 
       if (this.mounted) {
         setState(() {
           _fbFriends = fbFriends;
           _numFriendsChecked = _fbFriends.length;
           _numFriends = _fbFriends.length;
-          _isFriendChecked =
-            new List.filled(_fbFriends.length, true);
+          _isFriendChecked = new List.filled(_fbFriends.length, true);
         });
       }
-    }
-    catch (error) {
+    } catch (error) {
       log("$error");
     }
-  }
-
-  // Analogous to _fetchLobbyData()
-  Future<List<UserData>> _fetchSetData() async {
-    List tempFriendList;
-
-    await Future.wait([
-          () async {
-            tempFriendList = await Future.wait([
-              fetchFBFriendsFuture()
-        ]);
-        log("Fetched lobby user data.");
-      }(),
-    ]);
-
-    return tempFriendList[0];
-  }
-
-  // Analogous to fetchIncomingRequests
-  Future<List<UserData>> fetchFBFriendsFuture() async {
-//    if (fff_backend_constants.localMockData) {
-//      return MockData.onlineFriends;
-//    }
-
-    final response = await http.post(
-      fff_backend_constants.server_location + "/api/fbfriends.json",
-      body: {"access_token": fff_auth.accessToken},
-      headers: fff_auth.getAuthHeaders(),
-    );
-
-    if (response.statusCode != 200)
-      throw new Exception("Failed to get FB Friends friends...");
-
-    return UserData.listFromJsonString(response.body);
   }
 
   @override
@@ -105,8 +68,7 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      Container (
+    return Container(
         color: fff_colors.background,
         child: SafeArea(
           child: Container(
@@ -188,21 +150,18 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                             FFFCheckBox(
                               onTap: () {
                                 setState(() {
-                                  if (_numFriendsChecked !=
-                                      _numFriends) {
-                                    _numFriendsChecked =
-                                        _numFriends;
-                                    _isFriendChecked = new List.filled(
-                                        _numFriends, true);
+                                  if (_numFriendsChecked != _numFriends) {
+                                    _numFriendsChecked = _numFriends;
+                                    _isFriendChecked =
+                                        new List.filled(_numFriends, true);
                                   } else {
                                     _numFriendsChecked = 0;
-                                    _isFriendChecked = new List.filled(
-                                        _numFriends, false);
+                                    _isFriendChecked =
+                                        new List.filled(_numFriends, false);
                                   }
                                 });
                               },
-                              checked: this._numFriendsChecked ==
-                                  _numFriends
+                              checked: this._numFriendsChecked == _numFriends
                                   ? true
                                   : this._numFriendsChecked == 0 ? false : null,
                             ),
@@ -211,56 +170,71 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
 
                         // List of friends
 
-                        _fbFriends == null ? Center(
-                          child: CircularProgressIndicator(),
-                        ) :
-
-                        (_fbFriends.length == 0 ? Text("You are the first of your Facebook friends using FFF! (Or maybe you've already added all of your Facebook friends.)",
-                        style: Theme.of(context).textTheme.display2)
-                            : Expanded(
-                          child: ListView.separated(
-                            padding: const EdgeInsets.only(top: 5),
-                            itemCount: _numFriends,
-                            itemBuilder: (BuildContext context, int index) {
-                              return this.friendAtIndexVisible(index)
-                                  ? Row(
-                                children: <Widget>[
-                                  URLAvatar(
-                                    imageURL: _fbFriends[index].imageUrl,
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      _fbFriends[index].name,
-                                      style:
-                                      Theme.of(context).textTheme.display2,
+                        _fbFriends == null
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : (_fbFriends.length == 0
+                                ? Text(
+                                    "You are the first of your Facebook friends using FFF! (Or maybe you've already added all of your Facebook friends.)",
+                                    style: Theme.of(context).textTheme.display2)
+                                : Expanded(
+                                    child: ListView.separated(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      itemCount: _numFriends,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return this.friendAtIndexVisible(index)
+                                            ? Row(
+                                                children: <Widget>[
+                                                  URLAvatar(
+                                                    imageURL: _fbFriends[index]
+                                                        .imageUrl,
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 10),
+                                                    child: Text(
+                                                      _fbFriends[index].name,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .display2,
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  FFFCheckBox(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        _numFriendsChecked +=
+                                                            _isFriendChecked[
+                                                                    index]
+                                                                ? -1
+                                                                : 1;
+                                                        _isFriendChecked[
+                                                                index] =
+                                                            !_isFriendChecked[
+                                                                index];
+                                                      });
+                                                    },
+                                                    checked:
+                                                        this._isFriendChecked[
+                                                            index],
+                                                  ),
+                                                ],
+                                              )
+                                            : Container();
+                                      },
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return this.friendAtIndexVisible(index)
+                                            ? Divider(
+                                                color: fff_colors.black,
+                                              )
+                                            : Container();
+                                      },
                                     ),
-                                  ),
-                                  Spacer(),
-                                  FFFCheckBox(
-                                    onTap: () {
-                                      setState(() {
-                                        _numFriendsChecked +=
-                                        _isFriendChecked[index] ? -1 : 1;
-                                        _isFriendChecked[index] =
-                                        !_isFriendChecked[index];
-                                      });
-                                    },
-                                    checked: this._isFriendChecked[index],
-                                  ),
-                                ],
-                              )
-                                  : Container();
-                            },
-                            separatorBuilder: (BuildContext context, int index) {
-                              return this.friendAtIndexVisible(index)
-                                  ? Divider(
-                                color: fff_colors.black,
-                              )
-                                  : Container();
-                            },
-                          ),
-                        )),
+                                  )),
                       ],
                     ),
                   ),
@@ -275,9 +249,8 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                           " Selected Friends",
                       style: Theme.of(context).textTheme.button,
                     ),
-                    onPressed: () {
-                      print("TODO BACKEND");
-                      List<UserData> friendsToAdd = [];
+                    onPressed: () async {
+                      final List<UserData> friendsToAdd = [];
 
                       if (_fbFriends != null) {
                         for (int i = 0; i < _fbFriends.length; i++) {
@@ -289,10 +262,11 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
                         }
                       }
 
-                      // Friends to add contains the UserDatas of all the selected friends
-
-                      // just go to the home page
-                      Navigator.pushReplacementNamed(context, fff_routes.home);
+                      if (await fff_backend_friends
+                          .bulkCreateRequest(friendsToAdd)) {
+                        Navigator.pushReplacementNamed(
+                            context, fff_routes.home);
+                      }
                     },
                     color: fff_colors.strongBackground,
                     padding: const EdgeInsets.symmetric(
@@ -304,13 +278,12 @@ class _AddFriendsSignupState extends State<AddFriendsSignup> {
               ],
             ),
           ),
-        )
-      );
+        ));
   }
 
-
   bool friendAtIndexVisible(int index) {
-    return _fbFriends[index].name
+    return _fbFriends[index]
+        .name
         .toLowerCase()
         .contains(this.filterText.toLowerCase());
   }
