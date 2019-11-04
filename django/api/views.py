@@ -156,7 +156,8 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
 
         # serialize the request and pass it back; the default create doesn't serialize the users
         # TODO: clean up
-        newRequest = FFRequest.objects.get(sender = request.user, receiver=receiver, status=FFRequestStatusEnum.PENDING.value)
+        newRequest = FFRequest.objects.get(
+            sender=request.user, receiver=receiver, status=FFRequestStatusEnum.PENDING.value)
         # print(newRequest, repr(newRequest))
         responseSerializer = FFRequestReadSerializer(newRequest)
         return JsonResponse(responseSerializer.data, safe=False, status=201)
@@ -189,7 +190,7 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
                 # expire the user's lobby timer
                 request.user.lobby_expiration = timezone.now()
                 request.user.save()
-                
+
                 # send push to sender's device
                 Device.objects.filter(user=req.sender).all().send_message(
                     title="Let's FFF!", body=rec.receiver.name + " has accepted your FFF request!", click_action="FLUTTER_NOTIFICATION_CLICK")
@@ -243,7 +244,7 @@ class IncomingFFRequests(rest_framework.generics.ListAPIView):
         requests = FFRequest.objects.filter(
             status=self.kwargs["status"],
             receiver=self.request.user,
-        ) # .select_related("sender", "receiver")
+        )  # .select_related("sender", "receiver")
 
         # filter for non-expired requests
         # FF requests are cancelled lazily - they are not cancelled when an
@@ -272,7 +273,7 @@ class OutgoingFFRequests(rest_framework.generics.ListAPIView):
         requests = FFRequest.objects.filter(
             status=self.kwargs["status"],
             sender=self.request.user,
-        ) # .select_related("sender", "receiver")
+        )  # .select_related("sender", "receiver")
 
         # filter for non-expired requests - see above comment
         filteredRequests = []
@@ -288,11 +289,11 @@ class OutgoingFFRequests(rest_framework.generics.ListAPIView):
 
         return filteredRequests
 
+
 class AcceptedFFRequests(rest_framework.generics.ListAPIView):
     serializer_class = FFRequestReadSerializer
 
     def get_queryset(self):
-
         # Selects all accepted FF Requests sent by this user but not yet seen by this user
         requests = FFRequest.objects.filter(
             status=FFRequestStatusEnum.ACCEPTED.value,
@@ -300,8 +301,12 @@ class AcceptedFFRequests(rest_framework.generics.ListAPIView):
             has_sender_seen_accepted_view=False,
         )
 
+        # update the field before we pass it back
+        requests.update(has_sender_seen_accepted_view=True)
+
         # just return all requests which match this; should probably be 0 or 1 but we don't check
         return requests
+
 
 class FriendList(rest_framework.generics.ListAPIView):
     serializer_class = UserPublicSerializer
