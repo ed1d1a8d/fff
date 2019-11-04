@@ -60,7 +60,10 @@ class AddFacebookFriends(rest_framework.generics.GenericAPIView):
             friendlist = fbresponse["friends"]["data"]
 
             for friend in friendlist:
-                u = User.objects.get(fb_id=friend["id"])
+                try:
+                    u = User.objects.get(fb_id=friend["id"])
+                except User.DoesNotExist:
+                    continue
                 if (u not in existing_fff_friends
                         and u.id not in requestedUsers):
                     serializer = UserPublicSerializer(u)
