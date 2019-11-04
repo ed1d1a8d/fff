@@ -39,6 +39,7 @@ class FFRequestReadSerializer(ModelSerializer):
             "message",
             "sender",
             "receiver",
+            "has_sender_seen_accepted_view",
         )
         read_only_fields = ("status", "sender")
 
@@ -53,6 +54,7 @@ class FFRequestWriteSerializer(ModelSerializer):
             "message",
             "sender",
             "receiver",
+            "has_sender_seen_accepted_view",
         )
         read_only_fields = ("status", "sender")
 

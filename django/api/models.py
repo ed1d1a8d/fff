@@ -63,6 +63,8 @@ class FFRequest(models.Model):
                                  related_name="request_receiver_set",
                                  on_delete=models.CASCADE)
 
+    has_sender_seen_accepted_view = models.BooleanField(default=True)
+
     def __str__(self):
         return f"{self.message} {self.sender} {self.receiver} {self.status}"
 

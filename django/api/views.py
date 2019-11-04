@@ -150,7 +150,7 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
                 request.user, User.objects.get(pk=receiver.id)) != True:
             return HttpResponse(f"Can't send request to non-friends",
                                 status=400)
-        
+
         # create the request
         super().create(request, *args, **kwargs)
 
@@ -281,9 +281,41 @@ class OutgoingFFRequests(rest_framework.generics.ListAPIView):
                     ffRequest.save()
                 continue
             filteredRequests.append(ffRequest)
-            
+
         return filteredRequests
 
+class AcceptedFFRequests(rest_framework.generics.ListAPIView):
+    serializer_class = FFRequestReadSerializer
+
+    def get_queryset(self):
+
+        # Selects all accepted FF Requests sent by this user but not yet seen by this user
+        requests = FFRequest.objects.filter(
+            status=FFRequestStatusEnum.accepted,
+            sender=self.request.user,
+            has_sender_seen_accepted_view=False,
+        )
+
+        # filter for non-expired requests - see above comment
+        filteredRequests = []
+        for ffRequest in requests:
+            if ffRequest.receiver.lobby_expiration < timezone.now():
+                print("FF Request lazily cancelled for receiver", ffRequest.receiver,
+                      "expired at", ffRequest.receiver.lobby_expiration)
+                with transaction.atomic():
+                    ffRequest.status = FFRequestStatusEnum.EXPIRED.value
+                    ffRequest.save()
+                continue
+            filteredRequests.append(ffRequest)
+
+
+        if len(filteredRequests) == 0: # currently no accepted requests
+            return filteredRequests
+        elif len(filteredRequests) == 1: # currently ONE (or more) accepted requests exist. But we only care about the first one
+            acceptedrequest = filteredRequests[0]
+            acceptedrequest.has_sender_seen_accepted_view = True
+            acceptedrequest.save()
+            return [acceptedrequest]
 
 class FriendList(rest_framework.generics.ListAPIView):
     serializer_class = UserPublicSerializer

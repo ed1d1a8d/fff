@@ -25,6 +25,7 @@ urlpatterns = [
     path("ffrequests/cancel/<int:pk>/", views.CancelFFRequest.as_view()),
     path("ffrequests/search_friend_request/<int:other_pk>",
          views.FetchFFSearchForFriend.as_view()),
+    path("ffrequests/accepted_and_unread/", views.AcceptedFFRequests.as_view()),
 
     # Friends
     path("friends/",
