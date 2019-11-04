@@ -60,6 +60,9 @@ class FFRequestWriteSerializer(ModelSerializer):
 
 
 class FriendshipRequestSerializer(ModelSerializer):
+    from_user = UserPublicSerializer()
+    to_user = UserPublicSerializer()
+
     class Meta:
         model = friendship.models.FriendshipRequest
-        fields = ("from_user", "to_user", "created")
+        fields = ("id", "from_user", "to_user")
