@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+import json
 
 from django.db import transaction
 from django.db.models import Q
@@ -9,7 +10,6 @@ import rest_framework.generics
 from rest_framework.response import Response
 import requests
 from rest_framework import parsers
-import json
 from django.db import models
 
 from friendship.models import Friend, FriendshipRequest
@@ -41,7 +41,7 @@ class SelfDetail(rest_framework.generics.RetrieveUpdateAPIView):
 
 
 class AddFacebookFriends(rest_framework.generics.GenericAPIView):
-    def post(self, request, format):
+    def post(self, request):
         url = "https://graph.facebook.com/v4.0/{0}/?fields=friends&access_token={1}".format(
             request.user.fb_id, request.data["access_token"])
 
@@ -50,19 +50,25 @@ class AddFacebookFriends(rest_framework.generics.GenericAPIView):
 
         if r.status_code == 200:
             existing_fff_friends = Friend.objects.friends(request.user)
+            # TODO: Fix jank requestedUsers
+            requestedUsers = FriendshipRequest.objects.select_related(
+                "to_user").filter(from_user=self.request.user,
+                                  rejected__isnull=True).values_list("to_user",
+                                                                     flat=True)
 
             fbresponse = r.json()
             friendlist = fbresponse["friends"]["data"]
 
             for friend in friendlist:
                 u = User.objects.get(fb_id=friend["id"])
-                if (u not in existing_fff_friends):
+                if (u not in existing_fff_friends
+                        and u.id not in requestedUsers):
                     serializer = UserPublicSerializer(u)
                     returnlist.append(serializer.data)
 
             return JsonResponse(returnlist, safe=False)
 
-        return ("Error")
+        return HttpResponse("Error in getting facebook friends.", status=400)
 
 
 class DeviceView(rest_framework.generics.GenericAPIView):
@@ -368,6 +374,24 @@ class FriendActions(rest_framework.generics.GenericAPIView):
                 return HttpResponse(str(exception), status=400)
 
         return HttpResponse("Invalid action.", status=400)
+
+
+class BulkAddFriends(rest_framework.generics.GenericAPIView):
+    def post(self, request):
+        try:
+            ids = [int(id) for id in json.loads(request.data["ids"])]
+        except:
+            return HttpResponse("Invalid json.", status=400)
+
+        try:
+            toUsers = [User.objects.get(pk=id) for id in ids]
+        except:
+            return HttpResponse("Invalid user ids.", status=400)
+
+        for toUser in toUsers:
+            Friend.objects.add_friend(request.user, toUser)
+
+        return HttpResponse("Invalid user ids.", status=200)
 
 
 class GenerateMockDataForUser(rest_framework.generics.GenericAPIView):

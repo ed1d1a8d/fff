@@ -1,3 +1,4 @@
+import "dart:convert";
 import "dart:developer";
 
 import "package:fff/backend/auth.dart" as fff_auth;
@@ -36,6 +37,19 @@ Future<bool> createRequest(UserData toUser) async {
       headers: fff_auth.getAuthHeaders());
 
   if (response.statusCode != 200) log("Failed to send friend request.");
+
+  return response.statusCode == 200;
+}
+
+Future<bool> bulkCreateRequest(List<UserData> toUsers) async {
+  final response = await http.post(
+    "$_friendsEndpoint/bulkadd/",
+    body: {"ids": json.encode(toUsers.map((u) => u.id).toList())},
+    headers: fff_auth.getAuthHeaders(),
+  );
+
+  if (response.statusCode != 200)
+    throw new Exception("Could not bulk send friend requests.");
 
   return response.statusCode == 200;
 }
@@ -85,8 +99,11 @@ Future<List<UserData>> fetchFBFriends() async {
     return MockData.onlineFriends;
   }
 
-  final response = await http.get("$_friendsEndpoint/fbfriends.json",
-      headers: fff_auth.getAuthHeaders());
+  final response = await http.post(
+    "$_friendsEndpoint/fbfriends/",
+    body: {"access_token": fff_auth.accessToken},
+    headers: fff_auth.getAuthHeaders(),
+  );
 
   if (response.statusCode != 200)
     throw new Exception("Failed to get FB Friends friends...");

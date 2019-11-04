@@ -37,6 +37,7 @@ urlpatterns = [
     path("friends/requests/<str:action>/", views.FriendRequests.as_view()),
     path("friends/actions/<str:action>/<int:pk>/",
          views.FriendActions.as_view()),
+    path("friends/bulkadd/", views.BulkAddFriends.as_view())
 ]
 
 if settings.DEBUG:
