@@ -275,7 +275,9 @@ class _FriendDetailState extends State<FriendDetail> {
       innerWidget = Material(
           child: Container(
         child: TextFormField(
-          onChanged: (text) => this.newRequestMessage = text,
+          onChanged: (text) => setState(() {
+            this.newRequestMessage = text;
+          }),
           keyboardType: TextInputType.multiline,
           maxLines: null,
           textInputAction: TextInputAction.done,
