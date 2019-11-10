@@ -2,13 +2,12 @@ import "dart:convert";
 import "dart:developer";
 
 import "package:fff/backend/auth.dart" as fff_auth;
-import "package:fff/backend/fff_timer.dart" as fff_timer_backend;
 import "package:fff/backend/constants.dart" as fff_constants_backend;
+import "package:fff/backend/fff_timer.dart" as fff_timer_backend;
 import "package:fff/models/user_data.dart";
 import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
-import "package:fff/components/timer_box.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 
@@ -29,25 +28,15 @@ class Login extends StatelessWidget {
     Map<String, dynamic> jsonResponseBody = jsonDecode(response.body);
     me = UserData.fromJson(json.decode(response.body));
 
-    // set the timer to the expiration that we have on the backend
-    // lobbyExpirationResponse is now a json like this { "lobby_expiration": "2050-01-01T00:00:00Z" }
-    DateTime expirationTime = await fff_timer_backend.getExpirationTime();
+    // get expiration from the backend
+    await fff_timer_backend.fetchExpirationTime();
 
     // if the expiration is past (it will always be on first login, and probably on most logins)
     // set it to 20 minutes in the future
-    final DateTime now = DateTime.now();
-    if (now.isAfter(expirationTime)) {
-      log("Previous expiration time " +
-          expirationTime.toLocal().toString() +
-          " is before current time " +
-          now.toString() +
-          ". Setting new time...");
-      expirationTime = now.add(new Duration(minutes: 20));
-
-      // TODO: error handling
-      await fff_timer_backend.setExpirationTime(expirationTime);
+    if (fff_timer_backend.hasExpired()) {
+      fff_timer_backend
+          .setExpirationTime(DateTime.now().add(Duration(minutes: 20)));
     }
-    TimerBox.setExpirationTime(expirationTime);
 
     return jsonResponseBody["first_sign_in"];
   }
