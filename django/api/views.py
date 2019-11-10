@@ -166,6 +166,14 @@ class CreateFFRequest(rest_framework.generics.CreateAPIView):
             receiver=receiver,
             status=FFRequestStatusEnum.PENDING.value)
         # print(newRequest, repr(newRequest))
+
+        # send a push notif to the receiver's device and prompt them to short circuit the timer
+        Device.objects.filter(user=receiver).all().send_message(
+            title="Let's FFF!",
+            body=request.user.name + " wants to eat with you!",
+            click_action="FLUTTER_NOTIFICATION_CLICK")
+
+        # return
         responseSerializer = FFRequestReadSerializer(newRequest)
         return JsonResponse(responseSerializer.data, safe=False, status=201)
 
@@ -182,11 +190,9 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
 
         if action == FFRequestStatusEnum.ACCEPTED.value:
             with transaction.atomic():
-                print("after atomic")
                 req.status = action
                 req.save()
-                
-                print("before filter")
+
                 FFRequest.objects.filter(
                     status=FFRequestStatusEnum.PENDING.value,
                     sender=request.user).update(
@@ -197,12 +203,10 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
                         status=FFRequestStatusEnum.REJECTED.value)
 
                 # expire the user's lobby timer
-                print("before expire")
                 request.user.lobby_expiration = timezone.now()
                 request.user.save()
 
                 # send push to sender's device
-                print("before push")
                 Device.objects.filter(user=req.sender).all().send_message(
                     title="Let's FFF!",
                     body=req.receiver.name + " has accepted your FFF request!",
@@ -307,7 +311,7 @@ class OutgoingFFRequests(rest_framework.generics.ListAPIView):
 
 class AcceptedFFRequests(rest_framework.generics.ListAPIView):
     serializer_class = FFRequestReadSerializer
-    
+
     def get_queryset(self):
         # Selects all accepted FF Requests sent by this user but not yet seen by this user
         requests = FFRequest.objects.filter(
