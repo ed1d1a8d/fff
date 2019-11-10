@@ -106,27 +106,19 @@ class _FriendDetailState extends State<FriendDetail> {
           ),
         ),
         Spacer(flex: 2),
-        MaterialButton(
-          child: Text(
-            "Message " + friendName,
-            style: Theme.of(context).textTheme.button,
-          ),
-          onPressed: () {
-            // transition to open the fb link
-            final String url = "https://m.me/" + widget.user.facebookId;
-            log("Opening " + url + " in browser.");
-
-            canLaunch(url).then((_) {
-              launch(url);
-            }).catchError((error) {
-              // TODO report user
-              log("Could not launch. $error");
-            });
-          },
-          color: fff_colors.strongBackground,
-          padding: const EdgeInsets.symmetric(
-            vertical: 15,
-            horizontal: 25,
+        Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          child: GradientContainer(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Container(
+                child: Text(
+                  widget.ffRequest.message,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.body2,
+                ),
+              ),
+            ),
           ),
         ),
         Spacer(flex: 2),
@@ -215,9 +207,9 @@ class _FriendDetailState extends State<FriendDetail> {
       body: Container(
         constraints: BoxConstraints.expand(),
         padding: const EdgeInsets.all(fff_spacing.viewEdgeInsets),
-          child: Column(
-            children: widgets,
-          ),
+        child: Column(
+          children: widgets,
+        ),
       ),
     );
   }
@@ -225,19 +217,20 @@ class _FriendDetailState extends State<FriendDetail> {
   Widget _mapWidget(BuildContext context, LatLng center) {
     if (center == null) {
       return Container(
-          height: MediaQuery.of(context).size.height * 0.3,
-          child: GradientContainer(
-            padding: const EdgeInsets.all(10),
-            child: Center(
-              child: Container(
-                child: Text(
-                  "We cannot show the location of your friend right now.",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.body2,
-                ),
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: GradientContainer(
+          padding: const EdgeInsets.all(10),
+          child: Center(
+            child: Container(
+              child: Text(
+                "We cannot show the location of your friend right now.",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.body2,
               ),
             ),
-          ));
+          ),
+        ),
+      );
     } else {
       Marker friendMarker = Marker(markerId: MarkerId("0"), position: center);
       Set<Marker> elements = [friendMarker].toSet();
@@ -263,24 +256,23 @@ class _FriendDetailState extends State<FriendDetail> {
     // case on FFRequest status
     if (widget.ffRequest == null) {
       innerWidget = Material(
-        child: Container(
-          child: TextFormField(
-            onChanged: (text) => this.newRequestMessage = text,
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            textInputAction: TextInputAction.done,
-            autocorrect: false,
-            style: Theme.of(context).textTheme.body1,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.only(left: 5),
-              fillColor: fff_colors.white,
-              filled: true,
-              hintText: "Write a short message to your friend!",
-            ),
+          child: Container(
+        child: TextFormField(
+          onChanged: (text) => this.newRequestMessage = text,
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          textInputAction: TextInputAction.done,
+          autocorrect: false,
+          style: Theme.of(context).textTheme.body1,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.only(left: 5),
+            fillColor: fff_colors.white,
+            filled: true,
+            hintText: "Write a short message to your friend!",
           ),
-        )
-      );
+        ),
+      ));
     } else if (widget.ffRequest.isIncoming) {
       innerWidget = Text(widget.ffRequest.message,
           style: Theme.of(context).textTheme.body1);
