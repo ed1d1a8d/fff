@@ -1,6 +1,4 @@
 import "dart:developer";
-import "package:firebase_messaging/firebase_messaging.dart";
-import "package:flutter/material.dart";
 
 import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/theme.dart";
@@ -12,7 +10,8 @@ import "package:fff/views/home.dart";
 import "package:fff/views/loading.dart";
 import "package:fff/views/login.dart";
 import "package:fff/views/search_people.dart";
-import "package:fff/components/timer_box.dart";
+import "package:firebase_messaging/firebase_messaging.dart";
+import "package:flutter/material.dart";
 
 void main() => runApp(FFFApp());
 
@@ -53,13 +52,6 @@ class _FFFAppState extends State<FFFApp> {
     );
   }
 
-  Function _buildRoute(Widget route) {
-    return (BuildContext context) {
-      TimerBox.setGlobalContextFromMain(context);
-      return route;
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -74,14 +66,14 @@ class _FFFAppState extends State<FFFApp> {
 
       // Used by the navigator.
       routes: <String, WidgetBuilder>{
-        fff_routes.loading: this._buildRoute(Loading()),
-        fff_routes.login: this._buildRoute(Login()),
-        fff_routes.home: this._buildRoute(Home()),
-        fff_routes.friendRequest: this._buildRoute(FriendRequests()),
-        fff_routes.addFriendsSignup: this._buildRoute(AddFriendsSignup()),
-        fff_routes.searchPeople: this._buildRoute(SearchPeople()),
-        fff_routes.addFBFriends: this._buildRoute(AddFBFriends()),
-        fff_routes.fffTimerExpired: this._buildRoute(FFFTimerExpired()),
+        fff_routes.loading: (_) => Loading(),
+        fff_routes.login: (_) => Login(),
+        fff_routes.home: (_) => Home(),
+        fff_routes.friendRequest: (_) => FriendRequests(),
+        fff_routes.addFriendsSignup: (_) => AddFriendsSignup(),
+        fff_routes.searchPeople: (_) => SearchPeople(),
+        fff_routes.addFBFriends: (_) => AddFBFriends(),
+        fff_routes.fffTimerExpired: (_) => FFFTimerExpired(),
       },
     );
   }

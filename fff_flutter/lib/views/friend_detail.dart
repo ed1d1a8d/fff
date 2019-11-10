@@ -1,22 +1,19 @@
 import "dart:developer";
-import "package:flutter/cupertino.dart";
-import "package:flutter/material.dart";
-
-import "package:google_maps_flutter/google_maps_flutter.dart";
-import "package:url_launcher/url_launcher.dart";
 
 import "package:fff/backend/fff_timer.dart" as fff_timer_backend;
 import "package:fff/backend/ffrequests.dart" as fff_request_backend;
+import "package:fff/components/Dialog.dart";
+import "package:fff/components/gradient_container.dart";
+import "package:fff/components/url_avatar.dart";
+import "package:fff/models/ffrequest.dart";
+import "package:fff/models/user_data.dart";
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/views/home.dart";
-import "package:fff/components/Dialog.dart";
-import "package:fff/components/timer_box.dart";
-import "package:fff/models/ffrequest.dart";
-import "package:fff/models/user_data.dart";
-import "package:fff/components/url_avatar.dart";
-import "package:fff/components/gradient_container.dart";
-import 'package:keyboard_avoider/keyboard_avoider.dart';
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:google_maps_flutter/google_maps_flutter.dart";
+import "package:url_launcher/url_launcher.dart";
 
 class FriendDetail extends StatefulWidget {
   static const String routeName = "friend-detail";
@@ -59,11 +56,11 @@ class _FriendDetailState extends State<FriendDetail> {
     log("Initialized _FriendDetailState; showingAcceptedView = " +
         _FriendDetailState.showingAcceptedView.toString());
 
-    // if we are showing an accepted friend detail page, then update the timer as well so that it is synced up with backend, because the backend probably changed the timer
+    // if we are showing an accepted friend detail page, then update the timer
+    // as well so that it is synced up with backend, because the backend
+    // probably changed the timer
     if (widget.showingAcceptedView) {
-      fff_timer_backend.getExpirationTime().then((newExpirationTime) {
-        TimerBox.setExpirationTime(newExpirationTime);
-      });
+      fff_timer_backend.fetchExpirationTime();
     }
   }
 
