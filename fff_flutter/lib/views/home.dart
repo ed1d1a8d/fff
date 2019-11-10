@@ -21,6 +21,7 @@ import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:geolocator/geolocator.dart";
 import "dart:developer";
 import "package:http/http.dart" as http;
+import "package:badges/badges.dart";
 
 enum _HomeTab { incomingRequests, onlineFriends, outgoingRequests }
 
@@ -95,12 +96,12 @@ class _HomeState extends State<Home> {
           Text("Your timer has expired.",
               style: Theme.of(context).textTheme.display2),
           SizedBox(height: 12),
-          Text("To go back online and see friends and requests, please update your timer.",
+          Text(
+              "To go back online and see friends and requests, please update your timer.",
               style: Theme.of(context).textTheme.display2),
         ],
       );
-    }
-    else if (data.length == 0) {
+    } else if (data.length == 0) {
       // If their list is empty, show special text by tab
       return _getNoneText(tab);
     } else {
@@ -110,8 +111,7 @@ class _HomeState extends State<Home> {
         itemBuilder: (BuildContext context, int index) {
           if (data[index] is UserData) {
             return GestureDetector(
-              onTap: () => this
-                  ._pushFriendDetail(context, data[index], null),
+              onTap: () => this._pushFriendDetail(context, data[index], null),
               behavior: HitTestBehavior.translucent,
               child: buildProfilePane(
                 data[index].imageUrl,
@@ -124,8 +124,8 @@ class _HomeState extends State<Home> {
 
           // if data[index] is FFRequest
           return GestureDetector(
-            onTap: () => this._pushFriendDetail(
-                context, data[index].user, data[index]),
+            onTap: () =>
+                this._pushFriendDetail(context, data[index].user, data[index]),
             behavior: HitTestBehavior.translucent,
             child: buildProfilePane(
               data[index].user.imageUrl,
@@ -135,15 +135,14 @@ class _HomeState extends State<Home> {
             ),
           );
         },
-        separatorBuilder: (BuildContext context, int index) =>
-        const Divider(
+        separatorBuilder: (BuildContext context, int index) => const Divider(
           height: 20,
           color: fff_colors.black,
         ),
       );
     }
   }
-  
+
   Column _getNoneText(_HomeTab tab) {
     switch (tab) {
       case _HomeTab.incomingRequests:
@@ -350,7 +349,7 @@ class _HomeState extends State<Home> {
           request.user.longitude == null ||
           position.latitude == null ||
           position.longitude == null) {
-        request.user.distance = null;
+        request.user.distance = double.infinity;
       } else {
         request.user.distance = await Geolocator().distanceBetween(
             position.latitude,
@@ -379,6 +378,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    int incomingLength = _HomeState._incomingRequests == null ? 0 : _HomeState._incomingRequests.length;
     return Scaffold(
       backgroundColor: fff_colors.background,
       appBar: AppBar(
@@ -442,7 +442,13 @@ class _HomeState extends State<Home> {
             currentIndex: _curTab.index,
             items: [
               BottomNavigationBarItem(
-                icon: new Icon(Icons.mail),
+                icon: incomingLength == 0
+                    ? new Icon(Icons.mail)
+                    : Badge(
+                        badgeColor: fff_colors.badgeColor,
+                        badgeContent: Text(incomingLength.toString()),
+                        child: new Icon(Icons.mail),
+                      ),
                 title: Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
                   child: Text(
@@ -495,9 +501,8 @@ class _HomeState extends State<Home> {
       child: Container(
         color: fff_colors.background,
         child: GradientContainer(
-          padding: const EdgeInsets.all(fff_spacing.profileListInsets),
-          child: _getBody(_curTab, data)
-        ),
+            padding: const EdgeInsets.all(fff_spacing.profileListInsets),
+            child: _getBody(_curTab, data)),
       ),
     );
   }
