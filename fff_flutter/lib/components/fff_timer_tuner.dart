@@ -1,6 +1,6 @@
-import "package:flutter/material.dart";
+import "package:fff/backend/fff_timer.dart" as fff_backend_timer;
 import "package:flutter/cupertino.dart";
-import "package:fff/components/timer_box.dart";
+import "package:flutter/material.dart";
 
 class FFFTimerTuner extends StatelessWidget {
   final bool showText;
@@ -17,10 +17,11 @@ class FFFTimerTuner extends StatelessWidget {
         child: CupertinoTimerPicker(
           mode: CupertinoTimerPickerMode.hms,
           minuteInterval: 1,
-          initialTimerDuration: TimerBox.durationToExpiration(),
+          initialTimerDuration: fff_backend_timer.getRemainingDuration(),
           onTimerDurationChanged: (Duration newDuration) {
-            TimerBox.queueSimulataneousExpirationUpdate(
-                DateTime.now().add(newDuration));
+            // TODO: Make a button to update time.
+            fff_backend_timer
+                .setExpirationTime(DateTime.now().add(newDuration));
           },
         ),
       ),

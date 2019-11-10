@@ -5,29 +5,44 @@ Procedures related to the FFF timer backend.
 import "dart:convert";
 import "dart:developer";
 
-import "package:fff/backend/constants.dart" as fff_backend_constants;
 import "package:fff/backend/auth.dart" as fff_auth;
+import "package:fff/backend/constants.dart" as fff_backend_constants;
 import "package:http/http.dart" as http;
 
 const String endpoint =
     fff_backend_constants.server_location + "/api/lobby/expiration/";
 const String expirationTimeField = "lobby_expiration";
 
-Future<DateTime> getExpirationTime() async {
-  final http.Response response =
-      await http.get(endpoint, headers: fff_auth.getAuthHeaders());
-  final Map<String, dynamic> lobbyExpirationMap =
-      json.decode(response.body);
+DateTime _expirationTime;
+
+Future<void> fetchExpirationTime() async {
+  final response = await http.get(endpoint, headers: fff_auth.getAuthHeaders());
+  final Map<String, dynamic> lobbyExpirationMap = json.decode(response.body);
   final String expirationString = lobbyExpirationMap[expirationTimeField];
-  log("Lobby expiration retrieved from backend: " + expirationString);
-  return DateTime.parse(expirationString);
+  _expirationTime = DateTime.parse(expirationString);
+  log("Fetched expiration time of $_expirationTime");
 }
 
-Future<http.Response> setExpirationTime(DateTime newExpirationTime) async {
-  log("Set new lobby expiration time on backend: " + newExpirationTime.toUtc().toString() + ".");
-  return await http.post(
+Future<bool> setExpirationTime(DateTime newExpirationTime) async {
+  log("Setting new lobby expiration time on backend: ${newExpirationTime.toUtc()}.");
+  final response = await http.post(
     endpoint,
     headers: fff_auth.getAuthHeaders(),
-    body: { expirationTimeField: newExpirationTime.toUtc().toString() },
+    body: {expirationTimeField: newExpirationTime.toUtc().toString()},
   );
+
+  if (response.statusCode == 200) {
+    _expirationTime = newExpirationTime;
+    return true;
+  }
+  return false;
+}
+
+/// needs to be called after fetchExpirationTime
+bool hasExpired() => _expirationTime.isBefore(DateTime.now());
+
+/// needs to be called after fetchExpirationTime
+Duration getRemainingDuration() {
+  final Duration diff = _expirationTime.difference(DateTime.now());
+  return diff > Duration.zero ? diff : Duration.zero;
 }
