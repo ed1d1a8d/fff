@@ -53,8 +53,10 @@ class _FriendDetailState extends State<FriendDetail> {
 
   @override
   initState() {
-    _FriendDetailState.showingAcceptedView += widget.showingAcceptedView ? 1 : 0;
-    log("Initialized _FriendDetailState; showingAcceptedView = " + _FriendDetailState.showingAcceptedView.toString());
+    _FriendDetailState.showingAcceptedView +=
+        widget.showingAcceptedView ? 1 : 0;
+    log("Initialized _FriendDetailState; showingAcceptedView = " +
+        _FriendDetailState.showingAcceptedView.toString());
 
     // if we are showing an accepted friend detail page, then update the timer as well so that it is synced up with backend, because the backend probably changed the timer
     if (widget.showingAcceptedView) {
@@ -66,8 +68,10 @@ class _FriendDetailState extends State<FriendDetail> {
 
   @override
   dispose() {
-    _FriendDetailState.showingAcceptedView -= widget.showingAcceptedView ? 1 : 0;
-    log("Disposed _FriendDetailState; showingAcceptedView = " + _FriendDetailState.showingAcceptedView.toString());
+    _FriendDetailState.showingAcceptedView -=
+        widget.showingAcceptedView ? 1 : 0;
+    log("Disposed _FriendDetailState; showingAcceptedView = " +
+        _FriendDetailState.showingAcceptedView.toString());
     super.dispose();
   }
 
@@ -78,7 +82,10 @@ class _FriendDetailState extends State<FriendDetail> {
   @override
   Widget build(BuildContext context) {
     String friendName = widget.user.name;
-    LatLng friendCenter = LatLng(widget.user.latitude, widget.user.longitude);
+    LatLng friendCenter =
+        (widget.user.latitude == null || widget.user.longitude == null)
+            ? null
+            : LatLng(widget.user.latitude, widget.user.longitude);
     String date = widget.user.lastFoodDate;
     String lastFFF = date == null
         ? "You have never eaten with $friendName."
@@ -215,21 +222,38 @@ class _FriendDetailState extends State<FriendDetail> {
   }
 
   Widget _mapWidget(BuildContext context, LatLng center) {
-    Marker friendMarker = Marker(markerId: MarkerId("0"), position: center);
-    Set<Marker> elements = [friendMarker].toSet();
+    if (center == null) {
+      return Container(
+          height: MediaQuery.of(context).size.height * 0.3,
+          child: GradientContainer(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Container(
+                child: Text(
+                  "We cannot show the location of your friend right now.",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.body2,
+                ),
+              ),
+            ),
+          ));
+    } else {
+      Marker friendMarker = Marker(markerId: MarkerId("0"), position: center);
+      Set<Marker> elements = [friendMarker].toSet();
 
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.3,
-      // rounded corners may be impossible or difficult
-      child: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: center,
-          zoom: 11.0,
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.3,
+        // rounded corners may be impossible or difficult
+        child: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: center,
+            zoom: 11.0,
+          ),
+          markers: elements,
         ),
-        markers: elements,
-      ),
-    );
+      );
+    }
   }
 
   Widget _buildTextField() {

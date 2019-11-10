@@ -100,7 +100,7 @@ class Login extends StatelessWidget {
                     if (isFirstLogin) {
                       // change first sign in to false on backend
 
-                      final updateSignin = await http.put(
+                      await http.put(
                         fff_constants_backend.server_location +
                             "/api/self/detail.json/",
                         body: {"first_sign_in": "False"},

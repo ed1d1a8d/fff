@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter/cupertino.dart";
 import "package:fff/components/timer_box.dart";
-import "package:fff/utils/colors.dart" as fff_colors;
 
 class FFFTimerTuner extends StatelessWidget {
   final bool showText;
