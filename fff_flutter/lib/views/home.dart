@@ -119,8 +119,8 @@ class _HomeState extends State<Home> {
     _HomeState._mountedInstances.add(this);
 
     if (_HomeState._fetchBackendTimer == null) {
-      _HomeState._fetchBackendTimer =
-          noDelayPeriodicTimer(_fetchPeriod, _HomeState._handleFetchTimerCalled);
+      _HomeState._fetchBackendTimer = noDelayPeriodicTimer(
+          _fetchPeriod, _HomeState._handleFetchTimerCalled);
     }
   }
 
@@ -236,25 +236,35 @@ class _HomeState extends State<Home> {
       Position position, List<UserData> users) async {
     if (users == null) return;
     for (final user in users) {
-      // TODO: Handle null positions for other users
-
-      user.distance = await Geolocator().distanceBetween(
-          position.latitude, position.longitude, user.latitude, user.longitude);
+      if (user.latitude == null ||
+          user.longitude == null ||
+          position.latitude == null ||
+          position.longitude == null) {
+        user.distance = null;
+      } else {
+        user.distance = await Geolocator().distanceBetween(position.latitude,
+            position.longitude, user.latitude, user.longitude);
+      }
     }
     users.sort((u1, u2) => u1.distance.compareTo(u2.distance));
   }
 
   static Future _updateFFRequestDistances(
       Position position, List<FFRequest> requests) async {
-    // TODO: Handle null positions
     if (requests == null) return;
     for (final request in requests) {
-      // TODO: Handle null positions for other users
-      request.user.distance = await Geolocator().distanceBetween(
-          position.latitude,
-          position.longitude,
-          request.user.latitude,
-          request.user.longitude);
+      if (request.user.latitude == null ||
+          request.user.longitude == null ||
+          position.latitude == null ||
+          position.longitude == null) {
+        request.user.distance = null;
+      } else {
+        request.user.distance = await Geolocator().distanceBetween(
+            position.latitude,
+            position.longitude,
+            request.user.latitude,
+            request.user.longitude);
+      }
     }
 
     requests.sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
