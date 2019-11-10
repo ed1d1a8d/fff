@@ -1,11 +1,34 @@
+import "dart:developer";
+
 import "package:fff/backend/fff_timer.dart" as fff_backend_timer;
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
-class FFFTimerTuner extends StatelessWidget {
+class FFFTimerTuner extends StatefulWidget {
   final bool showText;
 
   FFFTimerTuner(this.showText);
+
+  @override
+  State<StatefulWidget> createState() => _FFFTimerTunerState();
+}
+
+class _FFFTimerTunerState extends State<FFFTimerTuner> {
+  Duration _duration;
+
+  @override
+  void initState() {
+    super.initState();
+    _duration = fff_backend_timer.getRemainingDuration();
+    log("Initialized _FFFTimerTunerState");
+  }
+
+  @override
+  void dispose() {
+    // TODO: Make an actual button to update duration, not just update on dispose
+    fff_backend_timer.setExpirationTime(DateTime.now().add(_duration));
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +40,15 @@ class FFFTimerTuner extends StatelessWidget {
         child: CupertinoTimerPicker(
           mode: CupertinoTimerPickerMode.hms,
           minuteInterval: 1,
-          initialTimerDuration: fff_backend_timer.getRemainingDuration(),
+          initialTimerDuration: _duration,
           onTimerDurationChanged: (Duration newDuration) {
-            // TODO: Make a button to update time.
-            fff_backend_timer
-                .setExpirationTime(DateTime.now().add(newDuration));
+            _duration = newDuration;
           },
         ),
       ),
     ];
 
-    if (this.showText) {
+    if (widget.showText) {
       widgets.addAll([
         SizedBox(height: 20),
         Text(
@@ -43,7 +64,7 @@ class FFFTimerTuner extends StatelessWidget {
     }
 
     return Container(
-      height: this.showText ? 330 : null,
+      height: widget.showText ? 330 : null,
       child: Column(
         children: widgets,
       ),
