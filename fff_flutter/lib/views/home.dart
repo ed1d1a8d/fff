@@ -378,7 +378,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    int incomingLength = _HomeState._incomingRequests == null ? 0 : _HomeState._incomingRequests.length;
+    int incomingLength = _HomeState._incomingRequests == null
+        ? 0
+        : _HomeState._incomingRequests.length;
     return Scaffold(
       backgroundColor: fff_colors.background,
       appBar: AppBar(
@@ -536,7 +538,9 @@ class _HomeState extends State<Home> {
                   Text(
                     distance == double.infinity
                         ? ""
-                        : "${(distance / 1609.34).toStringAsFixed(2)} miles",
+                        : (distance == null
+                            ? ""
+                            : "${(distance / 1609.34).toStringAsFixed(2)} miles"),
                     style: Theme.of(context).textTheme.display1,
                   ),
                 ],
