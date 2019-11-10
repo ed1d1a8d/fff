@@ -1,6 +1,8 @@
+import "dart:async";
 import "dart:developer";
 
-import "package:fff/backend/fff_timer.dart" as fff_timer_backend;
+import "package:fff/routes.dart" as fff_routes;
+import "package:fff/backend/fff_timer.dart" as fff_backend_timer;
 import "package:fff/backend/ffrequests.dart" as fff_request_backend;
 import "package:fff/components/Dialog.dart";
 import "package:fff/components/gradient_container.dart";
@@ -13,7 +15,6 @@ import "package:fff/views/home.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
-import "package:url_launcher/url_launcher.dart";
 
 class FriendDetail extends StatefulWidget {
   static const String routeName = "friend-detail";
@@ -49,8 +50,14 @@ class _FriendDetailState extends State<FriendDetail> {
   // what the user might type as a request to send to the other user
   String newRequestMessage = "";
 
+  Timer _kickoutTimer;
+  bool needsKickingOut = false;
+  static const Duration _kickoutPeriod = Duration(milliseconds: 100);
+
   @override
   initState() {
+    super.initState();
+
     _FriendDetailState.showingAcceptedView +=
         widget.showingAcceptedView ? 1 : 0;
     log("Initialized _FriendDetailState; showingAcceptedView = " +
@@ -60,12 +67,25 @@ class _FriendDetailState extends State<FriendDetail> {
     // as well so that it is synced up with backend, because the backend
     // probably changed the timer
     if (widget.showingAcceptedView) {
-      fff_timer_backend.fetchExpirationTime();
+      fff_backend_timer.fetchExpirationTime();
+    } else {
+      // TODO: Rewrite this hack.
+      _kickoutTimer = Timer.periodic(_kickoutPeriod, (_) {
+        if (fff_backend_timer.hasExpired() ?? false) {
+          if (needsKickingOut) {
+            needsKickingOut = false;
+            Navigator.pushReplacementNamed(context, fff_routes.home);
+          }
+        } else {
+          needsKickingOut = true;
+        }
+      });
     }
   }
 
   @override
   dispose() {
+    _kickoutTimer.cancel();
     _FriendDetailState.showingAcceptedView -=
         widget.showingAcceptedView ? 1 : 0;
     log("Disposed _FriendDetailState; showingAcceptedView = " +

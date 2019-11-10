@@ -1,4 +1,5 @@
 import "dart:developer";
+import "dart:async";
 
 import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/theme.dart";
@@ -12,6 +13,7 @@ import "package:fff/views/login.dart";
 import "package:fff/views/search_people.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
+import "package:fff/backend/fff_timer.dart" as fff_backend_timer;
 
 void main() => runApp(FFFApp());
 

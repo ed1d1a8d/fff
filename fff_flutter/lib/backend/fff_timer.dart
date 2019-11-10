@@ -39,7 +39,7 @@ Future<bool> setExpirationTime(DateTime newExpirationTime) async {
 }
 
 /// needs to be called after fetchExpirationTime
-bool hasExpired() => _expirationTime.isBefore(DateTime.now());
+bool hasExpired() => _expirationTime?.isBefore(DateTime.now());
 
 /// needs to be called after fetchExpirationTime
 Duration getRemainingDuration() {

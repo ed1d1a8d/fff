@@ -37,7 +37,7 @@ class _TimerBoxState extends State<TimerBox> {
   }
 
   void _handleInternalTimerUpdate() async {
-    final newDuration = await fff_backend_timer.getRemainingDuration();
+    final newDuration = fff_backend_timer.getRemainingDuration();
     setState(() {
       _remainingDurationText = _durationToText(newDuration);
     });
