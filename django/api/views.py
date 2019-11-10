@@ -182,9 +182,11 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
 
         if action == FFRequestStatusEnum.ACCEPTED.value:
             with transaction.atomic():
+                print("after atomic")
                 req.status = action
                 req.save()
-
+                
+                print("before filter")
                 FFRequest.objects.filter(
                     status=FFRequestStatusEnum.PENDING.value,
                     sender=request.user).update(
@@ -195,13 +197,15 @@ class RespondToFFRequest(rest_framework.generics.GenericAPIView):
                         status=FFRequestStatusEnum.REJECTED.value)
 
                 # expire the user's lobby timer
+                print("before expire")
                 request.user.lobby_expiration = timezone.now()
                 request.user.save()
 
                 # send push to sender's device
+                print("before push")
                 Device.objects.filter(user=req.sender).all().send_message(
                     title="Let's FFF!",
-                    body=rec.receiver.name + " has accepted your FFF request!",
+                    body=req.receiver.name + " has accepted your FFF request!",
                     click_action="FLUTTER_NOTIFICATION_CLICK")
 
             return HttpResponse(status=200)
@@ -303,7 +307,7 @@ class OutgoingFFRequests(rest_framework.generics.ListAPIView):
 
 class AcceptedFFRequests(rest_framework.generics.ListAPIView):
     serializer_class = FFRequestReadSerializer
-
+    
     def get_queryset(self):
         # Selects all accepted FF Requests sent by this user but not yet seen by this user
         requests = FFRequest.objects.filter(
@@ -311,12 +315,15 @@ class AcceptedFFRequests(rest_framework.generics.ListAPIView):
             sender=self.request.user,
             has_sender_seen_accepted_view=False,
         )
+        list_of_requests = list(requests)
 
         # update the field before we pass it back
+        # this line will udpate the requests filter and make it empty
         requests.update(has_sender_seen_accepted_view=True)
 
         # just return all requests which match this; should probably be 0 or 1 but we don't check
-        return requests
+        # print(requests, list(requests), list_of_requests)
+        return list_of_requests
 
 
 class FriendList(rest_framework.generics.ListAPIView):
