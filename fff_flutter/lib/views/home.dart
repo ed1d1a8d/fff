@@ -4,6 +4,7 @@ import "package:fff/backend/lobby.dart" as fff_lobby_backend;
 import "package:fff/components/gradient_container.dart";
 import "package:fff/components/hamburger_drawer.dart";
 import "package:fff/components/timer_box.dart";
+import "package:fff/backend/fff_timer.dart" as backend_timer;
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/ffrequest.dart";
 import "package:fff/models/user_data.dart";
@@ -75,6 +76,70 @@ class _HomeState extends State<Home> {
     return null;
   }
 
+  Widget _getBody(_HomeTab tab, data) {
+    if (data == null) {
+      // If the data has not returned yet, show progress spinner
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    if (backend_timer.hasExpired()) {
+      // If timer has expired, show timer expiration info
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Your timer has expired.",
+              style: Theme.of(context).textTheme.display2),
+          SizedBox(height: 12),
+          Text("To go back online and see friends and requests, please update your timer.",
+              style: Theme.of(context).textTheme.display2),
+        ],
+      );
+    }
+    else if (data.length == 0) {
+      // If their list is empty, show special text by tab
+      return _getNoneText(tab);
+    } else {
+      // OTHERWISE Show friend list
+      return ListView.separated(
+        itemCount: data.length,
+        itemBuilder: (BuildContext context, int index) {
+          if (data[index] is UserData) {
+            return GestureDetector(
+              onTap: () => this
+                  ._pushFriendDetail(context, data[index], null),
+              behavior: HitTestBehavior.translucent,
+              child: buildProfilePane(
+                data[index].imageUrl,
+                data[index].name,
+                data[index].distance,
+                null,
+              ),
+            );
+          }
+
+          // if data[index] is FFRequest
+          return GestureDetector(
+            onTap: () => this._pushFriendDetail(
+                context, data[index].user, data[index]),
+            behavior: HitTestBehavior.translucent,
+            child: buildProfilePane(
+              data[index].user.imageUrl,
+              data[index].user.name,
+              data[index].user.distance,
+              data[index].message,
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) =>
+        const Divider(
+          height: 20,
+          color: fff_colors.black,
+        ),
+      );
+    }
+  }
+  
   Column _getNoneText(_HomeTab tab) {
     switch (tab) {
       case _HomeTab.incomingRequests:
@@ -403,48 +468,7 @@ class _HomeState extends State<Home> {
         color: fff_colors.background,
         child: GradientContainer(
           padding: const EdgeInsets.all(fff_spacing.profileListInsets),
-          child: data == null
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : (data.length == 0
-                  ? _getNoneText(_curTab)
-                  : ListView.separated(
-                      itemCount: data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (data[index] is UserData) {
-                          return GestureDetector(
-                            onTap: () => this
-                                ._pushFriendDetail(context, data[index], null),
-                            behavior: HitTestBehavior.translucent,
-                            child: buildProfilePane(
-                              data[index].imageUrl,
-                              data[index].name,
-                              data[index].distance,
-                              null,
-                            ),
-                          );
-                        }
-
-                        // if data[index] is FFRequest
-                        return GestureDetector(
-                          onTap: () => this._pushFriendDetail(
-                              context, data[index].user, data[index]),
-                          behavior: HitTestBehavior.translucent,
-                          child: buildProfilePane(
-                            data[index].user.imageUrl,
-                            data[index].user.name,
-                            data[index].user.distance,
-                            data[index].message,
-                          ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(
-                        height: 20,
-                        color: fff_colors.black,
-                      ),
-                    )),
+          child: _getBody(_curTab, data)
         ),
       ),
     );
