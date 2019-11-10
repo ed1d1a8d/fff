@@ -1,6 +1,8 @@
 import "dart:async";
 
 import "package:fff/backend/lobby.dart" as fff_lobby_backend;
+import "package:fff/backend/constants.dart" as fff_backend_constants;
+import "package:fff/backend/auth.dart" as fff_auth;
 import "package:fff/components/gradient_container.dart";
 import "package:fff/components/hamburger_drawer.dart";
 import "package:fff/components/timer_box.dart";
@@ -13,10 +15,12 @@ import "package:fff/utils/no_delay_periodic_timer.dart";
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/views/friend_detail.dart";
 import "package:fff/views/fff_timer_expired.dart";
+import "package:fff/views/login.dart";
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:geolocator/geolocator.dart";
 import "dart:developer";
+import "package:http/http.dart" as http;
 
 enum _HomeTab { incomingRequests, onlineFriends, outgoingRequests }
 
@@ -285,11 +289,35 @@ class _HomeState extends State<Home> {
     ]);
 
     if (position != null) {
-      // TODO: Fix location subscription
       await Future.wait([
         _updateFFRequestDistances(position, lobbyData[0]),
         _updateUserDataDistances(position, lobbyData[1]),
         _updateFFRequestDistances(position, lobbyData[2]),
+        () async {
+          UserData updatedMe = UserData(
+            latitude: position.latitude,
+            longitude: position.longitude,
+            id: me.id,
+            username: me.username,
+            name: me.name,
+            facebookId: me.facebookId,
+            imageUrl: me.imageUrl,
+            message: me.message,
+            lastFoodDate: me.lastFoodDate,
+          );
+          me = updatedMe;
+          // log("lat " + me.latitude.toString() + " lng " + me.longitude.toString());
+
+          // send the position to the backend
+          await http.put(
+            fff_backend_constants.server_location + "/api/self/detail.json/",
+            body: {
+              "latitude": position.latitude.toString(),
+              "longitude": position.longitude.toString(),
+            },
+            headers: fff_auth.getAuthHeaders(),
+          );
+        }(),
       ]);
       // log("Updated positions of lobby friends.");
     }
