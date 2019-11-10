@@ -10,13 +10,13 @@ import "package:shared_preferences/shared_preferences.dart";
 const String authEndpoint = fff_backend_constants.server_location + "/auth/";
 
 const String _savedAuthTokenKey = "fff_authToken";
-String _authToken;
+String _authToken; // fff
 
-final _facebookLogin = FacebookLogin();
+final facebookLogin = FacebookLogin();
 
 bool isAuthenticated() => _authToken != null;
 
-String accessToken;
+String accessToken; // facebook
 
 /// Tries to login with credentials from persistent storage
 /// Returns true if successful
@@ -47,7 +47,7 @@ Future<bool> loginWithSavedCredentials() async {
 
 /// Returns true if login succeeded.
 Future<bool> loginWithFacebook() async {
-  final fbLoginResult = await _facebookLogin.logIn(["user_friends"]);
+  final fbLoginResult = await facebookLogin.logIn(["user_friends"]);
   accessToken = fbLoginResult.accessToken.token;
 
   switch (fbLoginResult.status) {

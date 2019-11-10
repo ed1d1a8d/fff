@@ -7,6 +7,7 @@ import "package:fff/models/friend_request.dart";
 import 'package:fff/models/mock_data.dart';
 import "package:fff/models/user_data.dart";
 import "package:http/http.dart" as http;
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 final String _friendsEndpoint =
     fff_backend_constants.server_location + "/api/friends";
@@ -99,6 +100,22 @@ Future<List<UserData>> fetchFBFriends() async {
     return MockData.onlineFriends;
   }
 
+  // if accessToken null, prompt again
+  if (fff_auth.accessToken == null) {
+    final fbLoginResult = await fff_auth.facebookLogin.logIn(["user_friends"]);
+    fff_auth.accessToken = fbLoginResult.accessToken.token;
+
+    switch (fbLoginResult.status) {
+      case FacebookLoginStatus.cancelledByUser:
+      case FacebookLoginStatus.error:
+        // TODO: better here
+        return [];
+      case FacebookLoginStatus.loggedIn:
+        break;
+    }
+  }
+
+  log("token: " + fff_auth.accessToken.toString());
   final response = await http.post(
     "$_friendsEndpoint/fbfriends/",
     body: {"access_token": fff_auth.accessToken},

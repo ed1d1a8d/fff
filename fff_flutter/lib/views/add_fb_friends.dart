@@ -50,13 +50,13 @@ class _AddFBFriendsState extends State<AddFBFriends> {
       if (this.mounted) {
         setState(() {
           _fbFriends = fbFriends;
-          _numFriendsChecked = _fbFriends.length;
-          _numFriends = _fbFriends.length;
-          _isFriendChecked = new List.filled(_fbFriends.length, true);
+          _numFriendsChecked = fbFriends.length;
+          _numFriends = fbFriends.length;
+          _isFriendChecked = new List.filled(fbFriends.length, true);
         });
       }
     } catch (error) {
-      log("$error");
+      log("Error in Add FB Friends: $error");
     }
   }
 
