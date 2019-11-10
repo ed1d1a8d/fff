@@ -240,7 +240,7 @@ class _HomeState extends State<Home> {
           user.longitude == null ||
           position.latitude == null ||
           position.longitude == null) {
-        user.distance = null;
+        user.distance = double.infinity;
       } else {
         user.distance = await Geolocator().distanceBetween(position.latitude,
             position.longitude, user.latitude, user.longitude);
@@ -477,7 +477,7 @@ class _HomeState extends State<Home> {
                     height: 5,
                   ),
                   Text(
-                    distance == null
+                    distance == double.infinity
                         ? ""
                         : "${(distance / 1609.34).toStringAsFixed(2)} miles",
                     style: Theme.of(context).textTheme.display1,
