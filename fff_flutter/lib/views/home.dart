@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
       LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
 
   // the timerbox that we show here
-  final TimerBox _fffTimerBox = new TimerBox();
+  final TimerBox _fffTimerBox = new TimerBox(_HomeState.onTimerExpired);
 
   // request the backend every _fetchPeriod; timer runs even when page is not mounted
   static Timer _fetchBackendTimer;
@@ -67,6 +67,14 @@ class _HomeState extends State<Home> {
 
   _HomeTab _curTab = _HomeTab.incomingRequests;
   StreamSubscription<Position> _positionSubscription;
+
+  // callback to setstate
+  static void onTimerExpired() {
+    for (_HomeState instance in _HomeState._mountedInstances) {
+      // trivially update the frontend
+      instance.setState(() {});
+    }
+  }
 
   // helper function
   String _getHomeTabTitle(_HomeTab tab) {

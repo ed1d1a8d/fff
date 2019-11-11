@@ -8,6 +8,10 @@ import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
 class TimerBox extends StatefulWidget {
+  final Function expiredCallback;
+
+  TimerBox(Function this.expiredCallback);
+
   @override
   State<StatefulWidget> createState() => _TimerBoxState();
 }
@@ -37,6 +41,9 @@ class _TimerBoxState extends State<TimerBox> {
   }
 
   void _handleInternalTimerUpdate() async {
+    if (fff_backend_timer.hasExpired()) {
+      widget.expiredCallback();
+    }
     final newDuration = fff_backend_timer.getRemainingDuration();
     setState(() {
       _remainingDurationText = _durationToText(newDuration);
