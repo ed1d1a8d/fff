@@ -321,6 +321,11 @@ class AcceptedFFRequests(rest_framework.generics.ListAPIView):
         )
         list_of_requests = list(requests)
 
+        # remove from lobby
+        if len(list_of_requests) > 0:
+            self.request.user.lobby_expiration = timezone.now()
+            self.request.user.save()
+
         # update the field before we pass it back
         # this line will udpate the requests filter and make it empty
         requests.update(has_sender_seen_accepted_view=True)

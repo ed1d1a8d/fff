@@ -67,6 +67,7 @@ class _FriendDetailState extends State<FriendDetail> {
     // as well so that it is synced up with backend, because the backend
     // probably changed the timer
     if (widget.showingAcceptedView) {
+      log("before fetch expiration called");
       fff_backend_timer.fetchExpirationTime();
     } else {
       // TODO: Rewrite this hack.
@@ -85,7 +86,7 @@ class _FriendDetailState extends State<FriendDetail> {
 
   @override
   dispose() {
-    _kickoutTimer.cancel();
+    _kickoutTimer?.cancel();
     _FriendDetailState.showingAcceptedView -=
         widget.showingAcceptedView ? 1 : 0;
     log("Disposed _FriendDetailState; showingAcceptedView = " +
