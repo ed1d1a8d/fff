@@ -369,8 +369,8 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            DialogButton(context, "Accept", "accept this food request?", () {
-              fff_request_backend.actOnRequest(widget.ffRequest, "accepted");
+            DialogButton(context, "Accept", "accept this food request?", () async {
+              await fff_request_backend.actOnRequest(widget.ffRequest, "accepted");
               Navigator.pop(context);
               widget.callback(Detail.incoming, widget.ffRequest, true);
             });

@@ -40,7 +40,7 @@ Future<FFRequest> createRequest(UserData otherUser, String message) async {
   // return null;
 }
 
-void actOnRequest(FFRequest currRequest, String action) async {
+Future actOnRequest(FFRequest currRequest, String action) async {
   action = "/" + action + "/";
   final endpoint =
       ffrequestsEndpoint + "/respond/" + currRequest.id.toString() + action;
