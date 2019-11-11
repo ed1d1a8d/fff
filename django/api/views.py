@@ -410,7 +410,7 @@ class FriendActions(rest_framework.generics.GenericAPIView):
             try:
                 friend_request = FriendshipRequest.objects.get(
                     to_user=request.user.id, from_user=pk)
-                friend_request.decline()
+                friend_request.reject()
                 return HttpResponse(f"Declined friendship request from {pk}.")
             except Exception as exception:
                 return HttpResponse(str(exception), status=400)
