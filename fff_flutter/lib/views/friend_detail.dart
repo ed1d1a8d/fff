@@ -1,7 +1,6 @@
 import "dart:async";
 import "dart:developer";
 
-import "package:fff/routes.dart" as fff_routes;
 import "package:fff/backend/fff_timer.dart" as fff_backend_timer;
 import "package:fff/backend/ffrequests.dart" as fff_request_backend;
 import "package:fff/components/Dialog.dart";
@@ -9,6 +8,7 @@ import "package:fff/components/gradient_container.dart";
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/ffrequest.dart";
 import "package:fff/models/user_data.dart";
+import "package:fff/routes.dart" as fff_routes;
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/spacing.dart" as fff_spacing;
 import "package:fff/views/home.dart";
@@ -51,7 +51,6 @@ class _FriendDetailState extends State<FriendDetail> {
   String newRequestMessage = "";
 
   Timer _kickoutTimer;
-  bool needsKickingOut = false;
   static const Duration _kickoutPeriod = Duration(milliseconds: 100);
 
   @override
@@ -70,15 +69,10 @@ class _FriendDetailState extends State<FriendDetail> {
       log("before fetch expiration called");
       fff_backend_timer.fetchExpirationTime();
     } else {
-      // TODO: Rewrite this hack.
       _kickoutTimer = Timer.periodic(_kickoutPeriod, (_) {
-        if (fff_backend_timer.hasExpired() ?? false) {
-          if (needsKickingOut) {
-            needsKickingOut = false;
-            Navigator.pushReplacementNamed(context, fff_routes.home);
-          }
-        } else {
-          needsKickingOut = true;
+        if (fff_backend_timer.hasExpired()) {
+          log("Timer expired, kicking user from friend_detail to home.");
+          Navigator.pushReplacementNamed(context, fff_routes.home);
         }
       });
     }
@@ -369,8 +363,10 @@ class _FriendDetailState extends State<FriendDetail> {
             style: Theme.of(context).textTheme.body1,
           ),
           onPressed: () {
-            DialogButton(context, "Accept", "accept this food request?", () async {
-              await fff_request_backend.actOnRequest(widget.ffRequest, "accepted");
+            DialogButton(context, "Accept", "accept this food request?",
+                () async {
+              await fff_request_backend.actOnRequest(
+                  widget.ffRequest, "accepted");
               Navigator.pop(context);
               widget.callback(Detail.incoming, widget.ffRequest, true);
             });

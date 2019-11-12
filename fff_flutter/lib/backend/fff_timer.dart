@@ -40,10 +40,22 @@ Future<bool> setExpirationTime(DateTime newExpirationTime) async {
 }
 
 /// needs to be called after fetchExpirationTime
-bool hasExpired() => _expirationTime?.isBefore(DateTime.now());
+bool hasExpired() {
+  if (_expirationTime == null) {
+    throw new StateError(
+        "Should not call hasExpired before calling fetch or set.");
+  }
+
+  return _expirationTime.isBefore(DateTime.now());
+}
 
 /// needs to be called after fetchExpirationTime
 Duration getRemainingDuration() {
+  if (_expirationTime == null) {
+    throw new StateError(
+        "Should not call hasExpired before calling fetch or set.");
+  }
+
   final Duration diff = _expirationTime.difference(DateTime.now());
   return diff > Duration.zero ? diff : Duration.zero;
 }
