@@ -1,27 +1,27 @@
 import "dart:async";
+import "dart:developer";
 
-import "package:fff/backend/lobby.dart" as fff_lobby_backend;
-import "package:fff/backend/constants.dart" as fff_backend_constants;
+import "package:badges/badges.dart";
 import "package:fff/backend/auth.dart" as fff_auth;
+import "package:fff/backend/constants.dart" as fff_backend_constants;
+import "package:fff/backend/fff_timer.dart" as backend_timer;
+import "package:fff/backend/lobby.dart" as fff_lobby_backend;
 import "package:fff/components/gradient_container.dart";
 import "package:fff/components/hamburger_drawer.dart";
 import "package:fff/components/timer_box.dart";
-import "package:fff/backend/fff_timer.dart" as backend_timer;
 import "package:fff/components/url_avatar.dart";
 import "package:fff/models/ffrequest.dart";
 import "package:fff/models/user_data.dart";
 import "package:fff/utils/colors.dart" as fff_colors;
 import "package:fff/utils/no_delay_periodic_timer.dart";
 import "package:fff/utils/spacing.dart" as fff_spacing;
-import "package:fff/views/friend_detail.dart";
 import "package:fff/views/fff_timer_expired.dart";
+import "package:fff/views/friend_detail.dart";
 import "package:fff/views/login.dart";
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:geolocator/geolocator.dart";
-import "dart:developer";
 import "package:http/http.dart" as http;
-import "package:badges/badges.dart";
 
 enum _HomeTab { incomingRequests, onlineFriends, outgoingRequests }
 
@@ -52,13 +52,14 @@ class _HomeState extends State<Home> {
   static const _locationOptions =
       LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
 
-  // the timerbox that we show here
-  final TimerBox _fffTimerBox = new TimerBox(_HomeState.onTimerExpired);
+  static Set<_HomeState> _mountedInstances = Set();
+  static BuildContext _mountedContext;
 
   // request the backend every _fetchPeriod; timer runs even when page is not mounted
   static Timer _fetchBackendTimer;
-  static Set<_HomeState> _mountedInstances = Set();
-  static BuildContext _mountedContext;
+
+  //
+  static bool _backendRefreshNeeded = true;
 
   // lobby information - kept updated by _fetchBackendTimer;
   static List<FFRequest> _incomingRequests;
@@ -66,148 +67,46 @@ class _HomeState extends State<Home> {
   static List<FFRequest> _outgoingRequests;
 
   _HomeTab _curTab = _HomeTab.incomingRequests;
+  TimerBox _fffTimerBox;
   StreamSubscription<Position> _positionSubscription;
-
-  // callback to setstate
-  static void onTimerExpired() {
-    for (_HomeState instance in _HomeState._mountedInstances) {
-      // trivially update the frontend
-      instance.setState(() {});
-    }
-  }
-
-  // helper function
-  String _getHomeTabTitle(_HomeTab tab) {
-    switch (tab) {
-      case _HomeTab.incomingRequests:
-        return "Incoming Requests";
-      case _HomeTab.onlineFriends:
-        return "Online Friends";
-      case _HomeTab.outgoingRequests:
-        return "Outgoing Requests";
-    }
-    return null;
-  }
-
-  Widget _getBody(_HomeTab tab, data) {
-    if (data == null) {
-      // If the data has not returned yet, show progress spinner
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-    if (backend_timer.hasExpired()) {
-      // If timer has expired, show timer expiration info
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text("Your timer has expired.",
-              style: Theme.of(context).textTheme.display2),
-          SizedBox(height: 12),
-          Text(
-              "To go back online and see friends and requests, please update your timer.",
-              style: Theme.of(context).textTheme.display2),
-        ],
-      );
-    } else if (data.length == 0) {
-      // If their list is empty, show special text by tab
-      return _getNoneText(tab);
-    } else {
-      // OTHERWISE Show friend list
-      return ListView.separated(
-        itemCount: data.length,
-        itemBuilder: (BuildContext context, int index) {
-          if (data[index] is UserData) {
-            return GestureDetector(
-              onTap: () => this._pushFriendDetail(context, data[index], null),
-              behavior: HitTestBehavior.translucent,
-              child: buildProfilePane(
-                data[index].imageUrl,
-                data[index].name,
-                data[index].distance,
-                null,
-              ),
-            );
-          }
-
-          // if data[index] is FFRequest
-          return GestureDetector(
-            onTap: () =>
-                this._pushFriendDetail(context, data[index].user, data[index]),
-            behavior: HitTestBehavior.translucent,
-            child: buildProfilePane(
-              data[index].user.imageUrl,
-              data[index].user.name,
-              data[index].user.distance,
-              data[index].message,
-            ),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(
-          height: 20,
-          color: fff_colors.black,
-        ),
-      );
-    }
-  }
-
-  Column _getNoneText(_HomeTab tab) {
-    switch (tab) {
-      case _HomeTab.incomingRequests:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("You have no incoming requests.",
-                style: Theme.of(context).textTheme.display2),
-          ],
-        );
-      case _HomeTab.onlineFriends:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("None of your friends are currently online.",
-                style: Theme.of(context).textTheme.display2),
-            SizedBox(height: 12),
-            Text("Try adding more through the hamburger menu.",
-                style: Theme.of(context).textTheme.display2),
-          ],
-        );
-      case _HomeTab.outgoingRequests:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("You have no outgoing requests.",
-                style: Theme.of(context).textTheme.display2),
-            SizedBox(height: 12),
-            Text("Send some through the Online Friends tab.",
-                style: Theme.of(context).textTheme.display2),
-          ],
-        );
-    }
-    return null;
-  }
 
   @override
   initState() {
     super.initState();
-    log("Initialized _HomeState.");
     _HomeState._mountedContext = this.context;
     _HomeState._mountedInstances.add(this);
-
     if (_HomeState._fetchBackendTimer == null) {
       _HomeState._fetchBackendTimer = noDelayPeriodicTimer(
           _fetchPeriod, _HomeState._handleFetchTimerCalled);
     }
+
+    _fffTimerBox = TimerBox(() => setState(() {}));
+    log("Initialized _HomeState.");
+  }
+
+  @override
+  dispose() {
+    log("dispose() called on Home.");
+    _positionSubscription?.cancel();
+    _HomeState._mountedInstances.remove(this);
+    super.dispose();
   }
 
   static Future _handleFetchTimerCalled() async {
     try {
       // only fetch data if the timer has not expired yet and not showing accepted screen
       if (!FFFTimerExpired.mounted && !FriendDetail.isShowingAcceptedView()) {
+        _backendRefreshNeeded = false;
         final List<List> lobbyData = await _HomeState._fetchLobbyData();
 
         // make changes to the static data - and call setstate if we're mounted
         Function updateStaticData = () {
+          if (_backendRefreshNeeded) {
+            log("Backend fetch stale, redoing...");
+            _handleFetchTimerCalled();
+            return;
+          }
+
           _HomeState._incomingRequests = lobbyData[0];
           _HomeState._onlineFriends = lobbyData[1];
           _HomeState._outgoingRequests = lobbyData[2];
@@ -370,15 +269,118 @@ class _HomeState extends State<Home> {
     requests.sort((r1, r2) => r1.user.distance.compareTo(r2.user.distance));
   }
 
-  @override
-  dispose() {
-    log("dispose() called on Home.");
-    _positionSubscription?.cancel();
-    _HomeState._mountedInstances.remove(this);
-    super.dispose();
+  // helper function
+  String _getHomeTabTitle(_HomeTab tab) {
+    switch (tab) {
+      case _HomeTab.incomingRequests:
+        return "Incoming Requests";
+      case _HomeTab.onlineFriends:
+        return "Online Friends";
+      case _HomeTab.outgoingRequests:
+        return "Outgoing Requests";
+    }
+    return null;
   }
 
-  void onTabTapped(int index) {
+  Widget _getBody(_HomeTab tab, data) {
+    if (data == null) {
+      // If the data has not returned yet, show progress spinner
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    if (backend_timer.hasExpired()) {
+      // If timer has expired, show timer expiration info
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Your timer has expired.",
+              style: Theme.of(context).textTheme.display2),
+          SizedBox(height: 12),
+          Text(
+              "To go back online and see friends and requests, please update your timer.",
+              style: Theme.of(context).textTheme.display2),
+        ],
+      );
+    } else if (data.length == 0) {
+      // If their list is empty, show special text by tab
+      return _getNoneText(tab);
+    } else {
+      // OTHERWISE Show friend list
+      return ListView.separated(
+        itemCount: data.length,
+        itemBuilder: (BuildContext context, int index) {
+          if (data[index] is UserData) {
+            return GestureDetector(
+              onTap: () => this._pushFriendDetail(context, data[index], null),
+              behavior: HitTestBehavior.translucent,
+              child: buildProfilePane(
+                data[index].imageUrl,
+                data[index].name,
+                data[index].distance,
+                null,
+              ),
+            );
+          }
+
+          // if data[index] is FFRequest
+          return GestureDetector(
+            onTap: () =>
+                this._pushFriendDetail(context, data[index].user, data[index]),
+            behavior: HitTestBehavior.translucent,
+            child: buildProfilePane(
+              data[index].user.imageUrl,
+              data[index].user.name,
+              data[index].user.distance,
+              data[index].message,
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => const Divider(
+          height: 20,
+          color: fff_colors.black,
+        ),
+      );
+    }
+  }
+
+  Column _getNoneText(_HomeTab tab) {
+    switch (tab) {
+      case _HomeTab.incomingRequests:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("You have no incoming requests.",
+                style: Theme.of(context).textTheme.display2),
+          ],
+        );
+      case _HomeTab.onlineFriends:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("None of your friends are currently online.",
+                style: Theme.of(context).textTheme.display2),
+            SizedBox(height: 12),
+            Text("Try adding more through the hamburger menu.",
+                style: Theme.of(context).textTheme.display2),
+          ],
+        );
+      case _HomeTab.outgoingRequests:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("You have no outgoing requests.",
+                style: Theme.of(context).textTheme.display2),
+            SizedBox(height: 12),
+            Text("Send some through the Online Friends tab.",
+                style: Theme.of(context).textTheme.display2),
+          ],
+        );
+    }
+    return null;
+  }
+
+  void _onTabTapped(int index) {
     setState(() {
       _curTab = _HomeTab.values[index];
     });
@@ -448,7 +450,7 @@ class _HomeState extends State<Home> {
         // sets the inactive color of the `BottomNavigationBar`
         child: SizedBox(
           child: BottomNavigationBar(
-            onTap: onTabTapped,
+            onTap: _onTabTapped,
             currentIndex: _curTab.index,
             items: [
               BottomNavigationBarItem(
@@ -578,61 +580,56 @@ class _HomeState extends State<Home> {
           user,
           ffRequest,
           (Detail detail, FFRequest ffRequest, bool incomingRequestAccepted) {
-            if (detail == Detail.outgoing) {
-              // this callback means the outgoing request was withdrawn
-              // print("start");
-              // print(_HomeState._outgoingRequests.length);
-              this.setState(() {
-                _HomeState._outgoingRequests.removeWhere(
-                    (request) => request.user.id == ffRequest.user.id);
-
-                // add back to online friends
-                _HomeState._onlineFriends.add(ffRequest.user);
-              });
-              // print(_HomeState._outgoingRequests.length);
-              // print("end");
-            } else if (detail == Detail.online) {
-              // this means an outgoing request was sent
-              this.setState(() {
-                // TODO: this doesn't work too well
-                log(ffRequest.toString());
-                _HomeState._outgoingRequests.insert(0, ffRequest);
-                this._curTab = _HomeTab.outgoingRequests;
-
-                // filter out online friends for this requested friend
-                _HomeState._onlineFriends
-                    .removeWhere((user) => user.id == ffRequest.user.id);
-              });
-            } else {
-              // incoming request was either accepted or rejected
-              // use the incomingRequestAccepted flag to check this
-              this.setState(() {
-                _HomeState._incomingRequests.removeWhere(
-                    (request) => request.user.id == ffRequest.user.id);
-              });
-
-              // if accepted an incoming request
-              if (incomingRequestAccepted == true) {
-                log("Accepted an incoming request. Showing accepted view...");
-
-                // push onto the navigator
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FriendDetail(
-                      user,
-                      ffRequest,
-                      () {},
-                      showingAcceptedView: true,
-                    ),
-                  ),
-                );
-              } else {
-                // add back to online friends
-                this.setState(() {
-                  _HomeState._onlineFriends.add(ffRequest.user);
+            switch (detail) {
+              case Detail.outgoing:
+                log("User withdrew a FFRequest.");
+                setState(() {
+                  _outgoingRequests.removeWhere(
+                      (request) => request.user.id == ffRequest.user.id);
+                  _onlineFriends.add(ffRequest.user);
+                  _backendRefreshNeeded = true;
                 });
-              }
+                break;
+
+              case Detail.online:
+                log("User sent a FFRequest");
+                setState(() {
+                  // TODO: this doesn't work too well
+                  _onlineFriends
+                      .removeWhere((user) => user.id == ffRequest.user.id);
+                  _outgoingRequests.insert(0, ffRequest);
+                  _backendRefreshNeeded = true;
+
+                  _curTab = _HomeTab.outgoingRequests;
+                });
+                break;
+
+              case Detail.incoming:
+                if (incomingRequestAccepted) {
+                  log("User accepted incoming request. Showing accepted view...");
+                  _backendRefreshNeeded = true;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FriendDetail(
+                        user,
+                        ffRequest,
+                        () {},
+                        showingAcceptedView: true,
+                      ),
+                    ),
+                  );
+                  break;
+                }
+
+                log("User rejected incoming request");
+                setState(() {
+                  _incomingRequests.removeWhere(
+                      (request) => request.user.id == ffRequest.user.id);
+                  _onlineFriends.add(ffRequest.user);
+                  _backendRefreshNeeded = true;
+                });
+                break;
             }
           },
         ),

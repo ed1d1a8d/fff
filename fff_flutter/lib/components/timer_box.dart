@@ -10,7 +10,7 @@ import "package:flutter/material.dart";
 class TimerBox extends StatefulWidget {
   final Function expiredCallback;
 
-  TimerBox(Function this.expiredCallback);
+  TimerBox(this.expiredCallback);
 
   @override
   State<StatefulWidget> createState() => _TimerBoxState();

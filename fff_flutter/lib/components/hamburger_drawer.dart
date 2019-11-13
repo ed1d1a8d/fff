@@ -1,7 +1,6 @@
 import 'package:fff/backend/auth.dart' as fff_auth;
 import 'package:fff/routes.dart' as fff_routes;
 import 'package:fff/views/login.dart';
-import 'package:fff/views/home.dart';
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 
@@ -17,8 +16,11 @@ class HamburgerDrawer extends StatelessWidget {
           _createHeader(context),
           _createDrawerItem(context, FontAwesomeIcons.home, "Home",
               () => Navigator.pushReplacementNamed(context, fff_routes.home)),
-          _createDrawerItem(context, FontAwesomeIcons.facebook, "Add Facebook Friends",
-                  () => Navigator.pushReplacementNamed(
+          _createDrawerItem(
+              context,
+              FontAwesomeIcons.facebook,
+              "Add Facebook Friends",
+              () => Navigator.pushReplacementNamed(
                   context, fff_routes.addFBFriends)),
           _createDrawerItem(
               context,
@@ -37,9 +39,6 @@ class HamburgerDrawer extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: _createDrawerItem(
                   context, FontAwesomeIcons.powerOff, "Log Out", () async {
-                // reset the fetch timer to not run after logging out
-                Home.resetFetchBackendTimer();
-
                 await fff_auth.logout();
                 Navigator.pushReplacementNamed(context, fff_routes.login);
               }),
@@ -54,8 +53,7 @@ class HamburgerDrawer extends StatelessWidget {
     return BoxDecoration(
         shape: BoxShape.circle,
         image: DecorationImage(
-            fit: BoxFit.fill,
-            image: NetworkImage(me.imageUrl)));
+            fit: BoxFit.fill, image: NetworkImage(me.imageUrl)));
   }
 
   Widget _createHeader(context) {
