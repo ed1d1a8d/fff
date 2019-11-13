@@ -419,7 +419,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.50;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fff.fff;
 				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -559,7 +559,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.50;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fff.fff;
 				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -593,7 +593,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.50;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fff.fff;
 				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
