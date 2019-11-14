@@ -23,6 +23,7 @@ dependencies:
   # cached_network_image: ^1.1.1
   firebase_messaging: ^5.1.6
   flutter_facebook_login: ^3.0.0
+  flutter_launcher_icons: ^0.7.3
   font_awesome_flutter: ^8.2.0
   geolocator: ^5.1.4+1
   google_maps_flutter: ^0.5.21+7
@@ -40,6 +41,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  image_path_android: "assets/icons/android-icon.png"
+  adaptive_icon_background: "#fef5e3"
+  adaptive_icon_foreground: "assets/icons/android-icon.png"
+  ios: true
+  image_path_ios: "assets/icons/ios-icon.png"
 
 
 # For information on the generic Dart part of this file, see the
