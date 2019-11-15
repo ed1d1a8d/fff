@@ -2,6 +2,7 @@ import "dart:convert";
 import "dart:developer";
 
 import "package:fff/backend/constants.dart" as fff_backend_constants;
+import "package:fff/backend/fff_timer.dart" as fff_timer_backend;
 import "package:fff/backend/push_notifications.dart" as fff_push_notifications;
 import "package:flutter_facebook_login/flutter_facebook_login.dart";
 import "package:http/http.dart" as http;
@@ -85,6 +86,9 @@ Future<bool> loginWithFacebook() async {
 }
 
 Future<void> logout() async {
+  await fff_timer_backend
+      .setExpirationTime(DateTime.now().add(Duration(minutes: -1)));
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove(_savedAuthTokenKey);
 
