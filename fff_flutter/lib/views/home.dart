@@ -66,7 +66,9 @@ class _HomeState extends State<Home> {
   static List<UserData> _onlineFriends;
   static List<FFRequest> _outgoingRequests;
 
-  _HomeTab _curTab = _HomeTab.incomingRequests;
+  // default to online friends tab
+  _HomeTab _curTab = _HomeTab.onlineFriends;
+
   TimerBox _fffTimerBox;
   StreamSubscription<Position> _positionSubscription;
 
@@ -212,7 +214,6 @@ class _HomeState extends State<Home> {
             lastFoodDate: me.lastFoodDate,
           );
           me = updatedMe;
-          // log("lat " + me.latitude.toString() + " lng " + me.longitude.toString());
 
           // send the position to the backend
           await http.put(
