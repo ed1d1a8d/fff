@@ -104,28 +104,7 @@ class FriendRequestsState extends State<FriendRequests> {
                       left: fff_spacing.viewEdgeInsets,
                       right: fff_spacing.viewEdgeInsets,
                     ),
-                    child: _friendRequests == null
-                        ? Center(child: CircularProgressIndicator())
-                        : Column(
-                            children: <Widget>[
-                              Expanded(
-                                child: ListView.separated(
-                                  padding: const EdgeInsets.only(),
-                                  itemCount: _friendRequests.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) =>
-                                          buildFriendRequestRow(
-                                              _friendRequests[index]),
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return Divider(
-                                      color: fff_colors.black,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                    child: this._buildFriendRequestsList(),
                   ),
                 ),
               ],
@@ -134,6 +113,38 @@ class FriendRequestsState extends State<FriendRequests> {
         ),
       ),
     );
+  }
+
+  Widget _buildFriendRequestsList() {
+    if (this._friendRequests == null) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      if (this._friendRequests.length == 0) {
+        return Container(
+          padding: const EdgeInsets.all(10),
+          child: Text(
+            "You have no incoming friend requests.",
+            style: Theme.of(context).textTheme.display2,
+          ),
+        );
+      } else {
+        return Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.only(),
+                itemCount: _friendRequests.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    buildFriendRequestRow(_friendRequests[index]),
+                separatorBuilder: (BuildContext context, int index) {
+                  return Divider(color: fff_colors.black);
+                },
+              ),
+            ),
+          ],
+        );
+      }
+    }
   }
 
   Widget buildFriendRequestRow(FriendRequest fr) => Row(

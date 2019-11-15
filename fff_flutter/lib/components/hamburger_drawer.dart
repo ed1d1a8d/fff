@@ -19,10 +19,10 @@ class HamburgerDrawer extends StatelessWidget {
               () => Navigator.pushReplacementNamed(context, fff_routes.home)),
           _createDrawerItem(
               context,
-              FontAwesomeIcons.facebook,
-              "Add Facebook Friends",
+              FontAwesomeIcons.smile,
+              "Friend Requests",
               () => Navigator.pushReplacementNamed(
-                  context, fff_routes.addFBFriends)),
+                  context, fff_routes.friendRequest)),
           _createDrawerItem(
               context,
               FontAwesomeIcons.search,
@@ -31,10 +31,10 @@ class HamburgerDrawer extends StatelessWidget {
                   context, fff_routes.searchPeople)),
           _createDrawerItem(
               context,
-              FontAwesomeIcons.smile,
-              "Friend Requests",
+              FontAwesomeIcons.facebook,
+              "Add Facebook Friends",
               () => Navigator.pushReplacementNamed(
-                  context, fff_routes.friendRequest)),
+                  context, fff_routes.addFBFriends)),
           new Expanded(
             child: new Align(
               alignment: Alignment.bottomCenter,
