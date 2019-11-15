@@ -23,7 +23,7 @@ dependencies:
   # cached_network_image: ^1.1.1
   firebase_messaging: ^5.1.6
   flutter_facebook_login: ^3.0.0
-  flutter_launcher_icons: ^0.7.3
+  flutter_launcher_icons: ^0.7.4
   font_awesome_flutter: ^8.2.0
   geolocator: ^5.1.4+1
   google_maps_flutter: ^0.5.21+7
