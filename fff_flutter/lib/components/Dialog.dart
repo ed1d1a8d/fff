@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
 
 void DialogButton(BuildContext context, String title, String content, Function callback) {
   title = "Confirm " + title;

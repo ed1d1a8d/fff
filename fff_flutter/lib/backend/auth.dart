@@ -3,7 +3,7 @@ import "dart:developer";
 
 import "package:fff/backend/constants.dart" as fff_backend_constants;
 import "package:fff/backend/push_notifications.dart" as fff_push_notifications;
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import "package:flutter_facebook_login/flutter_facebook_login.dart";
 import "package:http/http.dart" as http;
 import "package:shared_preferences/shared_preferences.dart";
 

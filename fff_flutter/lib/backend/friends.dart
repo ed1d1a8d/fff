@@ -4,10 +4,10 @@ import "dart:developer";
 import "package:fff/backend/auth.dart" as fff_auth;
 import "package:fff/backend/constants.dart" as fff_backend_constants;
 import "package:fff/models/friend_request.dart";
-import 'package:fff/models/mock_data.dart';
+import "package:fff/models/mock_data.dart";
 import "package:fff/models/user_data.dart";
 import "package:http/http.dart" as http;
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import "package:flutter_facebook_login/flutter_facebook_login.dart";
 
 final String _friendsEndpoint =
     fff_backend_constants.server_location + "/api/friends";
