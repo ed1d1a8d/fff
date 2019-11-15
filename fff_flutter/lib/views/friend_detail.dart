@@ -254,7 +254,7 @@ class _FriendDetailState extends State<FriendDetail> {
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
             target: center,
-            zoom: 11.0,
+            zoom: 15.0,
           ),
           markers: elements,
         ),
