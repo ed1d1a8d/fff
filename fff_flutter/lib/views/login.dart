@@ -34,7 +34,7 @@ class Login extends StatelessWidget {
     // if the expiration is past (it will always be on first login, and probably on most logins)
     // set it to 20 minutes in the future
     if (fff_timer_backend.hasExpired()) {
-      fff_timer_backend
+      await fff_timer_backend
           .setExpirationTime(DateTime.now().add(Duration(minutes: 20)));
     }
 

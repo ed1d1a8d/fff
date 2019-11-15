@@ -48,7 +48,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static const _fetchPeriod = const Duration(seconds: 10);
+  static const _fetchPeriod = const Duration(seconds: 5);
   static const _locationOptions =
       LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
 

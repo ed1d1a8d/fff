@@ -22,7 +22,7 @@ class UserAdmin(auth.admin.UserAdmin):
     form = UserChangeForm
 
     fieldsets = auth.admin.UserAdmin.fieldsets + (("FFF Fields", {
-        "fields": ("longitude", "latitude", "name")
+        "fields": ("longitude", "latitude", "name", "lobby_expiration")
     }), )
 
     list_display = ("username", "name")
