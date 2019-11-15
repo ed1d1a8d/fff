@@ -75,7 +75,8 @@ class SearchPeopleState extends State<SearchPeople> {
 
   void _addUserToCombinedList(UserData toUser, List<Widget> combinedList,
       {bool addFriendButton = false}) {
-    combinedList.add(Row(
+    combinedList.addAll([
+      Row(
         children: <Widget>[
               URLAvatar(
                 imageURL: toUser.imageUrl,
@@ -103,13 +104,16 @@ class SearchPeopleState extends State<SearchPeople> {
                       ),
                     )
                   ]
-                : [])));
+                : []),
+      ),
+      SizedBox(height: 7),
+    ]);
   }
 
   Widget _buildListSectionLabel(String labelText) {
     return Container(
       margin: const EdgeInsets.only(
-        bottom: 10,
+        bottom: 15,
       ),
       child: Text(
         labelText,
@@ -130,7 +134,6 @@ class SearchPeopleState extends State<SearchPeople> {
     _friends
         .where(_userVisible)
         .forEach((user) => _addUserToCombinedList(user, combinedList));
-    combinedList.add(Divider(color: fff_colors.black));
 
     // small divide between sections
     combinedList.add(SizedBox(height: 20));
@@ -142,9 +145,6 @@ class SearchPeopleState extends State<SearchPeople> {
         .forEach((user) => _addUserToCombinedList(user, combinedList));
     _otherPeople.where(_userVisible).forEach((user) =>
         _addUserToCombinedList(user, combinedList, addFriendButton: true));
-    combinedList.add(Divider(color: fff_colors.black));
-
-    combinedList.add(SizedBox(height: 20));
 
     return combinedList;
   }

@@ -17,7 +17,7 @@ DateTime _expirationTime;
 
 Future<void> fetchExpirationTime() async {
   final response = await http.get(endpoint, headers: fff_auth.getAuthHeaders());
-  log("fetch response: " + response.body.toString());
+  // log("fetch response: " + response.body.toString());
   final Map<String, dynamic> lobbyExpirationMap = json.decode(response.body);
   final String expirationString = lobbyExpirationMap[expirationTimeField];
   _expirationTime = DateTime.parse(expirationString);
