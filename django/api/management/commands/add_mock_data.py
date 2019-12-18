@@ -155,7 +155,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.create_superuser()
-        self.create_mock_users()
-        self.create_friendships()
-        self.create_mock_requests()
+        # self.create_mock_users()
+        # self.create_friendships()
+        # self.create_mock_requests()
         self.create_social_app()

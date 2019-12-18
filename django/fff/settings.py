@@ -26,7 +26,7 @@ except:
     SECRET_KEY = "not_secret_key"
 
 # SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     # local dev
