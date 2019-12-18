@@ -1,43 +1,33 @@
-# FFF
+# Free for Food (FFF)
 
-Free for Food?\
-Yang Yan, Stella Yang, Jing Lin, Tony Wang
+Project by Yang Yan, Stella Yang, Jing Lin, and Tony Wang.
 
-An app to help connect friends or strangers looking to get food at the same time!
+An app that lets you find friends near you who are available right now to grab a meal with. Grabbing a meal is really just a proxy for hanging out.
 
-## Branches
+## Secrets
 
-`production` is deployed live with 30s CI-CD. It is one commit ahead.
+Secrets are available via the link <https://drive.google.com/drive/folders/1U_5gPiPYDzk3eNVXlqUZNAM9XGK7QQTM?usp=sharing>.
 
-## django
+## Front-end
 
-### Endpoints
+FFF builds for both iOS and Android using Flutter.
 
-Endpoint|Purpose
--|-
-`/auth/login`|Login and get a session token (which never expires).
-`/auth/registration`|Create a new user.
-`/auth/user`|Get information about currently logged in user.
-`/auth/facebook`|Login with a Facebook token. Pass the FB token in the header field `access_token`.
-`/api/friends`|List of friends of current user and all data in JSON format.
-`/api/friends/requests/unread`|JSON of unread friend requests or 400.
-`/api/friends/requests/unrejected`|JSON of unrejected friend requests or 400.
-`/api/friends/actions/info/x`|JSON information about friend with pk x, or 400 if not friends.
-`/api/friends/actions/request/x`|200 or 400 to request a friendship with user with pk x.
-`/api/friends/actions/accept/x`|200 or 400 to accept a friendship request from user with pk x.
-`/api/friends/actions/decline/x`|200 or 400 to decline a friendship request from user with pk x.
-`/api/friends/actions/remove/x`|200 or 400 to remove a friend with pk x.
+## Back-end
 
-Add `.json` suffix to an endpoint to get the JSON version instead of HTML version i.e. `/auth/user.json`.
+FFF runs a Django backend on an AWS EC2 instance managed by Yang. The Django server is tunneled via an HTTP multiplexer to the backend URL <https://mus.icu> with the command:
 
-This endpoints list may not always be up to date. Please refer to the *self-documenting* code for more info.
+```bash
+ssh -p 2222 -R mus.icu:80:127.0.0.1:8000 gilgamesh.cc
+```
 
-### Commands
+Both the tunnel and the Django server run on the same instance, accessible via the command:
 
-* `pg_ctl -D /usr/local/var/postgres start`
-* `pg_ctl -D /usr/local/var/postgres stop`
-* `brew services restart postgresql`
+```bash
+ssh mus_icu@gilgamesh.cc
+```
 
-### AWS
+The password is the secret `$BACKEND_PASSWORD`.
 
-`/deploy/fff-1.pem` contains the gitignored AWS private key. Check Drive for a copy.
+### Branches
+
+The backend runs on the `production` branch, which is `master` but one commit ahead, turning off `DEBUG` mode for the Django server.
