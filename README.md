@@ -10,7 +10,9 @@ Secrets are available via the link <https://drive.google.com/drive/folders/1U_5g
 
 In addition to cloning the repository, several secret files need to be imported from the folder `secret-files` via the link. Relative to the root repository directory, these files are:
 
-* `/fff_ios/Secret.swift`
+`secret-files` path|Repository path
+-|-
+`Secret.swift`|`/fff_ios/Secret.swift`
 
 ## Front-end
 
