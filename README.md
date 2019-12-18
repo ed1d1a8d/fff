@@ -14,6 +14,7 @@ In addition to cloning the repository, several secret files need to be imported 
 -|-
 `Secret.swift`|`/fff_ios/Secret.swift`
 `django_secret_key.py`|`/django/fff/django_secret_key.py`
+`add_mock_data_secrets.py`|`/django/api/management/commands/add_mock_data_secrets.py`
 
 ## Front-end
 
