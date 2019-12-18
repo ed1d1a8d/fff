@@ -13,6 +13,7 @@ In addition to cloning the repository, several secret files need to be imported 
 `secret-files` path|Repository path
 -|-
 `Secret.swift`|`/fff_ios/Secret.swift`
+`django_secret_key.py`|`/django/fff/django_secret_key.py`
 
 ## Front-end
 
