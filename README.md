@@ -66,13 +66,15 @@ exit
 ./reset_and_add_mock_data.sh
 ```
 
-The Postgres user `fff` should have password `$POSTGRES_FFF_PASSWORD`, available as a secret. Postgres should run on the default port.
+The Postgres user `fff` should have password `$POSTGRES_FFF_PASSWORD`, available as a secret. Postgres should run on the default port. When installing Postgres, the local user `postgres` should have password `password` for clarity.
 
 On OSX with Brew, Postgres can be installed via:
 
 ```bash
 brew install postgresql
 ```
+
+On Windows, each command should be run with `-U postgres` instead of prepending commands with `sudo su - postgres`.
 
 ## Endpoints
 
